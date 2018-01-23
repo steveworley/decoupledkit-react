@@ -25,6 +25,32 @@ Here is a quick summary of elements included within this application stack, but 
 TODO //     
 
 
+<!--
+
+Complex CRUD operations in Drupal 8
+
+Extending core REST with REST plugins
+
+Drupal as a single data source: GraphQL and JSON API
+
+Multiple data sources: Handing non-Drupal API data
+
+Synthesizing non-Drupal and Drupal API data with GraphQL
+
+Proxying data into Drupal via JSON API and JavaScript middleware
+
+Best practices in correlating data from multiple API sources
+
+Common issues in rate limiting and API failure
+
+Caching data in non-Drupal APIs for API failover
+
+Mocking APIs for local application development
+
+
+-->
+
+
 
 
 
