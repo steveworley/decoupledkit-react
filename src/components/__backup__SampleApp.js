@@ -1,11 +1,10 @@
 import React from 'react';
 import SearchApp from './SearchApp';
-import TimeTracker from './timeTracker';
 import UserApp from './UserApp';
 import StarWarsApp from './StarWarsApp';
 import StarWarsExternalApp from './StarWarsExternalApp';
 import IncrementApp from './IncrementApp';
-import GraphqlClientApp from './GraphqlClientApp';
+// import GraphqlClientApp from './GraphqlClientApp';
 import { ApolloProvider } from 'react-apollo';
 import { ApolloClient } from 'apollo-client';
 import { HttpLink } from 'apollo-link-http';
@@ -24,7 +23,6 @@ function SampleApp() {
 
     <div className="sample-app">
 
-      <TimeTracker />
 
       <h2>Collection of Sample Components</h2>
 
@@ -48,9 +46,9 @@ function SampleApp() {
         <StarWarsExternalApp />
       </div>
 
-      <ApolloProvider client={client}>
+      {/* <ApolloProvider client={client}>
         <GraphqlClientApp />
-      </ApolloProvider>
+      </ApolloProvider> */}
 
     </div>
   );
