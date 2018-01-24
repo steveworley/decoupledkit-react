@@ -41,17 +41,18 @@ class GraphQLClientDrupal extends React.Component {
 
       <div className="holder">
 
-        <h4>GraphQL Client Query Single</h4>
+        <h4>Using GraphQL to query a Headless Drupal Instance</h4>
 
         <p>
-          [ ] TODO: updated core requirements <br />
-          [ ] TODO: updated core requirements <br />
-          [ ] TODO: updated core requirements <br />
+          <b>Story:</b> As a developer, I would like to understand the usefullness of utilizing a GraphQL server when retrieving data from a Drupal JSON API source.
         </p>
-        <br />
 
-
-
+        <ul>
+          <li>Setup a common data schema as a single content types in Drupal using the Headless Lightning distro located at https://github.com/acquia-pso/javascript-ps-starter-headlessdrupal</li>
+          <li>Using the sample GraphQL server application in "__graphql_server", set up the proper types and schema definitions to display this data.</li>
+          <li>Using this GraphQL server, illustrates the benefits of consolidating multiple API data points within the type definitions and/or schemas.</li>
+          <li>Using this React application, show how to retrieve the designated queries from the GraphQL server.</li>
+        </ul>
       </div>
 
     );
