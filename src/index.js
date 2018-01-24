@@ -7,7 +7,7 @@ import configureStore, { history } from './store/configureStore';
 import Root from './components/Root';
 import {loadStarWars} from './actions/starwarsActions';
 
-import './styles/styles.scss';
+import './styles/baseline.scss';
 require('./favicon.ico');
 
 const store = configureStore();

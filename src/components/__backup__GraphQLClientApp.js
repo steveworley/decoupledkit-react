@@ -1,7 +1,7 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import '../styles/graphql.scss';
+// import '../styles/graphql.scss';
 import * as actions from '../actions/graphqlclientActions';
 /*eslint-disable no-console */
 
