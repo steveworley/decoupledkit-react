@@ -86,7 +86,17 @@ class DrupalCrudApp extends React.Component {
             // [{ [uuid]: uuid }, { 'img_path': img_path }]   why can I do this here but not in render
             t.setState({ drupal_api_load_img: [...t.state.drupal_api_load_img, ...[img_path]] }); // TODO: update structure by UUID
             // console.log('img_path', img_path);
-            // let currNodes = [...t.state.drupal_nodes.api_data];
+
+            /**
+             * I want to update the existing object "drupal_nodes" the image field reference in this loop.
+             * Just nested like this: https://screencast.com/t/0SGdMJpgnL2t
+            */
+            let currNodes = [...t.state.drupal_nodes.api_data];
+            currNodes[0]['freakin_picture'] = 'test';
+            console.log('currNodes ====>',currNodes);
+
+
+
             console.log('t.state', t.state);
           }
 
