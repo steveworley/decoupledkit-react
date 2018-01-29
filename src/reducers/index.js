@@ -1,14 +1,13 @@
 import { combineReducers } from 'redux';
-import users from './userReducer';
-import number from './incrementReducer';
-import starwars from './starwarsReducer';
-import graphql from './graphqlclientReducer';
+
+import drupal_api_load from './drupalLoadReducer';
+import drupal_api_load_img from './drupalLoadImgReducer';
+import drupal_api_update from './drupalUpdateReducer';
 
 const rootReducer = combineReducers({
-  users,
-  number,
-  starwars,
-  graphql
+  drupal_api_load,
+  drupal_api_load_img,
+  drupal_api_update
 });
 
 export default rootReducer;
