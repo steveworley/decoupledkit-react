@@ -91,11 +91,9 @@ class DrupalCrudApp extends React.Component {
              * I want to update the existing object "drupal_nodes" the image field reference in this loop.
              * Just nested like this: https://screencast.com/t/0SGdMJpgnL2t
             */
-            let currNodes = [...t.state.drupal_nodes.api_data];
-            currNodes[0]['freakin_picture'] = 'test';
-            console.log('currNodes ====>',currNodes);
-
-
+            // let currNodes = [...t.state.drupal_nodes.api_data];
+            // currNodes[0]['freakin_picture'] = 'test';
+            // console.log('currNodes ====>',currNodes);
 
             console.log('t.state', t.state);
           }
