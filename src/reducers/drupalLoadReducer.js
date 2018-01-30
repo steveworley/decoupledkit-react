@@ -1,15 +1,23 @@
-import * as types from '../actions/drupalAPITypes';
+import { LOAD_DRUPAL_DATA, RECEIVE_DRUPAL_DATA } from '../actions/drupalAPIActions';
 
-export default function drupalLoadReducer(state = [], action) {
+const initialState = {
+  data: {},
+  images: {},
+}
+
+export default function drupalLoadReducer(state = initialState, action) {
   switch (action.type) {
-    case types.LOAD_DRUPAL_SUCCESS:
-      console.log('action.drupal_api_load',action.drupal_api_load);
-      return action.drupal_api_load;
-      //return [{...state, action.drupal_api_load}];
-      // return [
-      //   ...state,
-      //   { action.drupal_api_load }
-      // ];
+    case LOAD_DRUPAL_DATA:
+      return Object.assign({}, state, {
+        fetching: true,
+      });
+
+    case RECEIVE_DRUPAL_DATA:
+      return Object.assign({}, state,  { data: action.data });
+
+    case 'RECEIVE_IMAGES':
+      return Object.assign({}, state, { images: action.images });
+
     default:
       return state;
   }
