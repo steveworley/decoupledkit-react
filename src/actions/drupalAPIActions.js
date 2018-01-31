@@ -41,8 +41,8 @@ export function doLoadDrupalData() {
         }, {});
 
         const initialReturn = JSON.parse(JSON.stringify(result));
-
         dispatch(receiveDrupalData(initialReturn));
+        initialReturn = null; // GC.
 
         const imageRequests = [];
         const images = {};
@@ -60,6 +60,7 @@ export function doLoadDrupalData() {
             });
             const imageResult = JSON.parse(JSON.stringify(result));
             dispatch(receiveDrupalData(imageResult));
+            imageResult = null; // GC.
           });
       })
       .catch(err => console.log(err));
