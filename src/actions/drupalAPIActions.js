@@ -40,7 +40,7 @@ export function doLoadDrupalData() {
           return result;
         }, {});
 
-        const initialReturn = JSON.parse(JSON.stringify(result));
+        let initialReturn = JSON.parse(JSON.stringify(result));
         dispatch(receiveDrupalData(initialReturn));
         initialReturn = null; // GC.
 
@@ -58,7 +58,7 @@ export function doLoadDrupalData() {
               const uuid = self.split('/').splice(-2, 1)[0]; // has to be a better way to get the UUID.
               result[uuid].image = DRUPAL_API_LOC.replace('\/jsonapi\/node\/dogs', attributes.url);
             });
-            const imageResult = JSON.parse(JSON.stringify(result));
+            let imageResult = JSON.parse(JSON.stringify(result));
             dispatch(receiveDrupalData(imageResult));
             imageResult = null; // GC.
           });
