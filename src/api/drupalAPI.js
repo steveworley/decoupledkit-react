@@ -57,19 +57,21 @@ class drupalAPI {
 
   static updateDrupal(API_LOC = types.DRUPAL_API_LOC, data) {
     // console.log('dataz ===>', JSON.stringify(data));
+    console.log('URL ===> ', API_LOC);
     return fetch(API_LOC, {
       method: 'PATCH',
       body: JSON.stringify(data),
-      // mode: 'no-cors',
+      mode: 'no-cors',
       headers: new Headers({
         'Accept': 'application/vnd.api+json',
         'Content-Type': 'application/vnd.api+json',
-        'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjEyM2JkMzExMjQwODE4Njg2NDg5NGJjMjQ5YWY0NTA2ODkxNTVkYWIwMjhiYWU3Nzc3ZTAwMDI0MTBmZGViMjI2ZmUxYTZhYTNhYzNmMGEyIn0.eyJhdWQiOiI5ZWQ2MGUwOC04ZWFjLTRiYjMtYjRjNy04ZmEzYjk3NjQ2MjIiLCJqdGkiOiIxMjNiZDMxMTI0MDgxODY4NjQ4OTRiYzI0OWFmNDUwNjg5MTU1ZGFiMDI4YmFlNzc3N2UwMDAyNDEwZmRlYjIyNmZlMWE2YWEzYWMzZjBhMiIsImlhdCI6MTUxNjkxMzE3OCwibmJmIjoxNTE2OTEzMTc4LCJleHAiOjE1MTY5MTM0NzgsInN1YiI6IjIiLCJzY29wZXMiOlsiYXV0aGVudGljYXRlZCIsImRvZ3NfY3JlYXRvciIsImRvZ3NfcmV2aWV3ZXIiXX0.qW431TY179UBD3Vtk0uLRSwxJQxJ3XYJi2tspKHbQhrtEUgjs8a5eb6_Y8Y8cyrtbsAliCXPxmHQKE4TKZzfHCD2-mijK8c0s0Wlbhj51IWJy4wspjx6ZvMTjHwShMD1-D9Tzm0t65928FRK68ZU9Am2Q7eGCAnXFEQa_Fun5Fhd3zVsPD0gdpNwo6xy4llI_XP1ROJaiZ59OAhxXk2CoQzgBvHlxHXrw_ARadj15kV7bYyphHXcGQGBfzslJ4pV17-W1oJ2OQ-GGK9Jqjao02pr1DGD3mSn7upDsRX2dIEG0ocXeQXIZyhMnybE8bMMxKz690zsSN8IceURURalpA'
+        'Authorization': 'Basic YXBpLWRvZy1hZG1pbjp0ZXN0'
       })
     }).then(response => {
-      // console.log('response.json() ===> ', response.json());
+      console.log('this is response');
       return response.json();
     }).catch(error => {
+      console.log('this is error');
       return error;
     });
   }

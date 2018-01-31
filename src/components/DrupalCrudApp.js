@@ -13,12 +13,16 @@ class DrupalCrudApp extends React.Component {
     this.props.actions.doLoadDrupalData();
   }
 
+  onChange(item, field, val) {
+    this.props.actions.updateContent(item, field, val);
+  }
+
   render() {
     const data = {...this.props.data};
     const nodeList = Object.keys(data).map(key => {
       const item = data[key];
       return (
-        <Node key={key} {...item.attributes} image={item.image} />
+        <Node key={key} {...item.attributes} image={item.image} onChangeHandler={this.onChange.bind(this) } />
       );
     })
 

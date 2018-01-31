@@ -17,7 +17,25 @@ export function receiveDrupalData(data) {
 }
 
 export function receiveDrupalImages(images) {
-  return { type: 'RECEIVE_IMAGES', images };
+  return { type: RECEIVE_DRUPAL_IMAGES, images };
+}
+
+export function updateContent(item, field, val) {
+  return dispatch => {
+    const body = {
+      "data": {
+        "id": item.uuid,
+        "attributes": {
+          [field]: val
+        }
+      }
+    }
+    console.log(`${DRUPAL_API_LOC}/${item.uuid}`)
+    drupalAPI.updateDrupal(`${DRUPAL_API_LOC}/${item.uuid}`, body).then((res) => {
+      console.log(res);
+      dispatch(loadDrupalData());
+    });
+  }
 }
 
 /**
