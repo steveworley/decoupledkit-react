@@ -1,22 +1,20 @@
 import { LOAD_DRUPAL_DATA, RECEIVE_DRUPAL_DATA } from '../actions/drupalAPIActions';
 
 const initialState = {
-  data: {},
-  images: {},
+  data: {}
 }
 
 export default function drupalLoadReducer(state = initialState, action) {
   switch (action.type) {
     case LOAD_DRUPAL_DATA:
-      return Object.assign({}, state, {
-        fetching: true,
-      });
+      return {...state, fetching: true }
 
     case RECEIVE_DRUPAL_DATA:
-      return Object.assign({}, state,  { data: action.data });
+      return { ...state, data: action.data }
 
     case 'RECEIVE_IMAGES':
-      return Object.assign({}, state, { images: action.images });
+      return { ...state, data: action.images };
+
 
     default:
       return state;

@@ -37,14 +37,15 @@ export function doLoadDrupalData() {
         const { data } = json;
         result = data.reduce((result, item) => {
           result[item.id] = item;
-          result[item.id].image = null;
           return result;
         }, {});
 
-        dispatch(receiveDrupalData(result));
+        const initialReturn = JSON.parse(JSON.stringify(result));
+
+        dispatch(receiveDrupalData(initialReturn));
 
         const imageRequests = [];
-        const imageData = {}
+        const images = {};
 
         Object.keys(result).forEach((uuid, index) => {
           imageRequests.push(drupalAPI.getAllDrupalImg(`${DRUPAL_API_LOC}/${uuid}/field_dog_picture`));
@@ -55,9 +56,10 @@ export function doLoadDrupalData() {
             values.forEach((item, index) => {
               const { data: { attributes }, links: { self } } = item;
               const uuid = self.split('/').splice(-2, 1)[0]; // has to be a better way to get the UUID.
-              imageData[uuid] = DRUPAL_API_LOC.replace('\/jsonapi\/node\/dogs', attributes.url);
+              result[uuid].image = DRUPAL_API_LOC.replace('\/jsonapi\/node\/dogs', attributes.url);
             });
-            dispatch(receiveDrupalImages(imageData));
+            const imageResult = JSON.parse(JSON.stringify(result));
+            dispatch(receiveDrupalData(imageResult));
           });
       })
       .catch(err => console.log(err));
