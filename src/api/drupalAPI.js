@@ -1,10 +1,16 @@
 import * as types from '../actions/drupalAPITypes';
 
+const headers = {
+  'Accept': 'application/vnd.api+json',
+  'Content-Type': 'application/vnd.api+json',
+  'Authorization': 'Basic ' + btoa('api-dog-admin:test')
+}
+
 class drupalAPI {
 
   static getAllDrupal(API_LOC = types.DRUPAL_API_LOC) {
     console.log('getAllDrupal()');
-    return fetch(API_LOC).then(response => {
+    return fetch(API_LOC, { headers }).then(response => {
       return response.json();
     }).catch(error => {
       return error;
@@ -13,12 +19,27 @@ class drupalAPI {
 
   static getAllDrupalImg(API_LOC = types.DRUPAL_API_LOC) {
     console.log('getAllDrupalImg()');
-    return fetch(API_LOC).then(response => {
+    return fetch(API_LOC, { headers }).then(response => {
       return response.json();
     }).catch(error => {
       return error;
     });
   }
+
+  static createNode(API_LOC = types.DRUPAL_API_LOC, data = {}) {
+    console.log('CREATING NODE ==>', API_LOC);
+    return fetch(API_LOC, {method: 'POST', body: JSON.stringify(data), headers})
+      .then(res => res.json())
+      .catch(err => console.log(err))
+  }
+
+  static deleteNode(API_LOC = types.DRUPAL_API_LOC) {
+    console.log('DELETING NODE ==>', API_LOC)
+    return fetch(API_LOC, {method: 'DELETE', headers})
+      .then(res => res.json())
+      .catch(err => console.log(err))
+  }
+
 
   // var url = 'https://example.com/profile';
   // var data = {username: 'example'};
@@ -54,19 +75,13 @@ class drupalAPI {
 'Content-Type' => 'application/vnd.api+json'
  */
 
-
   static updateDrupal(API_LOC = types.DRUPAL_API_LOC, data) {
     // console.log('dataz ===>', JSON.stringify(data));
     console.log('URL ===> ', API_LOC);
     return fetch(API_LOC, {
       method: 'PATCH',
       body: JSON.stringify(data),
-      mode: 'no-cors',
-      headers: new Headers({
-        'Accept': 'application/vnd.api+json',
-        'Content-Type': 'application/vnd.api+json',
-        'Authorization': 'Basic YXBpLWRvZy1hZG1pbjp0ZXN0'
-      })
+      headers
     }).then(response => {
       console.log('this is response');
       return response.json();

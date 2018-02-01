@@ -7,6 +7,8 @@ export const LOAD_DRUPAL_DATA = 'LOAD_DRUPAL_DATA';
 export const RECEIVE_DRUPAL_DATA = 'RECEIVE_DRUPAL_DATA';
 export const LOAD_DRUPAL_IMAGES = 'LOAD_DRUPAL_IMAGES';
 export const RECEIVE_DRUPAL_IMAGES = 'RECEIVE_DRUPAL_IMAGES';
+export const DRUPAL_CRUD_MESSAGE_SEND = 'DRUPAL_CRUD_MESSAGE_SEND';
+export const DRUPAL_CRUD_MESSAGE_CLEAR = 'DRUPAL_CRUD_MESSAGE_CLEAR';
 
 export function loadDrupalData() {
   return { type: LOAD_DRUPAL_DATA, data: {} };
@@ -20,6 +22,14 @@ export function receiveDrupalImages(images) {
   return { type: RECEIVE_DRUPAL_IMAGES, images };
 }
 
+export function sendMessage(message) {
+  return { type: DRUPAL_CRUD_MESSAGE_SEND, message };
+}
+
+export function clearMessage() {
+  return { type: DRUPAL_CRUD_MESSAGE_CLEAR, message: null }
+}
+
 export function updateContent(item, field, val) {
   return dispatch => {
     const body = {
@@ -30,11 +40,46 @@ export function updateContent(item, field, val) {
         }
       }
     }
-    console.log(`${DRUPAL_API_LOC}/${item.uuid}`)
+    dispatch(sendMessage(`Sending a content update for ${item.uuid}`));
     drupalAPI.updateDrupal(`${DRUPAL_API_LOC}/${item.uuid}`, body).then((res) => {
-      console.log(res);
-      dispatch(loadDrupalData());
+      dispatch(doLoadDrupalData());
+      dispatch(sendMessage(`Succesfully updated ${item.uuid}`));
+      setTimeout(() => { dispatch(clearMessage()) }, 3000);
     });
+  }
+}
+
+export function createContent(item) {
+  return dispatch => {
+    const { title, body } = item;
+    const requestBody = {
+      "data": {
+        "type": "node--dogs",
+        "attributes": {
+          title,
+          body: { value: body, format: 'plain_text' }
+        }
+      }
+    }
+    dispatch(sendMessage(`Creating a new node with title ${title}`));
+    drupalAPI.createNode(`${DRUPAL_API_LOC}`, requestBody)
+      .then(res => {
+        dispatch(doLoadDrupalData());
+        dispatch(sendMessage(`Successfully created the node!`));
+        setTimeout(() => { dispatch(clearMessage()) }, 3000);
+      });
+  }
+}
+
+export function deleteContent(uuid) {
+  return dispatch => {
+    dispatch(sendMessage(`Deleting node with ${uuid}`));
+    return drupalAPI.deleteNode(`${DRUPAL_API_LOC}/${uuid}`)
+      .then(res => {
+        dispatch(sendMessage(`Successfully deleted ${uuid}`));
+        dispatch(doLoadDrupalData());
+        setTimeout(() => { dispatch(clearMessage()) }, 3000);
+      });
   }
 }
 
@@ -79,7 +124,8 @@ export function doLoadDrupalData() {
             let imageResult = JSON.parse(JSON.stringify(result));
             dispatch(receiveDrupalData(imageResult));
             imageResult = null; // GC.
-          });
+          })
+          .catch(err => console.log(err));
       })
       .catch(err => console.log(err));
   }

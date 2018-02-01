@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import * as actions from '../actions/drupalAPIActions'
 import Node from './node';
+import NewNodeForm from './NewNodeForm';
 
 import '../styles/drupalcrud.scss'
 
@@ -17,14 +18,35 @@ class DrupalCrudApp extends React.Component {
     this.props.actions.updateContent(item, field, val);
   }
 
+  onNewNodeSubmit(item) {
+    console.log('NEW NODE ===>', item);
+    this.props.actions.createContent(item);
+  }
+
+  onRemoveHandler(uuid) {
+    console.log('DELETING NODE ===>', uuid);
+    this.props.actions.deleteContent(uuid);
+  }
+
   render() {
     const data = {...this.props.data};
     const nodeList = Object.keys(data).map(key => {
       const item = data[key];
       return (
-        <Node key={key} {...item.attributes} image={item.image} onChangeHandler={this.onChange.bind(this) } />
+        <Node
+          key={key}
+          image={item.image}
+          onChangeHandler={this.onChange.bind(this) }
+          onRemoveHandler={this.onRemoveHandler.bind(this)}
+          {...item.attributes}
+        />
       );
     })
+    const Message = !!this.props.message ? (
+      <div className="messages">
+        <div className="message-inner">{this.props.message}</div>
+      </div>
+    ) : '';
 
     return (
       <div>
@@ -41,8 +63,12 @@ class DrupalCrudApp extends React.Component {
           <li>Show the ability to delete a node of that content type (delete)</li>
         </ul>
         <div className={"node-rows"}>
+          <NewNodeForm onSubmit={this.onNewNodeSubmit.bind(this)} />
+        </div>
+        <div className={"node-rows"}>
           {nodeList}
         </div>
+        {Message}
       </div>
     );
   }
@@ -52,9 +78,10 @@ DrupalCrudApp.propTypes = {
   actions: PropTypes.object.isRequired,
 };
 
-function mapStateToProps(state, newState) {
-  const { drupalLoadReducer: { data } } = state || { drupalLoadReducer: {data: {}}};
-  return { data };
+function mapStateToProps(state) {
+  const { drupalLoadReducer: { data } } = state || { drupalLoadReducer: {data: {}}}
+  const { drupalLoadReducer: { message } } = state || { drupalLoadReducer: {message: ''}}
+  return { data, message };
 }
 
 function MapDispatchToProps(dispatch) {
