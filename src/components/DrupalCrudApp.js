@@ -19,12 +19,10 @@ class DrupalCrudApp extends React.Component {
   }
 
   onNewNodeSubmit(item) {
-    console.log('NEW NODE ===>', item);
     this.props.actions.createContent(item);
   }
 
   onRemoveHandler(uuid) {
-    console.log('DELETING NODE ===>', uuid);
     this.props.actions.deleteContent(uuid);
   }
 
