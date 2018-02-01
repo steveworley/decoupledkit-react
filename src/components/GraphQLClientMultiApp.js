@@ -2,7 +2,9 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import '../styles/graphqlclientdrupal.scss';
-import * as actions from '../actions/graphqlclientActions';
+import * as actions from '../actions/graphqlMulti';
+
+import Hero from './Hero';
 
 /*eslint-disable no-console */
 
@@ -10,32 +12,26 @@ class GraphQLClientMulti extends React.Component {
 
   constructor(props, store) {
     super(props, store);
-    this.handleClick = this.handleClick.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.state = {
-      graphql_data: [],
-      show_villains: false,
-      filter_villain_id: '',
-      id_error: false,
-      query_display: false,
-    };
   }
 
   componentDidMount() {
-  }
-
-
-  handleClick(event) {
-    //let value = event.target.value;
-  }
-
-  handleChange(event) {
-    // let value = event.target.value;
+    this.props.actions.fetchGraphql()
   }
 
   render() {
+    const { data } = this.props
+    const Heroes = data.map(hero => {
+      return (
+        <Hero
+          name={hero.name}
+          description={hero.description}
+          image={hero.image}
+          comics={hero.comics}
+          villains={hero.villains}
+        />
+      )
+    })
 
-    //    const graphql_data = this.props.graphql.data;
 
     return (
 
@@ -55,6 +51,8 @@ class GraphQLClientMulti extends React.Component {
           <li>Using this React application, show how to retrieve the designated queries from the GraphQL server.</li>
         </ul>
 
+        {Heroes}
+
       </div>
 
     );
@@ -62,9 +60,9 @@ class GraphQLClientMulti extends React.Component {
 }
 
 export function mapStateToProps(state) {
-  return {
-    graphql: state.graphql
-  };
+  const { graphqlMultiReducer: { data } } = state
+  console.log(state, 'state data');
+  return { data };
 }
 
 export function MapDispatchToProps(dispatch) {
