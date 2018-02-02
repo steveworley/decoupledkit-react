@@ -15,6 +15,9 @@ class DrupalCrudApp extends React.Component {
   }
 
   onChange(item, field, val) {
+    console.log('item',item);
+    console.log('field',field);
+    console.log('val',val);
     this.props.actions.updateContent(item, field, val);
   }
 

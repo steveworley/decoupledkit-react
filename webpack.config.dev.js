@@ -100,6 +100,13 @@ export default {
         ]
       },
       {
+        test: /\.css$/,
+        loaders: [
+          'style-loader',
+          'css-loader?modules'
+        ]
+      },
+      {
         test: /(\.css|\.scss|\.sass|\.less)$/,
         use: [
           'style-loader',
