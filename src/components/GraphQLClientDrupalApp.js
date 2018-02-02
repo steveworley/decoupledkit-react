@@ -1,41 +1,39 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import '../styles/graphqlclientdrupal.scss';
 import * as actions from '../actions/graphqlclientActions';
 
+// Should have called this module character :( haha...
+import Villain from './Hero'
+
 /*eslint-disable no-console */
 
-class GraphQLClientDrupal extends React.Component {
+class GraphqlClientDrupal extends Component {
 
-  constructor(props, store) {
-    super(props, store);
-    this.handleClick = this.handleClick.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.state = {
-      graphql_data: [],
-      show_villains: false,
-      filter_villain_id: '',
-      id_error: false,
-      query_display: false,
-    };
+  constructor(props) {
+    super(props)
   }
 
   componentDidMount() {
-  }
-
-
-  handleClick(event) {
-    //let value = event.target.value;
-  }
-
-  handleChange(event) {
-    // let value = event.target.value;
+    this.props.actions.fetchData()
   }
 
   render() {
 
-    //    const graphql_data = this.props.graphql.data;
+    const { data } = this.props
+
+    const Villains = data.map(villain => {
+      return (
+        <Villain
+          name={villain.name}
+          description={`${villain.powers} ${villain.description}`}
+          image={villain.image}
+          comics={[]}
+          villains={[]}
+        />
+      )
+    })
 
     return (
 
@@ -53,16 +51,17 @@ class GraphQLClientDrupal extends React.Component {
           <li>Using this GraphQL server, illustrates the benefits of consolidating multiple API data points within the type definitions and/or schemas.</li>
           <li>Using this React application, show how to retrieve the designated queries from the GraphQL server.</li>
         </ul>
-      </div>
 
+        {Villains}
+
+      </div>
     );
   }
 }
 
 export function mapStateToProps(state) {
-  return {
-    graphql: state.graphql
-  };
+  const { graphqlSingle: { data } } = state
+  return { data }
 }
 
 export function MapDispatchToProps(dispatch) {
@@ -71,4 +70,4 @@ export function MapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, MapDispatchToProps)(GraphQLClientDrupal);
+export default connect(mapStateToProps, MapDispatchToProps)(GraphqlClientDrupal);
