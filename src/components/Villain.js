@@ -2,21 +2,34 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 class Villain extends Component {
+  constructor(props) {
+    super(props)
+    this.state = { showinfo: false }
+  }
+  showInfo(e) {
+    e.preventDefault();
+    this.setState({showinfo: !this.state.showinfo })
+  }
   render() {
-    const { name, description, image } = this.props;
+    const { name, description, image } = this.props
+    const classes = this.state.showinfo ? 'show' : 'hide'
+
     return (
       <div className="villain">
-        <div className="row">
-          <div className="label">{"Name"}</div>
-          {name}
-        </div>
-        <div className="row">
-          <div className="label">{"Description"}</div>
-          {description}
-        </div>
-        <div className="row">
-          <div className="label">{"Image"}</div>
-          {image}
+        <h4><a href="#" onClick={this.showInfo.bind(this)}>{name}</a></h4>
+        <div className={classes}>
+          <div className="row">
+            <p><strong>{"Name"}</strong></p>
+            {name}
+          </div>
+          <div className="row">
+            <p><strong>{"Description"}</strong></p>
+            {description}
+          </div>
+          <div className="row">
+            <p><strong>{"Image"}</strong></p>
+            <p style={{textAlign: "center"}}><img src={image} /></p>
+          </div>
         </div>
       </div>
     )

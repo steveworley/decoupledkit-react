@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
+import '../styles/hero.scss'
+
 import Villain from './Villain';
 import Comic from './Comic';
 
@@ -15,6 +17,7 @@ class Hero extends Component {
     const Comics = comics.map(comic => {
       return (
         <Comic
+          key={comic.id}
           title={comic.title}
           image={comic.image}
           description={comic.description}
@@ -25,6 +28,7 @@ class Hero extends Component {
     const Villains = villains.map(villain => {
       return (
         <Villain
+          key={villain.id}
           name={villain.name}
           image={villain.image}
           description={villain.description}
@@ -34,23 +38,30 @@ class Hero extends Component {
 
     return (
       <div className="hero">
-        <div className="row">
-          <div className="label">{"Name"}</div>
-          {name}
+        <h2>{name}</h2>
+        <div className="col">
+          <div className="row">
+            <div className="label">{"Image"}</div>
+            <div className="image"><img src={image} /></div>
+          </div>
         </div>
-        <div className="row">
-          <div className="label">{"Description"}</div>
-          {description}
-        </div>
-        <div className="row">
-          <div className="label">{"Image"}</div>
-          <img src={image} />
-        </div>
-        <div className="comics">
-          {Comics}
-        </div>
-        <div className="villains">
-          {Villains}
+        <div className="col">
+          <div className="row">
+            <div className="label">{"Name"}</div>
+            <p>{name}</p>
+          </div>
+          <div className="row">
+            <div className="label">{"Description"}</div>
+            <p>{description}</p>
+          </div>
+          <div className="villains">
+            <div className="label">{"Villains"}</div>
+            {Villains}
+          </div>
+          <div className="comics">
+            <div className="label">{"Appearances"}</div>
+            {Comics}
+          </div>
         </div>
       </div>
     )
