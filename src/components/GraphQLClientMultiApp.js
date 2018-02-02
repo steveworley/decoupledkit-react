@@ -1,10 +1,11 @@
-import React from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import '../styles/graphqlclientdrupal.scss';
-import * as actions from '../actions/graphqlMulti';
+import React from 'react'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import '../styles/graphqlclientdrupal.scss'
+import * as actions from '../actions/graphqlMulti'
 
-import Hero from './Hero';
+import Hero from './Hero'
+import CreateHeroForm from './CreateHeroForm'
 
 /*eslint-disable no-console */
 
@@ -18,11 +19,21 @@ class GraphQLClientMulti extends React.Component {
     this.props.actions.fetchGraphql()
   }
 
+  handleClick(event) {
+    this.props.actions.updateGrpahql('1009220', 'Captain was America');
+  }
+
+  handleSubmit(hero) {
+    this.props.actions.createGraphql(hero);
+  }
+
   render() {
-    const { data } = this.props
+    const { data, message } = this.props
+    let messages = ''
     const Heroes = data.map(hero => {
       return (
         <Hero
+          key={hero.id}
           name={hero.name}
           description={hero.description}
           image={hero.image}
@@ -32,6 +43,10 @@ class GraphQLClientMulti extends React.Component {
       )
     })
 
+    console.log(message)
+    if (message != '') {
+      messages = (<div className="messages"><div className="message-inner">{message}</div></div>)
+    }
 
     return (
 
@@ -51,7 +66,11 @@ class GraphQLClientMulti extends React.Component {
           <li>Using this React application, show how to retrieve the designated queries from the GraphQL server.</li>
         </ul>
 
+        <CreateHeroForm handleSubmit={this.handleSubmit.bind(this)} />
+
         {Heroes}
+
+        {messages}
 
       </div>
 
@@ -60,9 +79,8 @@ class GraphQLClientMulti extends React.Component {
 }
 
 export function mapStateToProps(state) {
-  const { graphqlMultiReducer: { data } } = state
-  console.log(state, 'state data');
-  return { data };
+  const { graphqlMultiReducer: { data, message } } = state
+  return { data, message };
 }
 
 export function MapDispatchToProps(dispatch) {
