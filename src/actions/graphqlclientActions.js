@@ -1,97 +1,41 @@
-import gql from 'graphql-tag';
-import * as types from './graphqlclientTypes';
-const {
-  createApolloFetch
-} = require('apollo-fetch');
+import gql from 'graphql-tag'
+import { createApolloFetch } from 'apollo-fetch'
 
-export function loadGraphQLSuccess(graphql) {
-  return {
-    type: types.CREATE_GRAPHQL,
-    graphql
-  };
-}
+export const BEGIN_GRAPHQL = 'BEGIN_GRAPHQL'
+export const RECEIVE_GRAPHQL = 'RECEIVE_GRAPHQL'
 
 const fetch = createApolloFetch({
   uri: 'http://localhost:8082/graphql',
 });
 
-function default_query() {
-  return {
-    query: gql`
-      query {
-        allVillains {
-          id
-          name
-        }
-      }`
-  };
-}
-
-function full_query() {
-  return {
-    query: gql`
-      query {
-        allVillains {
-          id
-          name
-          age
-          weight
-          image
-          description
-          powers
-          first_appearance
-        }
-      }`
-  };
-}
-
-function filter_by_id(id) {
-  return {
-    query: gql`
-      query {
-        villain(id: ${id}) {
-          id
-          name
-          age
-          weight
-          image
-          description
-          powers
-          first_appearance
-        }
-      }`
-  };
-}
-
-function count_query() {
-  return {
-    query: gql`
-      query {
-        totalVillains
-      }`
-  };
-}
-
-export function match_queries(query, id = 0) {
-  switch (query) {
-    case 'total_villains':
-      return count_query();
-    case 'full_list':
-      return full_query();
-    case 'filter_by_id':
-      return filter_by_id(id);
-    case 'default':
-      return default_query();
-    default:
-      return default_query();
+const query = gql`
+  query {
+    villains {
+      id
+      name
+      description
+      image
+      powers
+    }
   }
+`
+
+const beginFetch = () => {
+  return { type: BEGIN_GRAPHQL, data: []}
 }
 
-export function loadGraphQL(queries = 'default', id = 0) {
-  return function (dispatch) {
-    return fetch(match_queries(queries, id)).then(graphql => {
-      // console.log('graphql.data ====> ', graphql.data);
-      return dispatch(loadGraphQLSuccess(graphql));
-    });
-  };
+const receiveFetch = (data) => {
+  return { type: RECEIVE_GRAPHQL, data }
+}
+
+export function fetchData() {
+  return dispatch => {
+    dispatch(beginFetch())
+    return fetch({ query })
+      .then(graphql => {
+        const { data: { villains }} = graphql
+        dispatch(receiveFetch(villains))
+      })
+      .catch(err => console.log(err))
+  }
 }
