@@ -1,83 +1,132 @@
-import * as types from './drupalAPITypes';
 import drupalAPI from '../api/drupalAPI';
 
-export function loadDrupalSuccess(drupal_api_load) {
-  return {
-    type: types.LOAD_DRUPAL_SUCCESS,
-    drupal_api_load
-  };
+// This should probably be an environment variable.
+export const DRUPAL_API_LOC = 'http://local.decoupledkit.com/jsonapi/node/dogs';
+
+export const LOAD_DRUPAL_DATA = 'LOAD_DRUPAL_DATA';
+export const RECEIVE_DRUPAL_DATA = 'RECEIVE_DRUPAL_DATA';
+export const LOAD_DRUPAL_IMAGES = 'LOAD_DRUPAL_IMAGES';
+export const RECEIVE_DRUPAL_IMAGES = 'RECEIVE_DRUPAL_IMAGES';
+export const DRUPAL_CRUD_MESSAGE_SEND = 'DRUPAL_CRUD_MESSAGE_SEND';
+export const DRUPAL_CRUD_MESSAGE_CLEAR = 'DRUPAL_CRUD_MESSAGE_CLEAR';
+
+export function loadDrupalData() {
+  return { type: LOAD_DRUPAL_DATA, data: {} };
 }
 
-export function loadDrupalImgSuccess(drupal_api_load_img) {
-  return {
-    type: types.LOAD_DRUPAL_IMG_SUCCESS,
-    drupal_api_load_img
-  };
+export function receiveDrupalData(data) {
+  return { type: RECEIVE_DRUPAL_DATA, data };
 }
 
-export function updateDrupalSuccess(drupal_api_update) {
-  return {
-    type: types.UPDATE_DRUPAL_SUCCESS,
-    drupal_api_update
-  };
+export function receiveDrupalImages(images) {
+  return { type: RECEIVE_DRUPAL_IMAGES, images };
 }
 
-export function loadDrupal(API_LOC = types.DRUPAL_API_LOC) {
-  return function (dispatch) {
-    return drupalAPI.getAllDrupal(API_LOC).then(drupal_api_load => {
-      console.log('loadDrupalSuccess(drupal_api_load))', loadDrupalSuccess(drupal_api_load));
-      return dispatch(loadDrupalSuccess(drupal_api_load));
-    }).catch(error => {
-      throw (error);
-    });
-  };
+export function sendMessage(message) {
+  return { type: DRUPAL_CRUD_MESSAGE_SEND, message };
 }
 
-export function loadDrupalImg(API_LOC = types.DRUPAL_API_LOC) {
-  return function (dispatch) {
-
-    return drupalAPI.getAllDrupalImg(API_LOC).then(drupal_api_load_img => {
-      // console.log('loadDrupalImgSuccess(drupal_api_load_img)', loadDrupalImgSuccess(drupal_api_load_img));
-      return dispatch(loadDrupalImgSuccess(drupal_api_load_img));
-    }).catch(error => {
-      throw (error);
-    });
-  };
+export function clearMessage() {
+  return { type: DRUPAL_CRUD_MESSAGE_CLEAR, message: null }
 }
 
-export function updateDrupal(API_LOC = types.DRUPAL_API_LOC) {
-  return function (dispatch) {
-    return drupalAPI.updateDrupal(API_LOC, sample).then(drupal_api_update => {
-      console.log('I am update ==>', updateDrupalSuccess(drupal_api_update));
-      return dispatch(updateDrupalSuccess(drupal_api_update));
-    }).catch(error => {
-      throw (error);
-    });
-  };
-}
-
-
-let sample = {
-  "data": {
-    "id": "5de0fb4a-4057-4fa2-a808-5dbb6b96efe0",
-    "type": 'node--dogs',
-    "attributes": {
-      "title": "XOXO",
-      // 'body': {
-      //   'value': "xo xo xo",
-      //   'format': "rich_text",
-      //   'summary': ""
-      // },
-      // 'field_history_and_background': {
-      //   'value': "xo xo xo",
-      //   'format': "rich_text",
-      //   'summary': ""
-      // },
-      // 'field_physical_characteristics': {
-      //   'value': "xo xo xo",
-      //   'format': "rich_text",
-      //   'summary': ""
-      // }
+export function updateContent(item, field, val) {
+  return dispatch => {
+    const body = {
+      "data": {
+        "id": item.uuid,
+        "attributes": {
+          [field]: val
+        }
+      }
     }
+    dispatch(sendMessage(`Sending a content update for ${item.uuid}`));
+    drupalAPI.updateDrupal(`${DRUPAL_API_LOC}/${item.uuid}`, body).then((res) => {
+      dispatch(doLoadDrupalData());
+      dispatch(sendMessage(`Succesfully updated ${item.uuid}`));
+      setTimeout(() => { dispatch(clearMessage()) }, 3000);
+    });
+  }
+}
+
+export function createContent(item) {
+  return dispatch => {
+    const { title, body } = item;
+    const requestBody = {
+      "data": {
+        "type": "node--dogs",
+        "attributes": {
+          title,
+          body: { value: body, format: 'plain_text' }
+        }
+      }
+    }
+    dispatch(sendMessage(`Creating a new node with title ${title}`));
+    drupalAPI.createNode(`${DRUPAL_API_LOC}`, requestBody)
+      .then(res => {
+        dispatch(doLoadDrupalData());
+        dispatch(sendMessage(`Successfully created the node!`));
+        setTimeout(() => { dispatch(clearMessage()) }, 3000);
+      });
+  }
+}
+
+export function deleteContent(uuid) {
+  return dispatch => {
+    dispatch(sendMessage(`Deleting node with ${uuid}`));
+    return drupalAPI.deleteNode(`${DRUPAL_API_LOC}/${uuid}`)
+      .then(res => {
+        dispatch(sendMessage(`Successfully deleted ${uuid}`));
+        dispatch(doLoadDrupalData());
+        setTimeout(() => { dispatch(clearMessage()) }, 3000);
+      });
+  }
+}
+
+/**
+ * Fetch the drupal data.
+ *
+ * This will initiate a state change via `dispatch` and will instruct the
+ * component who is listening to the state of this action to trigger an update.
+ * We will chain resolvers here as well, after the initial request for data has
+ * completed we will trigger another request which we can `dispatch` back to
+ * the component and trigger another state update to add images.
+ */
+export function doLoadDrupalData() {
+  let result = {};
+  return (dispatch) => {
+    return drupalAPI.getAllDrupal(DRUPAL_API_LOC)
+      .then(json => {
+        const { data } = json;
+        result = data.reduce((result, item) => {
+          result[item.id] = item;
+          return result;
+        }, {});
+
+        let initialReturn = JSON.parse(JSON.stringify(result));
+        dispatch(receiveDrupalData(initialReturn));
+        initialReturn = null; // GC.
+
+        const imageRequests = [];
+        const images = {};
+
+        Object.keys(result).forEach((uuid, index) => {
+          imageRequests.push(drupalAPI.getAllDrupalImg(`${DRUPAL_API_LOC}/${uuid}/field_dog_picture`));
+        });
+
+        Promise.all(imageRequests)
+          .then(values => {
+            values.forEach((item, index) => {
+              const { data: { attributes }, links: { self } } = item;
+              const uuid = self.split('/').splice(-2, 1)[0]; // has to be a better way to get the UUID.
+              result[uuid].image = DRUPAL_API_LOC.replace('\/jsonapi\/node\/dogs', attributes.url);
+            });
+            let imageResult = JSON.parse(JSON.stringify(result));
+            dispatch(receiveDrupalData(imageResult));
+            imageResult = null; // GC.
+          })
+          .catch(err => console.log(err));
+      })
+      .catch(err => console.log(err));
   }
 }
