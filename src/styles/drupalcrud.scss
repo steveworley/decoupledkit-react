@@ -92,6 +92,7 @@ input[type="button"] {
 }
 
 .draftJsToolbar__button__qi1gf {
+  // float:left;
   background: #fbfbfb;
   color: #888;
   font-size: 18px;
@@ -132,6 +133,7 @@ input[type="button"] {
   box-shadow: 0px 1px 3px 0px rgba(220,220,220,1);
   z-index: 2;
   box-sizing: border-box;
+  float: left;
 }
 
 .draftJsToolbar__toolbar__dNtBH:after {
@@ -146,4 +148,3 @@ input[type="button"] {
   border-width: 6px;
   margin-left: -6px;
 }
-

@@ -48,6 +48,7 @@
     "react": "^16.2.0",
     "react-apollo": "2.0.4",
     "react-dom": "16.0.0",
+    "react-draft-wysiwyg": "1.12.7",
     "react-html-parser": "2.0.2",
     "react-redux": "5.0.6",
     "react-richtext": "1.1.0",

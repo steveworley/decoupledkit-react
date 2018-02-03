@@ -2,32 +2,19 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactHtmlParser from 'react-html-parser';
 // import RichTextEditor from 'react-rte';
-import { Editor, EditorState, ContentState, convertFromHTML, RichUtils } from 'draft-js';
-import {stateToHTML} from 'draft-js-export-html';
-import createToolbarPlugin, { Separator } from 'draft-js-static-toolbar-plugin';
-// import 'draft-js-mention-plugin/lib/plugin.css';
+import { EditorState, ContentState, convertFromHTML } from 'draft-js';
+import Editor from 'draft-js-plugins-editor';
+import createToolbarPlugin from 'draft-js-static-toolbar-plugin';
 
-// import {
-//   ItalicButton,
-//   BoldButton,
-//   UnderlineButton,
-//   CodeButton,
-//   HeadlineOneButton,
-//   HeadlineTwoButton,
-//   HeadlineThreeButton,
-//   UnorderedListButton,
-//   OrderedListButton,
-//   BlockquoteButton,
-//   CodeBlockButton,
-// } from 'draft-js-buttons';
-// import editorStyles from '../../node_modules/draft-js-static-toolbar-plugin/lib/plugin.css'; // draft-js-static-toolbar-plugin/lib/plugin.css
-
-// node_modules/draft-js-static-toolbar-plugin/lib/plugin.css
-// import '../../node_modules/draft-js-static-toolbar-plugin/lib/plugin.css';
+import editorStyles from '../styles/editorStyles.scss';
 
 const staticToolbarPlugin = createToolbarPlugin();
 const { Toolbar } = staticToolbarPlugin;
 const plugins = [staticToolbarPlugin];
+
+console.log('plugins', plugins);
+
+import { stateToHTML } from 'draft-js-export-html';
 
 class Node extends Component {
   constructor(props) {
@@ -37,9 +24,8 @@ class Node extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleRemoveNode = this.handleRemoveNode.bind(this);
     this._handleEditorChange = this._handleEditorChange.bind(this);
-    // this.focus = () => {
-    //   this.editor.focus();
-    // };
+    // this.focus = this.focus.bind(this);
+
     // console.log('props', props);
     const blocksHistory = convertFromHTML(props.field_history_and_background.value);
     const stateHistory = ContentState.createFromBlockArray(
@@ -81,16 +67,21 @@ class Node extends Component {
   }
 
   _handleEditorChange(event, name) {
+    console.log('------ >');
     if (name == 'body') { this.setState({ editorState_body: event }); }
     if (name == 'field_history_and_background') { this.setState({ editorState_history: event }); }
     this.setState({ [name]: stateToHTML(event.getCurrentContent()) });
   }
 
+  // focus(){
+  //   console.log(this);
+  //   this.editor.focus();
+  // }
 
   render() {
     const { nid, title, body, field_history_and_background, image } = this.state;
 
-    // console.log('this.state ==>', this.state);
+    console.log('this.state ==>', this.state);
 
     return (
       <div className="row">
@@ -100,13 +91,13 @@ class Node extends Component {
           {/* { console.log(body.value) } */}
           <form onSubmit={this.handleSubmit}>
             <input type={"text"} name="title" value={title} onChange={this.handleChange} />
-            {/* <textarea name="body" onChange={this.handleChange} value={body.value} /> */}
-            {/* <div onClick={this.focus}> */}
-              <Editor placeholder="Type" editorState={this.state.editorState_body}
+            <div className={editorStyles.editor}>
+              <Editor placeholder="Type" plugins={plugins}
+                editorState={this.state.editorState_body}
                 onChange={(e) => this._handleEditorChange(e, 'body')}
               />
-            {/* </div> */}
-            {/* <textarea name="field_history_and_background" onChange={this.handleChange} defaultValue={field_history_and_background.value} /> */}
+              <Toolbar />
+            </div>
             <Editor placeholder="Type" editorState={this.state.editorState_history}
               onChange={(e) => this._handleEditorChange(e, 'field_history_and_background')}
             />
@@ -136,7 +127,6 @@ class Node extends Component {
           <div className="label">{"Picture"}</div>
           <img src={image} />
         </div>
-
 
         <div className="remove">
           <input type="button" onClick={this.handleRemoveNode} value={"Remove"} />
