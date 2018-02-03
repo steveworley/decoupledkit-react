@@ -87,7 +87,7 @@ class Node extends Component {
         {/* -------------------------------------- */}
 
         <input type="button" className="remove-node-btn float-right" onClick={this.handleRemoveNode} value={"Remove Node"} />
-        <input type="button" className="update-node-btn float-right"  onClick={this.toggleUpdate} value={"Update Node"} />
+        <input type="button" className="update-node-btn float-right" onClick={this.toggleUpdate} value={"Update Node"} />
 
         {/* -------------------------------------- */}
 
@@ -136,10 +136,14 @@ class Node extends Component {
             <div className="label">{"History and background"}</div>
             {(field_history_and_background.value) ? ReactHtmlParser(field_history_and_background.value) : ReactHtmlParser(field_history_and_background)}
           </div>
-          <div className="dog-picture">
-            <div className="label">{"Picture"}</div>
-            <img src={image} />
-          </div>
+
+          {image && (
+            <div className="dog-picture">
+              <div className="label">{"Picture"}</div>
+              <img src={image} />
+            </div>
+          )}
+
         </div>
 
         {/* -------------------------------------- */}

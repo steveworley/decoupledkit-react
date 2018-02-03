@@ -36,7 +36,7 @@ export function updateContent(uuid, attr) {
     const body = {
       "data": {
         "id": uuid,
-        "attributes":  {
+        "attributes": {
           'title': fields['title'],
           'body': fields['body'],
           'field_history_and_background': fields['field_history_and_background'],
@@ -113,32 +113,30 @@ export function doLoadDrupalData() {
         }, {});
 
         let initialReturn = JSON.parse(JSON.stringify(result));
+
         // dispatch(receiveDrupalData(initialReturn));
+
         initialReturn = null; // GC.
 
         const imageRequests = [];
-
-        Object.keys(result).forEach((uuid, index) => {
+        Object.keys(result).forEach((uuid) => {
           imageRequests.push(drupalAPI.getAllDrupalImg(`${DRUPAL_API_LOC}/${uuid}/field_dog_picture`));
         });
 
-        Promise.all(imageRequests)
-          .then(values => {
-            values.forEach((item, index) => {
+        Promise.all(imageRequests).then(values => {
+          values.forEach((item) => {
+            if (item.hasOwnProperty('data')) { // validate it's not returning "" from 500
               const { data: { attributes }, links: { self } } = item;
               const uuid = self.split('/').splice(-2, 1)[0]; // has to be a better way to get the UUID.
               result[uuid].image = DRUPAL_API_LOC.replace('\/jsonapi\/node\/dogs', attributes.url);
-            });
-            let imageResult = JSON.parse(JSON.stringify(result));
-            dispatch(receiveDrupalData(imageResult));
-            // imageResult = null; // GC.
-            imageResult = null; // GC.
-
-
-          }).then(function(imageResult){
-
-
-          }).catch(err => console.log(err));
+            }
+          });
+          let imageResult = JSON.parse(JSON.stringify(result));
+          return imageResult;
+        }).then(function (imageResult) {
+          console.log('imageResult -->', imageResult);
+          dispatch(receiveDrupalData(imageResult));
+        }).catch(err => console.log(err));
       })
       .catch(err => console.log(err));
   }
