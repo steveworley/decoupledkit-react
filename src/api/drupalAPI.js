@@ -7,15 +7,13 @@ const headers = {
 }
 
 function handleErrors(response) { // todo: implement better 500 errors for missing images
-  if (!response.ok) { throw Error('response.statusText', response.statusText); }
-  // console.log('response ----->', response);
+  if (!response.ok) { throw Error('response.statusText', response.statusText); } // console.log('response ----->', response);
   return response;
 }
 
 class drupalAPI {
 
   static getAllDrupal(API_LOC = types.DRUPAL_API_LOC) {
-    console.log('getAllDrupal()');
     return fetch(API_LOC, { headers }).then(response => {
       return response.json();
     }).catch(error => {
@@ -32,32 +30,28 @@ class drupalAPI {
   }
 
   static createNode(API_LOC = types.DRUPAL_API_LOC, data = {}) {
-    console.log('CREATING NODE ==>', data);
     return fetch(API_LOC, { method: 'POST', body: JSON.stringify(data), headers })
       .then(res => res.json())
       .catch(err => console.log(err))
   }
 
   static deleteNode(API_LOC = types.DRUPAL_API_LOC) {
-    console.log('DELETING NODE ==>', API_LOC)
+    // console.log('DELETING NODE ==>', API_LOC)
     return fetch(API_LOC, { method: 'DELETE', headers })
       .then(res => res.json())
       .catch(err => console.log(err))
   }
 
   static updateDrupal(API_LOC = types.DRUPAL_API_LOC, data) {
-    // console.log('dataz ===>', JSON.stringify(data));
-    console.log('URL ===> ', API_LOC);
-    console.log('data received', data);
     return fetch(API_LOC, {
       method: 'PATCH',
       body: JSON.stringify(data),
       headers
     }).then(response => {
-      console.log('this is response');
+      //console.log('this is response');
       return response.json();
     }).catch(error => {
-      console.log('this is error');
+      //console.log('this is error');
       return error;
     });
   }

@@ -134,7 +134,6 @@ export function doLoadDrupalData() {
           let imageResult = JSON.parse(JSON.stringify(result));
           return imageResult;
         }).then(function (imageResult) {
-          console.log('imageResult -->', imageResult);
           dispatch(receiveDrupalData(imageResult));
         }).catch(err => console.log(err));
       })

@@ -68,7 +68,6 @@ class Node extends Component {
   }
 
   _handleEditorChange(event, name) {
-    console.log('------ >');
     if (name == 'body') { this.setState({ editorState_body: event }); }
     if (name == 'field_history_and_background') { this.setState({ editorState_history: event }); }
     this.setState({ [name]: stateToHTML(event.getCurrentContent()) });
@@ -76,11 +75,7 @@ class Node extends Component {
 
   render() {
     const { show_update_form, nid, title, body, field_history_and_background, image } = this.state;
-
-
-    console.log('this.state ==>', this.state);
-    console.log('this.body ==>', body);
-
+    // console.log('this.state ==>', this.state);
     return (
       <div className="row">
 
