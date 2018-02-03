@@ -123,7 +123,7 @@ export default {
               ],
               sourceMap: true
             }
-          },{
+          }, {
             loader: 'less-loader',
             options: {
               includePaths: [path.resolve(__dirname, 'src', 'less')],

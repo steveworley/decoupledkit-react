@@ -2,7 +2,32 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactHtmlParser from 'react-html-parser';
 // import RichTextEditor from 'react-rte';
-import { Editor, EditorState, ContentState, convertFromHTML, convertToRaw } from 'draft-js';
+import { Editor, EditorState, ContentState, convertFromHTML, RichUtils } from 'draft-js';
+import {stateToHTML} from 'draft-js-export-html';
+import createToolbarPlugin, { Separator } from 'draft-js-static-toolbar-plugin';
+// import 'draft-js-mention-plugin/lib/plugin.css';
+
+// import {
+//   ItalicButton,
+//   BoldButton,
+//   UnderlineButton,
+//   CodeButton,
+//   HeadlineOneButton,
+//   HeadlineTwoButton,
+//   HeadlineThreeButton,
+//   UnorderedListButton,
+//   OrderedListButton,
+//   BlockquoteButton,
+//   CodeBlockButton,
+// } from 'draft-js-buttons';
+// import editorStyles from '../../node_modules/draft-js-static-toolbar-plugin/lib/plugin.css'; // draft-js-static-toolbar-plugin/lib/plugin.css
+
+// node_modules/draft-js-static-toolbar-plugin/lib/plugin.css
+// import '../../node_modules/draft-js-static-toolbar-plugin/lib/plugin.css';
+
+const staticToolbarPlugin = createToolbarPlugin();
+const { Toolbar } = staticToolbarPlugin;
+const plugins = [staticToolbarPlugin];
 
 class Node extends Component {
   constructor(props) {
@@ -12,9 +37,10 @@ class Node extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleRemoveNode = this.handleRemoveNode.bind(this);
     this._handleEditorChange = this._handleEditorChange.bind(this);
-
-    console.log('props', props);
-
+    // this.focus = () => {
+    //   this.editor.focus();
+    // };
+    // console.log('props', props);
     const blocksHistory = convertFromHTML(props.field_history_and_background.value);
     const stateHistory = ContentState.createFromBlockArray(
       blocksHistory.contentBlocks,
@@ -32,13 +58,7 @@ class Node extends Component {
       editorState_body: EditorState.createWithContent(stateBody),
       editorState_history: EditorState.createWithContent(stateHistory)
     };
-
-
   }
-
-  // state = {
-
-  // }
 
   handleChange(event) {
     let state = {};
@@ -49,7 +69,7 @@ class Node extends Component {
 
   handleSubmit(event) {
     const { onChangeHandler } = this.props;
-    console.log('this.state ---==>', this.state);
+    // console.log('this.state ---==>', this.state);
     onChangeHandler(this.state.uuid, { ...this.state });
     event.preventDefault();
   }
@@ -61,29 +81,16 @@ class Node extends Component {
   }
 
   _handleEditorChange(event, name) {
-    let convertMarkup = convertToRaw(event.getCurrentContent()),
-      matchHtmlString = '';
-    for (const el of convertMarkup.blocks) {
-      if (el.type == 'unstyled') {
-        matchHtmlString += `<p>${el.text}<p>`
-      }
-      else {
-        matchHtmlString += el.text;
-      }
-    }
-
-    // Set states
     if (name == 'body') { this.setState({ editorState_body: event }); }
     if (name == 'field_history_and_background') { this.setState({ editorState_history: event }); }
-    this.setState({ [name]: matchHtmlString });
-
+    this.setState({ [name]: stateToHTML(event.getCurrentContent()) });
   }
 
 
   render() {
     const { nid, title, body, field_history_and_background, image } = this.state;
 
-    console.log('this.state ==>', this.state);
+    // console.log('this.state ==>', this.state);
 
     return (
       <div className="row">
@@ -94,9 +101,11 @@ class Node extends Component {
           <form onSubmit={this.handleSubmit}>
             <input type={"text"} name="title" value={title} onChange={this.handleChange} />
             {/* <textarea name="body" onChange={this.handleChange} value={body.value} /> */}
-            <Editor placeholder="Type" editorState={this.state.editorState_body}
-              onChange={(e) => this._handleEditorChange(e, 'body')}
-            />
+            {/* <div onClick={this.focus}> */}
+              <Editor placeholder="Type" editorState={this.state.editorState_body}
+                onChange={(e) => this._handleEditorChange(e, 'body')}
+              />
+            {/* </div> */}
             {/* <textarea name="field_history_and_background" onChange={this.handleChange} defaultValue={field_history_and_background.value} /> */}
             <Editor placeholder="Type" editorState={this.state.editorState_history}
               onChange={(e) => this._handleEditorChange(e, 'field_history_and_background')}
@@ -121,7 +130,7 @@ class Node extends Component {
         </div>
         <div className="history-and-background">
           <div className="label">{"History and background"}</div>
-          {!field_history_and_background ? ReactHtmlParser(field_history_and_background.value) : ''}
+          {ReactHtmlParser(field_history_and_background.value)}
         </div>
         <div className="dog-picture">
           <div className="label">{"Picture"}</div>
