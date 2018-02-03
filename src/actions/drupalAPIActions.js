@@ -117,10 +117,6 @@ export function doLoadDrupalData() {
         initialReturn = null; // GC.
 
         const imageRequests = [];
-        const images = {};
-
-
-        //
 
         Object.keys(result).forEach((uuid, index) => {
           imageRequests.push(drupalAPI.getAllDrupalImg(`${DRUPAL_API_LOC}/${uuid}/field_dog_picture`));

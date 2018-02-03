@@ -86,8 +86,10 @@ class Node extends Component {
 
         {/* -------------------------------------- */}
 
-        <input type="button"className="remove-node"  onClick={this.toggleUpdate} value={"Update Node"} />
-        <input type="button" className="remove-node" onClick={this.handleRemoveNode} value={"Remove Node"} />
+        <input type="button" className="remove-node-btn float-right" onClick={this.handleRemoveNode} value={"Remove Node"} />
+        <input type="button" className="update-node-btn float-right"  onClick={this.toggleUpdate} value={"Update Node"} />
+
+        {/* -------------------------------------- */}
 
         {show_update_form && (
           <div className="update-node">
@@ -113,7 +115,7 @@ class Node extends Component {
 
         <hr className="separator" />
 
-        <div className="existing-node">
+        <div className="existing-node clearfix">
 
           <h5>Current Node</h5>
 
@@ -128,11 +130,11 @@ class Node extends Component {
           </div>
           <div className="body">
             <div className="label">{"Body"}</div>
-            {ReactHtmlParser(body)}
+            {(body.value) ? ReactHtmlParser(body.value) : ReactHtmlParser(body)}
           </div>
           <div className="history-and-background">
             <div className="label">{"History and background"}</div>
-            {ReactHtmlParser(field_history_and_background)}
+            {(field_history_and_background.value) ? ReactHtmlParser(field_history_and_background.value) : ReactHtmlParser(field_history_and_background)}
           </div>
           <div className="dog-picture">
             <div className="label">{"Picture"}</div>
