@@ -1,20 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactHtmlParser from 'react-html-parser';
-// import RichTextEditor from 'react-rte';
 import { EditorState, ContentState, convertFromHTML } from 'draft-js';
 import Editor from 'draft-js-plugins-editor';
 import createToolbarPlugin from 'draft-js-static-toolbar-plugin';
-
 import editorStyles from '../styles/editorStyles.scss';
+import { stateToHTML } from 'draft-js-export-html';
 
 const staticToolbarPlugin = createToolbarPlugin();
 const { Toolbar } = staticToolbarPlugin;
 const plugins = [staticToolbarPlugin];
-
-console.log('plugins', plugins);
-
-import { stateToHTML } from 'draft-js-export-html';
+// @STEVE https://github.com/draft-js-plugins/draft-js-plugins/blob/master/FAQ.md#can-i-use-the-same-plugin-for-multiple-plugin-editors
 
 class Node extends Component {
   constructor(props) {
@@ -24,9 +20,8 @@ class Node extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleRemoveNode = this.handleRemoveNode.bind(this);
     this._handleEditorChange = this._handleEditorChange.bind(this);
-    // this.focus = this.focus.bind(this);
+    this.toggleUpdate = this.toggleUpdate.bind(this);
 
-    // console.log('props', props);
     const blocksHistory = convertFromHTML(props.field_history_and_background.value);
     const stateHistory = ContentState.createFromBlockArray(
       blocksHistory.contentBlocks,
@@ -42,20 +37,26 @@ class Node extends Component {
     this.state = {
       ...props,
       editorState_body: EditorState.createWithContent(stateBody),
-      editorState_history: EditorState.createWithContent(stateHistory)
+      editorState_history: EditorState.createWithContent(stateHistory),
+      show_update_form: false
     };
+  }
+
+  toggleUpdate() {
+    const { show_update_form } = this.state;
+    this.setState({
+      show_update_form: !show_update_form,
+    });
   }
 
   handleChange(event) {
     let state = {};
     state[event.target.name] = event.target.value;
     this.setState(state);
-    // console.log('state ==>', state);
   }
 
   handleSubmit(event) {
     const { onChangeHandler } = this.props;
-    // console.log('this.state ---==>', this.state);
     onChangeHandler(this.state.uuid, { ...this.state });
     event.preventDefault();
   }
@@ -73,64 +74,74 @@ class Node extends Component {
     this.setState({ [name]: stateToHTML(event.getCurrentContent()) });
   }
 
-  // focus(){
-  //   console.log(this);
-  //   this.editor.focus();
-  // }
-
   render() {
-    const { nid, title, body, field_history_and_background, image } = this.state;
+    const { show_update_form, nid, title, body, field_history_and_background, image } = this.state;
+
 
     console.log('this.state ==>', this.state);
+    console.log('this.body ==>', body);
 
     return (
       <div className="row">
 
-        {/* update div */}
-        <div className="update-node">
-          {/* { console.log(body.value) } */}
-          <form onSubmit={this.handleSubmit}>
-            <input type={"text"} name="title" value={title} onChange={this.handleChange} />
-            <div className={editorStyles.editor}>
-              <Editor placeholder="Type" plugins={plugins}
-                editorState={this.state.editorState_body}
-                onChange={(e) => this._handleEditorChange(e, 'body')}
+        {/* -------------------------------------- */}
+
+        <input type="button"className="remove-node"  onClick={this.toggleUpdate} value={"Update Node"} />
+        <input type="button" className="remove-node" onClick={this.handleRemoveNode} value={"Remove Node"} />
+
+        {show_update_form && (
+          <div className="update-node">
+            <form onSubmit={this.handleSubmit}>
+              <input type={"text"} name="title" value={title} onChange={this.handleChange} />
+              <div className={editorStyles.editor}>
+                <Editor placeholder="Type"
+                  // plugins={plugins}
+                  editorState={this.state.editorState_body}
+                  onChange={(e) => this._handleEditorChange(e, 'body')}
+                />
+                {/* <Toolbar /> */}
+              </div>
+              <Editor placeholder="Type" editorState={this.state.editorState_history}
+                onChange={(e) => this._handleEditorChange(e, 'field_history_and_background')}
               />
-              <Toolbar />
-            </div>
-            <Editor placeholder="Type" editorState={this.state.editorState_history}
-              onChange={(e) => this._handleEditorChange(e, 'field_history_and_background')}
-            />
-            <input type="submit" value="update" />
-          </form>
-          <hr />
+              <input type="submit" value="update api" />
+            </form>
+          </div>
+        )}
+
+        {/* -------------------------------------- */}
+
+        <hr className="separator" />
+
+        <div className="existing-node">
+
+          <h5>Current Node</h5>
+
+          <div className="nid">
+            <div className="label">{"NID"}</div>
+            {nid}
+          </div>
+
+          <div className="title">
+            <div className="label">{"Title"}</div>
+            {title}
+          </div>
+          <div className="body">
+            <div className="label">{"Body"}</div>
+            {ReactHtmlParser(body)}
+          </div>
+          <div className="history-and-background">
+            <div className="label">{"History and background"}</div>
+            {ReactHtmlParser(field_history_and_background)}
+          </div>
+          <div className="dog-picture">
+            <div className="label">{"Picture"}</div>
+            <img src={image} />
+          </div>
         </div>
 
-        <div className="nid">
-          <div className="label">{"NID"}</div>
-          {nid}
-        </div>
+        {/* -------------------------------------- */}
 
-        <div className="title">
-          <div className="label">{"Title"}</div>
-          {title}
-        </div>
-        <div className="body">
-          <div className="label">{"Body"}</div>
-          {ReactHtmlParser(body.value)}
-        </div>
-        <div className="history-and-background">
-          <div className="label">{"History and background"}</div>
-          {ReactHtmlParser(field_history_and_background.value)}
-        </div>
-        <div className="dog-picture">
-          <div className="label">{"Picture"}</div>
-          <img src={image} />
-        </div>
-
-        <div className="remove">
-          <input type="button" onClick={this.handleRemoveNode} value={"Remove"} />
-        </div>
       </div>
     )
   }
