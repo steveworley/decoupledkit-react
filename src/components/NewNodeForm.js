@@ -4,15 +4,19 @@ import PropTypes from 'prop-types'
 class NewNodeForm extends Component {
   constructor(props) {
     super(props)
-    this.state = { title: '', body: '', formErrors: {}}
-
+    this.state = {
+      title: '',
+      body: '',
+      field_history_and_background: '',
+      formErrors: {}
+    }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleChange = this.handleChange.bind(this)
   }
 
   handleSubmit(event) {
     const { onSubmit } = this.props
-    const { title, body } = this.state
+    const { title, body, field_history_and_background } = this.state
     const formErrors = {}
 
     event.preventDefault()
@@ -25,13 +29,17 @@ class NewNodeForm extends Component {
       formErrors.body = 'You need to enter some body text'
     }
 
+    if (field_history_and_background == '') {
+      formErrors.field_history_and_background = 'You need to enter history and background'
+    }
+
     if (Object.keys(formErrors).length > 0) {
       this.setState({ formErrors })
       return
     }
 
     onSubmit(this.state);
-    this.setState({ title: '', body: '' })
+    this.setState({ title: '', body: '', field_history_and_background: '' })
   }
 
   handleChange(event) {
@@ -42,7 +50,7 @@ class NewNodeForm extends Component {
   }
 
   render() {
-    const { title, body, formErrors } = this.state
+    const { title, body, field_history_and_background, formErrors } = this.state
     const { onSubmit } = this.props
 
     return (
@@ -54,10 +62,16 @@ class NewNodeForm extends Component {
               return (<li key={i}><strong>{fieldName}</strong> {formErrors[fieldName]}</li>)
             })}
           </ul>
+          <div>
           <div className="label">{"Title"}</div>
           <input type="text" name="title" value={title} onChange={this.handleChange} />
+          </div>
+          <div>
           <div className="label">{"Body"}</div>
           <textarea name="body" onChange={this.handleChange} value={body} />
+          </div>
+          <div className="label">{"History and Background"}</div>
+          <textarea name="field_history_and_background" onChange={this.handleChange} value={field_history_and_background} />
           <input type="submit" value="Create" />
         </div>
       </form>

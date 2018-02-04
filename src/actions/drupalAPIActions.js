@@ -30,20 +30,23 @@ export function clearMessage() {
   return { type: DRUPAL_CRUD_MESSAGE_CLEAR, message: null }
 }
 
-export function updateContent(item, field, val) {
+export function updateContent(uuid, attr) {
+  const fields = JSON.parse(JSON.stringify(attr));
   return dispatch => {
     const body = {
       "data": {
-        "id": item.uuid,
+        "id": uuid,
         "attributes": {
-          [field]: val
+          'title': fields['title'],
+          'body': fields['body'],
+          'field_history_and_background': fields['field_history_and_background'],
         }
       }
     }
-    dispatch(sendMessage(`Sending a content update for ${item.uuid}`));
-    drupalAPI.updateDrupal(`${DRUPAL_API_LOC}/${item.uuid}`, body).then((res) => {
+    dispatch(sendMessage(`Sending a content update for ${uuid}`));
+    drupalAPI.updateDrupal(`${DRUPAL_API_LOC}/${uuid}`, body).then((res) => {
       dispatch(doLoadDrupalData());
-      dispatch(sendMessage(`Succesfully updated ${item.uuid}`));
+      dispatch(sendMessage(`Succesfully updated ${uuid}`));
       setTimeout(() => { dispatch(clearMessage()) }, 3000);
     });
   }
@@ -51,13 +54,19 @@ export function updateContent(item, field, val) {
 
 export function createContent(item) {
   return dispatch => {
-    const { title, body } = item;
+    const { title, body, field_history_and_background } = item;
     const requestBody = {
       "data": {
         "type": "node--dogs",
         "attributes": {
           title,
-          body: { value: body, format: 'plain_text' }
+          body: {
+            value: body, format: 'rich_text'
+          },
+          field_history_and_background: {
+            value: field_history_and_background,
+            format: 'rich_text'
+          }
         }
       }
     }
@@ -104,28 +113,29 @@ export function doLoadDrupalData() {
         }, {});
 
         let initialReturn = JSON.parse(JSON.stringify(result));
-        dispatch(receiveDrupalData(initialReturn));
+
+        // dispatch(receiveDrupalData(initialReturn));
+
         initialReturn = null; // GC.
 
         const imageRequests = [];
-        const images = {};
-
-        Object.keys(result).forEach((uuid, index) => {
+        Object.keys(result).forEach((uuid) => {
           imageRequests.push(drupalAPI.getAllDrupalImg(`${DRUPAL_API_LOC}/${uuid}/field_dog_picture`));
         });
 
-        Promise.all(imageRequests)
-          .then(values => {
-            values.forEach((item, index) => {
+        Promise.all(imageRequests).then(values => {
+          values.forEach((item) => {
+            if (item.hasOwnProperty('data')) { // validate it's not returning "" from 500
               const { data: { attributes }, links: { self } } = item;
               const uuid = self.split('/').splice(-2, 1)[0]; // has to be a better way to get the UUID.
               result[uuid].image = DRUPAL_API_LOC.replace('\/jsonapi\/node\/dogs', attributes.url);
-            });
-            let imageResult = JSON.parse(JSON.stringify(result));
-            dispatch(receiveDrupalData(imageResult));
-            imageResult = null; // GC.
-          })
-          .catch(err => console.log(err));
+            }
+          });
+          let imageResult = JSON.parse(JSON.stringify(result));
+          return imageResult;
+        }).then(function (imageResult) {
+          dispatch(receiveDrupalData(imageResult));
+        }).catch(err => console.log(err));
       })
       .catch(err => console.log(err));
   }

@@ -16,7 +16,7 @@
       font-size: 100%;
       margin-bottom: 4px;
     }
-    .dog_picture img {
+    .dog-picture img {
       max-width: 250px;
     }
     input[type="text"] {
@@ -25,6 +25,20 @@
     }
     input[type="submit"] {
       float: right;
+    }
+    >.update-node {
+      background: #efefef;
+      padding: 10px;
+      border: 1px dotted #d3d3d3;
+      float: left;
+      margin: 18px 1%;
+      min-width: 98%;
+    }
+  }
+  .existing-node {
+    >div {
+      margin-bottom: 8px;
+      margin-bottom: 8px;
     }
   }
 }
@@ -35,7 +49,7 @@
 
 .errors {
   input[type="submit"] {
-    float: none!important;
+    float: none !important;
   }
 }
 
@@ -56,7 +70,7 @@ input[type="button"] {
 
 .messages {
   position: fixed;
-  background: rgba(0,0,0,.6);
+  background: rgba(0, 0, 0, .6);
   top: 0;
   left: 0;
   height: 100vh;
