@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import ReactHtmlParser from 'react-html-parser';
 import { EditorState, ContentState, convertFromHTML } from 'draft-js';
 import Editor from 'draft-js-plugins-editor';
-import createToolbarPlugin from 'draft-js-static-toolbar-plugin';
+// import createToolbarPlugin from 'draft-js-static-toolbar-plugin';
 import editorStyles from '../styles/editorStyles.scss';
 import { stateToHTML } from 'draft-js-export-html';
 
-const staticToolbarPlugin = createToolbarPlugin();
-const { Toolbar } = staticToolbarPlugin;
-const plugins = [staticToolbarPlugin];
+// const staticToolbarPlugin = createToolbarPlugin();
+// const { Toolbar } = staticToolbarPlugin;
+// const plugins = [staticToolbarPlugin];
 // @STEVE https://github.com/draft-js-plugins/draft-js-plugins/blob/master/FAQ.md#can-i-use-the-same-plugin-for-multiple-plugin-editors
 
 class Node extends Component {
