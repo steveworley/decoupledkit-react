@@ -61,7 +61,7 @@ class drupalAPI {
       data: {
         type: 'file--image',
         attributes: {
-          data: filebin.replace('data:image/jpeg;base64,/9j/', ''),
+          data: filebin,
           uri: 'public://api-uploaded.jpg'
         }
       }
