@@ -59,6 +59,7 @@ class Node extends Component {
       const Reader = new FileReader()
       Reader.readAsDataURL(file)
       Reader.onloadend = () => {
+        alert('Uploaded the image')
         this.setState({uploadedFiles: Reader.result})
       }
     })

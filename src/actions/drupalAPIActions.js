@@ -49,24 +49,31 @@ export function updateContent(uuid, attr) {
       console.log(attr.uploadedFiles.replace('data:image/jpeg;base64,/9j/', ''))
       drupalAPI.uploadImages('http://local.decoupledkit.com/jsonapi/file/image', attr.uploadedFiles)
         .then(file => {
-          console.log(file)
-          // const { data: { type, attributes }} = file;
-          // dispatch(sendMessage(`Files uploaded successfully, updating referneces.`))
-          //
-          // body.relationships = {
-          //   field_dog_picture: {
-          //     data: {
-          //       type: type,
-          //       id: attributes.uuid
-          //     }
-          //   }
-          // }
-          //
-          // drupalAPI.updateDrupal(`${DRUPAL_API_LOC}/${uuid}`, body).then(res => {
-          //   dispatch(doLoadDrupalData())
-          //   dispatch(sendMessage(`Successfull updated ${uuid}`))
-          //   setTimeout(() => { dispatch(clearMessage()) }, 3000);
-          // })
+          if (file.errors) {
+            dispatch(sendMessage(file.errors[0].detail))
+            setTimeout(() => { dispatch(clearMessage()) }, 3000)
+            return
+          }
+
+          const { data: { type, attributes }} = file;
+          dispatch(sendMessage(`Files uploaded successfully, updating referneces.`))
+
+          body.relationships = {
+            field_dog_picture: {
+              data: {
+                type: type,
+                id: attributes.uuid
+              }
+            }
+          }
+
+          console.log('UPDATING NODE ===>', body)
+
+          drupalAPI.updateDrupal(`${DRUPAL_API_LOC}/${uuid}`, body).then(res => {
+            dispatch(doLoadDrupalData())
+            dispatch(sendMessage(`Successfull updated ${uuid}`))
+            setTimeout(() => { dispatch(clearMessage()) }, 3000)
+          })
         })
     }
     else {

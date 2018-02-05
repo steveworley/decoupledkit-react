@@ -60,12 +60,14 @@ class drupalAPI {
     const body = {
       data: {
         type: 'file--image',
-        attirbutes: {
+        attributes: {
           data: filebin.replace('data:image/jpeg;base64,/9j/', ''),
-          uri: `public://api-uploaded.jpg`
+          uri: 'public://api-uploaded.jpg'
         }
       }
     }
+
+    console.log('CREATING IMAGE ==>', body)
 
     return fetch(API_LOC, {
       method: 'POST',
