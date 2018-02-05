@@ -22,24 +22,14 @@ class Node extends Component {
     this._handleEditorChange = this._handleEditorChange.bind(this);
     this.toggleUpdate = this.toggleUpdate.bind(this);
 
-    const blocksHistory = convertFromHTML(props.field_history_and_background.value);
-    const stateHistory = ContentState.createFromBlockArray(
-      blocksHistory.contentBlocks,
-      blocksHistory.entityMap
-    );
-
-    const blocksBody = convertFromHTML(props.body.value);
-    const stateBody = ContentState.createFromBlockArray(
-      blocksBody.contentBlocks,
-      blocksBody.entityMap
-    );
-
     this.state = {
       ...props,
-      editorState_body: EditorState.createWithContent(stateBody),
-      editorState_history: EditorState.createWithContent(stateHistory),
-      show_update_form: false
-    };
+      show_update_form: false,
+    }
+
+    this.fieldList().forEach((field) => {
+      this.state[`editorState_${field}`] = this.createRichEditorState(field)
+    })
   }
 
   toggleUpdate() {
@@ -68,14 +58,38 @@ class Node extends Component {
   }
 
   _handleEditorChange(event, name) {
-    if (name == 'body') { this.setState({ editorState_body: event }); }
-    if (name == 'field_history_and_background') { this.setState({ editorState_history: event }); }
-    this.setState({ [name]: stateToHTML(event.getCurrentContent()) });
+    this.setState({
+      [`editorState_${name}`]: event,
+      [name]: stateToHTML(event.getCurrentContent())
+    })
+  }
+
+  fieldList() {
+    // Manage a list of fields that we want to use a rich editor for.
+    return ['body', 'field_history_and_background']
+  }
+
+  createToolbarPlugins() {
+    const toolbarPlugin = createToolbarPlugin()
+    const { Toolbar } = toolbarPlugin
+
+    // Usage: const { Toolbar, plugins } = createToolbarPlugins()
+    return { Toolbar, plugins: [toolbarPlugin] }
+  }
+
+  createRichEditorState(field) {
+    const blocks = convertFromHTML(this.props[field].value)
+    const state = ContentState.createFromBlockArray(
+      blocks.contentBlocks,
+      blocks.entityMap
+    )
+
+    return EditorState.createWithContent(state)
   }
 
   render() {
     const { show_update_form, nid, title, body, field_history_and_background, image } = this.state;
-    // console.log('this.state ==>', this.state);
+
     return (
       <div className="row">
 
@@ -90,17 +104,23 @@ class Node extends Component {
           <div className="update-node">
             <form onSubmit={this.handleSubmit}>
               <input type={"text"} name="title" value={title} onChange={this.handleChange} />
-              <div className={editorStyles.editor}>
-                <Editor placeholder="Type"
-                  // plugins={plugins}
-                  editorState={this.state.editorState_body}
-                  onChange={(e) => this._handleEditorChange(e, 'body')}
-                />
-                {/* <Toolbar /> */}
-              </div>
-              <Editor placeholder="Type" editorState={this.state.editorState_history}
-                onChange={(e) => this._handleEditorChange(e, 'field_history_and_background')}
-              />
+
+              {this.fieldList().map((field) => {
+                // Create a new instance of the toolbar and plugins for each
+                // field that we have on the Node.
+                const { Toolbar, plugins } = this.createToolbarPlugins()
+                return (
+                  <div className={editorStyles.editor} key={field}>
+                    <Editor
+                      placeholder="Type"
+                      plugins={plugins}
+                      editorState={this.state[`editorState_${field}`]}
+                      onChange={(e) => this._handleEditorChange(e, field)}
+                    />
+                    <Toolbar editorState={this.state[`editorState_${field}`]} />
+                  </div>
+                )
+              })}
               <input type="submit" value="update api" />
             </form>
           </div>
