@@ -56,6 +56,26 @@ class drupalAPI {
     });
   }
 
+  static uploadImages(API_LOC = types.DRUPAL_API_LOC, filebin, name) {
+    const body = {
+      data: {
+        type: 'file--image',
+        attirbutes: {
+          data: filebin.replace('data:image/jpeg;base64,/9j/', ''),
+          uri: `public://api-uploaded.jpg`
+        }
+      }
+    }
+
+    return fetch(API_LOC, {
+      method: 'POST',
+      body: JSON.stringify(body),
+      headers
+    }).then(response => {
+      return response.json()
+    }).catch(error => console.log(error))
+  }
+
 }
 
 

@@ -19,12 +19,8 @@
     .dog-picture img {
       max-width: 250px;
     }
-    input[type="text"] {
-      width: 95%;
-      float: left;
-    }
-    input[type="submit"] {
-      float: right;
+    p.label {
+      margin: 0.5em 0;
     }
     >.update-node {
       background: #efefef;

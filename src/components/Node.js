@@ -1,16 +1,10 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import ReactHtmlParser from 'react-html-parser';
-import { EditorState, ContentState, convertFromHTML } from 'draft-js';
-import Editor from 'draft-js-plugins-editor';
-import createToolbarPlugin from 'draft-js-static-toolbar-plugin';
-import editorStyles from '../styles/editorStyles.scss';
-import { stateToHTML } from 'draft-js-export-html';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import ReactHtmlParser from 'react-html-parser'
+import ReactQuill from 'react-quill'
+import Dropzone from 'react-dropzone'
 
-const staticToolbarPlugin = createToolbarPlugin();
-const { Toolbar } = staticToolbarPlugin;
-const plugins = [staticToolbarPlugin];
-// @STEVE https://github.com/draft-js-plugins/draft-js-plugins/blob/master/FAQ.md#can-i-use-the-same-plugin-for-multiple-plugin-editors
+import '../styles/editorStyles.scss'
 
 class Node extends Component {
   constructor(props) {
@@ -19,33 +13,20 @@ class Node extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleRemoveNode = this.handleRemoveNode.bind(this);
-    this._handleEditorChange = this._handleEditorChange.bind(this);
     this.toggleUpdate = this.toggleUpdate.bind(this);
-
-    const blocksHistory = convertFromHTML(props.field_history_and_background.value);
-    const stateHistory = ContentState.createFromBlockArray(
-      blocksHistory.contentBlocks,
-      blocksHistory.entityMap
-    );
-
-    const blocksBody = convertFromHTML(props.body.value);
-    const stateBody = ContentState.createFromBlockArray(
-      blocksBody.contentBlocks,
-      blocksBody.entityMap
-    );
+    this.onDrop = this.onDrop.bind(this)
 
     this.state = {
       ...props,
-      editorState_body: EditorState.createWithContent(stateBody),
-      editorState_history: EditorState.createWithContent(stateHistory),
-      show_update_form: false
+      showUpdateForm: false,
+      uploadedFiles: ''
     };
   }
 
   toggleUpdate() {
     const { show_update_form } = this.state;
     this.setState({
-      show_update_form: !show_update_form,
+      showUpdateForm: !show_update_form,
     });
   }
 
@@ -58,6 +39,7 @@ class Node extends Component {
   handleSubmit(event) {
     const { onChangeHandler } = this.props;
     onChangeHandler(this.state.uuid, { ...this.state });
+    this.setState({showUpdateForm: false})
     event.preventDefault();
   }
 
@@ -67,14 +49,23 @@ class Node extends Component {
     onRemoveHandler(uuid);
   }
 
-  _handleEditorChange(event, name) {
-    if (name == 'body') { this.setState({ editorState_body: event }); }
-    if (name == 'field_history_and_background') { this.setState({ editorState_history: event }); }
-    this.setState({ [name]: stateToHTML(event.getCurrentContent()) });
+  _handleEditorChange(text, name) {
+    this.setState({ [name]: text });
+  }
+
+  onDrop(acceptedFiles, RejectedFiles) {
+    const uploadedFiles = this.state.uploadedFiles;
+    acceptedFiles.forEach(file => {
+      const Reader = new FileReader()
+      Reader.readAsDataURL(file)
+      Reader.onloadend = () => {
+        this.setState({uploadedFiles: Reader.result})
+      }
+    })
   }
 
   render() {
-    const { show_update_form, nid, title, body, field_history_and_background, image } = this.state;
+    const { showUpdateForm, nid, title, body, field_history_and_background, image } = this.state;
     // console.log('this.state ==>', this.state);
     return (
       <div className="row">
@@ -86,22 +77,28 @@ class Node extends Component {
 
         {/* -------------------------------------- */}
 
-        {show_update_form && (
+        {showUpdateForm && (
           <div className="update-node">
             <form onSubmit={this.handleSubmit}>
+              <p className="label"><strong>{"Title"}</strong></p>
               <input type={"text"} name="title" value={title} onChange={this.handleChange} />
-              <div className={editorStyles.editor}>
-                <Editor placeholder="Type"
-                  // plugins={plugins}
-                  editorState={this.state.editorState_body}
-                  onChange={(e) => this._handleEditorChange(e, 'body')}
-                />
-                {/* <Toolbar /> */}
-              </div>
-              <Editor placeholder="Type" editorState={this.state.editorState_history}
-                onChange={(e) => this._handleEditorChange(e, 'field_history_and_background')}
+              <p className="label"><strong>{"Body"}</strong></p>
+              <ReactQuill
+                value={body.value ? body.value : body}
+                onChange={function(text, medium) { this._handleEditorChange(text, 'body')}.bind(this)}
               />
-              <input type="submit" value="update api" />
+              <p className="label"><strong>{"History and Background"}</strong></p>
+              <ReactQuill
+                value={field_history_and_background.value ? field_history_and_background.value : field_history_and_background}
+                onChange={function(text, medium) { this._handleEditorChange(text, 'field_history_and_background')}.bind(this)}
+              />
+              <p className="label"><strong>{"Images"}</strong></p>
+              <Dropzone onDrop={this.onDrop}>
+                <p>Drop images to upload</p>
+              </Dropzone>
+              <p style={{textAlign: "right"}}>
+                <input type="submit" value="update api" />
+              </p>
             </form>
           </div>
         )}
