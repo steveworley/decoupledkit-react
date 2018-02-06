@@ -53,13 +53,15 @@ class NewNodeForm extends Component {
   onDrop(accepted, rejected) {
     const uploadedFile = this.state.uploadedFile;
     accepted.forEach(file => {
-      const Reader = new FileReader()
+      const Reader = new FileReader();
       Reader.readAsDataURL(file)
       Reader.onloadend = () => {
-        this.setState({uploadedFile: {
-          image: Reader.result,
-          name: file.name
-        }})
+        this.setState({
+          uploadedFile: {
+            image: Reader.result,
+            name: file.name
+          }
+        })
       }
     })
   }
@@ -71,8 +73,8 @@ class NewNodeForm extends Component {
     console.log(this.state)
 
     return (
-      <form onSubmit={ this.handleSubmit } className="errors">
-        <div className="row">
+      <form onSubmit={this.handleSubmit} className="errors">
+        <div className="row clearfix">
           <h5>Create a Node</h5>
           <ul className="form-errors">
             {Object.keys(formErrors).map((fieldName, i) => {
@@ -80,25 +82,29 @@ class NewNodeForm extends Component {
             })}
           </ul>
           <div>
-          <div className="label">{"Title"}</div>
-          <input type="text" name="title" value={title} onChange={function(event) {this.setState({title: event.target.value})}.bind(this)} />
+            <div className="label">{"Title"}</div>
+            <input type="text" name="title" value={title} onChange={function (event) { this.setState({ title: event.target.value }) }.bind(this)} />
           </div>
           <div>
-          <div className="label">{"Body"}</div>
-          <ReactQuill
-            value={body}
-            onChange={function(text, medium) { this.setState({'body': text})}.bind(this)}
-          />
+            <div className="label">{"Body"}</div>
+            <ReactQuill
+              value={body}
+              onChange={function (text, medium) { this.setState({ 'body': text }) }.bind(this)}
+            />
           </div>
           <div className="label">{"History and Background"}</div>
           <ReactQuill
             value={field_history_and_background}
-            onChange={function(text, medium) { this.setState({'field_history_and_background': text})}.bind(this)}
+            onChange={function (text, medium) { this.setState({ 'field_history_and_background': text }) }.bind(this)}
           />
           <div className="label">{"Image"}</div>
-          <Dropzone onDrop={this.onDrop.bind(this)}><p>Drop and image to upload</p></Dropzone>
-          {this.state.uploadedFile ? (<img src={this.state.uploadedFile.image} />) : ''}
-          <input type="submit" value="Create" />
+          <span className="img-preview">
+            <Dropzone onDrop={this.onDrop.bind(this)}><p>Drop and image to upload</p></Dropzone>
+            <div className="image-preview"> {this.state.uploadedFile ? (<img src={this.state.uploadedFile.image} />) : ''} </div>
+          </span>
+          <div className="submit-node clearix">
+            <input type="submit" value="Create New Node >" />
+          </div>
         </div>
       </form>
     );

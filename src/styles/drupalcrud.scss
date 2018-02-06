@@ -14,13 +14,13 @@
       width: 100%;
       font-weight: bold;
       font-size: 100%;
-      margin-bottom: 4px;
+      margin-bottom: 10px;
     }
     .dog-picture img {
       max-width: 250px;
     }
     p.label {
-      margin: 0.5em 0;
+      margin: 0.8em 0;
     }
     >.update-node {
       background: #efefef;
@@ -36,6 +36,10 @@
       margin-bottom: 8px;
       margin-bottom: 8px;
     }
+  }
+  img {
+    max-width: 400px;
+    display: inline-block;
   }
 }
 
@@ -80,4 +84,33 @@ input[type="button"] {
     top: 40vh;
     text-align: center;
   }
+}
+
+.image-preview {
+  float: left;
+  text-align: left;
+  border-left: 1px dotted #a9a9a9;
+  margin-left: 30px;
+  padding-left: 30px;
+}
+
+.img-preview {
+  display: block;
+  float: left;
+  >div:first-child {
+    float: left;
+  }
+}
+
+.submit-node {
+  padding: 10px 0;
+  display: block;
+  float: left;
+  width: 100%;
+}
+
+hr.separator {
+  clear: both;
+  max-width: 100%;
+  height: 20px;
 }

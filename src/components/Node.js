@@ -39,7 +39,7 @@ class Node extends Component {
   handleSubmit(event) {
     const { onChangeHandler } = this.props;
     onChangeHandler(this.state.uuid, { ...this.state });
-    this.setState({showUpdateForm: false})
+    this.setState({ showUpdateForm: false })
     event.preventDefault();
   }
 
@@ -59,10 +59,12 @@ class Node extends Component {
       const Reader = new FileReader()
       Reader.readAsDataURL(file)
       Reader.onloadend = () => {
-        this.setState({uploadedFiles: {
-          image: Reader.result,
-          name: file.name
-        }, image: Reader.result })
+        this.setState({
+          uploadedFiles: {
+            image: Reader.result,
+            name: file.name
+          }, image: Reader.result
+        })
       }
     })
   }
@@ -71,7 +73,7 @@ class Node extends Component {
     const { showUpdateForm, nid, title, body, field_history_and_background, image } = this.state;
     // console.log('this.state ==>', this.state);
     return (
-      <div className="row">
+      <div className="row clearfix">
 
         {/* -------------------------------------- */}
 
@@ -81,37 +83,41 @@ class Node extends Component {
         {/* -------------------------------------- */}
 
         {showUpdateForm && (
-          <div className="update-node">
+          <div className="update-node clearfix">
             <form onSubmit={this.handleSubmit}>
               <p className="label"><strong>{"Title"}</strong></p>
               <input type={"text"} name="title" value={title} onChange={this.handleChange} />
               <p className="label"><strong>{"Body"}</strong></p>
               <ReactQuill
                 value={body.value ? body.value : body}
-                onChange={function(text, medium) { this._handleEditorChange(text, 'body')}.bind(this)}
+                onChange={function (text, medium) { this._handleEditorChange(text, 'body') }.bind(this)}
               />
               <p className="label"><strong>{"History and Background"}</strong></p>
               <ReactQuill
                 value={field_history_and_background.value ? field_history_and_background.value : field_history_and_background}
-                onChange={function(text, medium) { this._handleEditorChange(text, 'field_history_and_background')}.bind(this)}
+                onChange={function (text, medium) { this._handleEditorChange(text, 'field_history_and_background') }.bind(this)}
               />
               <p className="label"><strong>{"Images"}</strong></p>
-              <Dropzone onDrop={this.onDrop}>
-                <p>Drop image to upload</p>
-              </Dropzone>
-              <div className="image-preview">
-                {this.state.uploadedFiles ? (<img src={this.state.uploadedFiles.image} />) : ''}
-              </div>
-              <p style={{textAlign: "right"}}>
+              <span className="img-preview">
+                <Dropzone onDrop={this.onDrop}>
+                  <p>Drop image to upload</p>
+                </Dropzone>
+                {this.state.uploadedFiles && (
+                  <div className="image-preview">
+                    {this.state.uploadedFiles ? (<img src={this.state.uploadedFiles.image} />) : ''}
+                  </div>
+                )}
+              </span>
+              <div className="submit-node clearfix">
                 <input type="submit" value="update api" />
-              </p>
+              </div>
             </form>
           </div>
         )}
 
         {/* -------------------------------------- */}
 
-        <hr className="separator" />
+        <hr className="separator clearfix" />
 
         <div className="existing-node clearfix">
 
