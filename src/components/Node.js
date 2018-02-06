@@ -24,9 +24,9 @@ class Node extends Component {
   }
 
   toggleUpdate() {
-    const { show_update_form } = this.state;
+    const { showUpdateForm } = this.state;
     this.setState({
-      showUpdateForm: !show_update_form,
+      showUpdateForm: !showUpdateForm,
     });
   }
 
@@ -59,8 +59,10 @@ class Node extends Component {
       const Reader = new FileReader()
       Reader.readAsDataURL(file)
       Reader.onloadend = () => {
-        alert('Uploaded the image')
-        this.setState({uploadedFiles: Reader.result})
+        this.setState({uploadedFiles: {
+          image: Reader.result,
+          name: file.name
+        }, image: Reader.result })
       }
     })
   }
@@ -95,8 +97,11 @@ class Node extends Component {
               />
               <p className="label"><strong>{"Images"}</strong></p>
               <Dropzone onDrop={this.onDrop}>
-                <p>Drop images to upload</p>
+                <p>Drop image to upload</p>
               </Dropzone>
+              <div className="image-preview">
+                {this.state.uploadedFiles ? (<img src={this.state.uploadedFiles.image} />) : ''}
+              </div>
               <p style={{textAlign: "right"}}>
                 <input type="submit" value="update api" />
               </p>

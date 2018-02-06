@@ -57,17 +57,22 @@ class drupalAPI {
   }
 
   static uploadImages(API_LOC = types.DRUPAL_API_LOC, filebin, name) {
+    // FileReader creats a base64encoded string that decorates with the file
+    // type and method and will look like data:image/jpeg;base64 this is
+    // typically followed by , and then the base64encoded string of the asset.
+    // We will attempt to locate the base64encoded string without the initial
+    // decorator.
+    filebin = filebin.split(',').slice(-1)[0]
+
     const body = {
       data: {
         type: 'file--image',
         attributes: {
           data: filebin,
-          uri: 'public://api-uploaded.jpg'
+          uri: `public://${name ? name : 'api-uploaded'}.jpg`
         }
       }
     }
-
-    console.log('CREATING IMAGE ==>', body)
 
     return fetch(API_LOC, {
       method: 'POST',
