@@ -45,9 +45,9 @@ export function updateContent(uuid, attr) {
     }
 
     if (attr.uploadedFiles) {
+      const { image, name } = attr.uploadedFiles
       dispatch(sendMessage(`Uploading files for ${uuid}`))
-      console.log(attr.uploadedFiles.replace('data:image/jpeg;base64,/9j/', ''))
-      drupalAPI.uploadImages('http://local.decoupledkit.com/jsonapi/file/image', attr.uploadedFiles)
+      drupalAPI.uploadImages('http://local.decoupledkit.com/jsonapi/file/image', image, name)
         .then(file => {
           if (file.errors) {
             dispatch(sendMessage(file.errors[0].detail))
@@ -58,7 +58,7 @@ export function updateContent(uuid, attr) {
           const { data: { type, attributes }} = file;
           dispatch(sendMessage(`Files uploaded successfully, updating referneces.`))
 
-          body.relationships = {
+          body.data.relationships = {
             field_dog_picture: {
               data: {
                 type: type,
@@ -89,7 +89,7 @@ export function updateContent(uuid, attr) {
 
 export function createContent(item) {
   return dispatch => {
-    const { title, body, field_history_and_background } = item;
+    const { title, body, field_history_and_background, uploadedFile } = item;
     const requestBody = {
       "data": {
         "type": "node--dogs",
@@ -105,13 +105,46 @@ export function createContent(item) {
         }
       }
     }
+
     dispatch(sendMessage(`Creating a new node with title ${title}`));
-    drupalAPI.createNode(`${DRUPAL_API_LOC}`, requestBody)
-      .then(res => {
-        dispatch(doLoadDrupalData());
-        dispatch(sendMessage(`Successfully created the node!`));
-        setTimeout(() => { dispatch(clearMessage()) }, 3000);
-      });
+
+    if (uploadedFile) {
+      const { image, name } = uploadedFile
+      drupalAPI.uploadImages('http://local.decoupledkit.com/jsonapi/file/image', image, name)
+        .then(file => {
+          if (file.errors) {
+            dispatch(sendMessage(file.errors[0].detail))
+            setTimeout(() => { dispatch(clearMessage()) }, 3000)
+            return
+          }
+
+          const { data: { type, attributes }} = file;
+          dispatch(sendMessage(`Files uploaded successfully, updating referneces.`))
+
+          requestBody.data.relationships = {
+            field_dog_picture: {
+              data: {
+                type: type,
+                id: attributes.uuid
+              }
+            }
+          }
+
+          drupalAPI.createNode(`${DRUPAL_API_LOC}`, requestBody)
+            .then(res => {
+              dispatch(doLoadDrupalData());
+              dispatch(sendMessage(`Successfully created the node!`));
+              setTimeout(() => { dispatch(clearMessage()) }, 3000);
+            });
+        })
+    } else {
+      drupalAPI.createNode(`${DRUPAL_API_LOC}`, requestBody)
+        .then(res => {
+          dispatch(doLoadDrupalData());
+          dispatch(sendMessage(`Successfully created the node!`));
+          setTimeout(() => { dispatch(clearMessage()) }, 3000);
+        });
+    }
   }
 }
 
