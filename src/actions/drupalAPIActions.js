@@ -9,6 +9,9 @@ export const LOAD_DRUPAL_IMAGES = 'LOAD_DRUPAL_IMAGES';
 export const RECEIVE_DRUPAL_IMAGES = 'RECEIVE_DRUPAL_IMAGES';
 export const DRUPAL_CRUD_MESSAGE_SEND = 'DRUPAL_CRUD_MESSAGE_SEND';
 export const DRUPAL_CRUD_MESSAGE_CLEAR = 'DRUPAL_CRUD_MESSAGE_CLEAR';
+export const RECEIVE_DURPAL_SINGLE_CACHE = 'RECEIVE_DURPAL_SINGLE_CACHE'
+export const RECEIVE_DURPAL_SINGLE_LOCAL_STORAGE = 'RECEIVE_DURPAL_SINGLE_LOCAL_STORAGE'
+export const RECEIVE_DURPAL_SINGLE_INDEXEDDB = 'RECEIVE_DURPAL_SINGLE_INDEXEDDB'
 
 export function loadDrupalData() {
   return { type: LOAD_DRUPAL_DATA, data: {} };
@@ -29,6 +32,37 @@ export function sendMessage(message) {
 export function clearMessage() {
   return { type: DRUPAL_CRUD_MESSAGE_CLEAR, message: null }
 }
+
+export function loadSingleCache() {
+  return dispatch => {
+    drupalAPI.getAllDrupal(`${DRUPAL_API_LOC}/bc2153d4-3426-4983-a33e-d57934dec3fa`)
+      .then(response => {
+        const { data } = response
+        dispatch({type: RECEIVE_DURPAL_SINGLE_CACHE, caches: data})
+      })
+  }
+}
+
+export function loadSingleLocalStorage() {
+  return dispatch => {
+    drupalAPI.loadLocalStorage(`${DRUPAL_API_LOC}/4d78bc0a-7e3c-4bd6-ad21-788278381540`)
+      .then(response => {
+        const { data } = response
+        dispatch({type: RECEIVE_DURPAL_SINGLE_LOCAL_STORAGE, localStorage: data})
+      })
+  }
+}
+
+export function loadSingleIndexedDB() {
+  return dispatch => {
+    drupalAPI.loadIndexedDB(`${DRUPAL_API_LOC}/4ca316a9-14cd-4e52-89a7-26a93e4b7c84`)
+      .then(response => {
+        const { data } = response
+        dispatch({type: RECEIVE_DURPAL_SINGLE_INDEXEDDB, indexedDb: data})
+      })
+  }
+}
+
 
 export function updateContent(uuid, attr) {
   const fields = JSON.parse(JSON.stringify(attr));
@@ -180,7 +214,7 @@ export function doLoadDrupalData() {
 
         let initialReturn = JSON.parse(JSON.stringify(result));
 
-        // dispatch(receiveDrupalData(initialReturn));
+        dispatch(receiveDrupalData(initialReturn));
 
         initialReturn = null; // GC.
 

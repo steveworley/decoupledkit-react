@@ -1,41 +1,64 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import '../styles/apidatafailover.scss';
-import * as actions from '../actions/graphqlclientActions';
+import * as actions from '../actions/drupalAPIActions'
+
+import Node from './Node'
 
 /*eslint-disable no-console */
 
-class APIDataFailoverApp extends React.Component {
+class APIDataFailoverApp extends Component {
 
   constructor(props, store) {
     super(props, store);
-    this.handleClick = this.handleClick.bind(this);
-    this.handleChange = this.handleChange.bind(this);
+
+    this.onLocalStorageClick = this.onLocalStorageClick.bind(this)
+    this.onIndexedDbClick = this.onIndexedDbClick.bind(this)
+    this.onCacheClick = this.onCacheClick.bind(this)
+
     this.state = {
-      graphql_data: [],
-      show_villains: false,
-      filter_villain_id: '',
-      id_error: false,
-      query_display: false,
-    };
+      canCache: ('caches' in window),
+      canLocalStorage: ('localStorage' in window),
+      canIndexedDb: ('indexedDB' in window)
+    }
   }
 
-  componentDidMount() {
+  onCacheClick(event) {
+    this.props.actions.loadSingleCache()
   }
 
-
-  handleClick(event) {
-    //let value = event.target.value;
+  onIndexedDbClick(event) {
+    this.props.actions.loadSingleIndexedDB()
   }
 
-  handleChange(event) {
-    // let value = event.target.value;
+  onLocalStorageClick(event) {
+    this.props.actions.loadSingleLocalStorage()
   }
 
   render() {
+    const { canCache, canIndexedDb, canLocalStorage } = this.state
+    const { caches, localStorage, indexedDb } = this.props
+    let Caches, LocalStorage, IndexedDb = ''
 
-    //    const graphql_data = this.props.graphql.data;
+    if (caches) {
+      Caches = (<Node onChangeHandler={() => {}} {...caches.attributes} />)
+    }
+
+    if (localStorage) {
+      // Unsure why Object spread wasn't working for this object.
+      LocalStorage = (<Node onChangeHandler={() => {}}
+        nid={localStorage.attributes.nid}
+        title={localStorage.attributes.title}
+        body={localStorage.attributes.body}
+        field_history_and_background={localStorage.attributes.field_history_and_background}
+        image=''
+      />)
+    }
+
+    if (indexedDb) {
+      IndexedDb = (<Node onChangeHandler={() => {}} {...indexedDb.attributes} />)
+    }
 
     return (
 
@@ -55,6 +78,21 @@ class APIDataFailoverApp extends React.Component {
           <li>Exhibit methods to handle common error codes when dealing with APIs (200, rate limits, etc) </li>
         </ul>
 
+
+        <div className="buttons">
+          {canCache ? (<input type="button" onClick={this.onCacheClick} value={"Load from cache"} />) : <span>Cache API is unavailable use a newer browser.</span>}
+          {canIndexedDb ? (<input type="button" onClick={this.onIndexedDbClick} value={"Load from IndexedDB"} />) : <span>IndexedDB API is unavailable use a newer browser.</span>}
+          {canLocalStorage ? (<input type="button" onClick={this.onLocalStorageClick} value={"Load from LocalStorage"} />) : <span>LocalStorage API is unavailable use a newer browser.</span>}
+        </div>
+
+        <div className={"node-rows"}>
+
+          {Caches ? (<div><h3>Loaded with Cache API</h3>{Caches}</div>) : '' }
+          {LocalStorage ? (<div><h3>Loaded with LocalStorage API</h3>{LocalStorage}</div>) : '' }
+          {IndexedDb ? (<div><h3>Loaded with IndexedDb API</h3>{IndexedDb}</div>) : '' }
+
+        </div>
+
       </div>
 
     );
@@ -62,9 +100,9 @@ class APIDataFailoverApp extends React.Component {
 }
 
 export function mapStateToProps(state) {
-  return {
-    graphql: state.graphql
-  };
+  const { drupalLoadReducer: { caches, localStorage, indexedDb } } = state || { drupalLoadReducer: { caches: {}, localStorage: {}, indexedDb: {}} }
+  console.log("STATE ===>", state)
+  return {caches, localStorage, indexedDb}
 }
 
 export function MapDispatchToProps(dispatch) {
