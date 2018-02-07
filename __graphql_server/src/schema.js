@@ -1,13 +1,10 @@
+import { bundle } from 'graphql-modules';
 import { makeExecutableSchema } from 'graphql-tools';
-import typeDefs from './types.graphql';
-import villains from '../data/villains';
 
-const resolvers = {
-    Query: {
-        villain: (_, args) => villains.find(villain => villain.id === args.id),
-        totalVillains: () => villains.length,
-        allVillains: () => villains,
-    }
-}
+import heroes from './types/hero';
+import villains from './types/villain';
+import comics from './types/comic';
 
-export default makeExecutableSchema({ typeDefs, resolvers });
+const modules = [heroes, villains, comics];
+
+export default makeExecutableSchema(bundle(modules));
