@@ -12,10 +12,11 @@ const query = gql`
   query {
     villains {
       id
-      name
-      description
+      title
+      nid
       image
-      powers
+      description
+      nemesis
     }
   }
 `
@@ -31,8 +32,8 @@ const receiveFetch = (data) => {
 export function fetchData() {
   return dispatch => {
     dispatch(beginFetch())
-    return fetch({ query })
-      .then(graphql => {
+    return fetch({ query }).then(graphql => {
+        console.log('data ===>', graphql);
         const { data: { villains }} = graphql
         dispatch(receiveFetch(villains))
       })

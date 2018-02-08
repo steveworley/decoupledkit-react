@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import '../styles/graphqlclientdrupal.scss';
 import * as actions from '../actions/graphqlclientActions';
 
-// Should have called this module character :( haha...
-import Villain from './Hero'
+// Should have called this module character :( haha...  :)
+import Villain from './Villain'
 
 /*eslint-disable no-console */
 
@@ -16,19 +16,20 @@ class GraphqlClientDrupal extends Component {
   }
 
   componentDidMount() {
-    this.props.actions.fetchData()
+    this.props.actions.fetchData();
   }
 
   render() {
 
-    const { data } = this.props
+    const { data } = this.props;
+    const Villains = data.map((villain, i) => {
 
-    const Villains = data.map(villain => {
       return (
-        <Villain
-          name={villain.name}
-          description={`${villain.powers} ${villain.description}`}
+        <Villain key={i}
+          name={villain.title}
+          description={`${villain.description}`}
           image={villain.image}
+          nemesis={villain.nemesis}
           comics={[]}
           villains={[]}
         />
@@ -52,7 +53,11 @@ class GraphqlClientDrupal extends Component {
           <li>Using this React application, show how to retrieve the designated queries from the GraphQL server.</li>
         </ul>
 
+
+      {/* TODO // Show Query examples in UI */}
+
         {Villains}
+
 
       </div>
     );

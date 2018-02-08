@@ -61,3 +61,14 @@ body {
     }
   }
 }
+
+// mark visual pieces from different locations
+span.api-source-drupal {
+  display: inline-block;
+  font-weight: 400;
+  font-size: 90%;
+  background: darkgreen;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 5px;
+}
