@@ -7,7 +7,7 @@ const headers = {
 }
 
 function handleErrors(response) { // todo: implement better 500 errors for missing images
-  if (!response.ok) { throw Error('response.statusText', response.statusText); } // console.log('response ----->', response);
+  if (!response.ok) { throw Error('response.statusText', response.statusText); }
   return response;
 }
 

@@ -29,7 +29,7 @@ class Hero extends Component {
       return (
         <Villain
           key={villain.id}
-          name={villain.name}
+          name={villain.title}
           image={villain.image}
           description={villain.description}
         />
@@ -54,10 +54,13 @@ class Hero extends Component {
             <div className="label">{"Description"}</div>
             <p>{description}</p>
           </div>
+          {/* @STEVE: hiding for now until we decide how to blend these */}
+          {/*
           <div className="villains">
             <div className="label">{"Villains"}</div>
             {Villains}
           </div>
+          */}
           <div className="comics">
             <div className="label">{"Appearances"}</div>
             {Comics}

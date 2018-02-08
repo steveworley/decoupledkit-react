@@ -48,14 +48,13 @@ class MarvelApi {
     return fetch(url)
       .then(res => res.json())
       .then(json => {
-        console.log('json.data.results.map(i => new Character(i))', json.data.results.map(i => new Character(i)));
+        //console.log('json.data.results.map(i => new Character(i))', json.data.results.map(i => new Character(i)));
         return json.data.results.map(i => new Character(i))
       })
       .catch(this.handleErrors);
   }
 
   comics(id) {
-    console.log('this.url',this.url);
     const url = `${this.url}/characters/${id}/comics?${this.params}`;
 
     if (this._cache.comics[id]) {
@@ -65,7 +64,6 @@ class MarvelApi {
     return fetch(url)
       .then(res => res.json())
       .then(json => {
-        console.log('json.data.results.map(i => new Comic(i))',json.data.results.map(i => new Comic(i)));
         const comics = json.data.results.map(i => new Comic(i));
         this._cache.comics[id] = comics;
         return comics;

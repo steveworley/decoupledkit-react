@@ -43,7 +43,7 @@ class GraphQLClientMulti extends React.Component {
       )
     })
 
-    console.log(message)
+    // console.log(message)
     if (message != '') {
       messages = (<div className="messages"><div className="message-inner">{message}</div></div>)
     }

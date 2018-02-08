@@ -23,9 +23,10 @@ function query() {
           image
           villains {
             id
-            name
+            title
             description
             image
+            nemesis
           }
           comics {
             id
@@ -43,7 +44,7 @@ const update = () => {
   return gql`
     mutation UpdateHero($id: Int! $input: HeroName!) {
       updateHero(id: $id input: $input) {
-        name
+        title
       }
     }
   `
@@ -59,9 +60,10 @@ const create = () => {
         image
         villains {
           id
-          name
+          title
           description
           image
+          nemesis
         }
         comics {
           id

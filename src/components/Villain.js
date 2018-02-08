@@ -17,7 +17,7 @@ class Villain extends Component {
 
     const { name, description, image, nemesis } = this.props
     //const classes = this.state.showinfo ? 'show' : 'hide'
-    const nemesisList = nemesis.join(", ");
+    const nemesisList = (nemesis) ? nemesis.join(", ") : '';
 
     return (
       <div className="villain clearfix">
@@ -36,10 +36,12 @@ class Villain extends Component {
             <div className="label">Description</div>
             {ReactHtmlParser(description)}
           </div>
-          <div className="row">
-            <div className="label">Nemesis</div>
-            <p> {nemesisList} </p>
-          </div>
+          {nemesisList && (
+            <div className="row">
+              <div className="label">Nemesis</div>
+              <p> {nemesisList} </p>
+            </div>
+          )}
         </div>
       </div>
     )

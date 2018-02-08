@@ -67,8 +67,6 @@ export function updateContent(uuid, attr) {
             }
           }
 
-          console.log('UPDATING NODE ===>', body)
-
           drupalAPI.updateDrupal(`${DRUPAL_API_LOC}/${uuid}`, body).then(res => {
             dispatch(doLoadDrupalData())
             dispatch(sendMessage(`Successfull updated ${uuid}`))

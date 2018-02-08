@@ -33,7 +33,7 @@ export function fetchData() {
   return dispatch => {
     dispatch(beginFetch())
     return fetch({ query }).then(graphql => {
-        console.log('data ===>', graphql);
+        // console.log('data ===>', graphql);
         const { data: { villains }} = graphql
         dispatch(receiveFetch(villains))
       })
