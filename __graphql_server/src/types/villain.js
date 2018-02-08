@@ -1,26 +1,35 @@
-
-import villainList from '../../data/villains';
+import { api as DrupalApi } from '../helper/DrupalApi';
 
 const schema = `
   type Villain {
     id: ID!
-    name: String!
-    age: Int
-    weight: Int
-    image: String
+    title: String
     description: String
-    powers: String
-    first_appearance: String
+    image: String
+    nemesis: [String]
+    nid: Int
   }
 `;
 
 export const queries = `
   villains: [Villain],
-  villain(id: Int!): Villain,
+  villain(nid: Int!): Villain,
 `
 
-const villains = () => villainList;
-const villain = (_, { id }) => villainList.find(villain => villain.id === id);
+export class Model {
+  constructor({ id, attributes }) {
+    this.id = id;
+    this.title = attributes.title;
+    this.description = attributes.field_description.value;
+    this.image = attributes.field_image_reference;
+    this.nemesis = attributes.field_nemesis;
+    this.nid = attributes.nid;
+  }
+}
+const villains = () => DrupalApi.characters();
+const villain = (_, { nid }) => villains().then(json => { // TODO: review syntax
+  return json.find(villain => villain.nid === nid);
+});
 
 const resolvers = {
   queries: {
@@ -31,6 +40,7 @@ const resolvers = {
 
 export default () => ({
   schema,
+  Model,
   queries,
   resolvers,
 });
