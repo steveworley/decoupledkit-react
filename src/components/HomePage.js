@@ -2,8 +2,8 @@ import React from 'react';
 
 const HomePage = () => {
   return (
-    <div>
-      <h2>Welcome to the React Decoupled Kit</h2>
+    <div className="boxy float-left clearfix">
+      <h4>Welcome to the React Decoupled Kit</h4>
       <p>
       {/* TODO // highlights of each component / page */}
       </p>
