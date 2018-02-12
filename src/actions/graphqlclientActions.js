@@ -10,19 +10,21 @@ const fetch = createApolloFetch({
 
 const query = gql`
   query {
-    villains {
+    pokemons {
       id
-      title
       nid
-      image
-      description
-      nemesis
+      pokemon_id
+      title
+      back_shiny_sprite
+      front_shiny_sprite
+      height_pokemon
+      weight_pokemon
     }
   }
-`
+`;
 
 const beginFetch = () => {
-  return { type: BEGIN_GRAPHQL, data: []}
+  return { type: BEGIN_GRAPHQL, data: [] }
 }
 
 const receiveFetch = (data) => {
@@ -33,10 +35,9 @@ export function fetchData() {
   return dispatch => {
     dispatch(beginFetch())
     return fetch({ query }).then(graphql => {
-        // console.log('data ===>', graphql);
-        const { data: { villains }} = graphql
-        dispatch(receiveFetch(villains))
-      })
+      const { data: { pokemons } } = graphql
+      dispatch(receiveFetch(pokemons))
+    })
       .catch(err => console.log(err))
   }
 }

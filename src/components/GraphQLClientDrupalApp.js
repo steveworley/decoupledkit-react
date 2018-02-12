@@ -5,7 +5,7 @@ import '../styles/graphqlclientdrupal.scss';
 import * as actions from '../actions/graphqlclientActions';
 
 // Should have called this module character :( haha...  :)
-import Villain from './Villain'
+import Pokemon from './Pokemon'
 
 /*eslint-disable no-console */
 
@@ -22,16 +22,25 @@ class GraphqlClientDrupal extends Component {
   render() {
 
     const { data } = this.props;
-    const Villains = data.map((villain, i) => {
-
+    const Pokemons = data.map((pokemon, i) => {
+      // id
+      // nid
+      // pokemon_id
+      // title
+      // back_shiny_sprite
+      // front_shiny_sprite
+      // height_pokemon
+      // weight_pokemon
       return (
-        <Villain key={i}
-          name={villain.title}
-          description={`${villain.description}`}
-          image={villain.image}
-          nemesis={villain.nemesis}
-          comics={[]}
-          villains={[]}
+        <Pokemon key={i}
+          id={pokemon.id}
+          nid={pokemon.nid}
+          pokemon_id={pokemon.pokemon_id}
+          title={pokemon.title}
+          back_shiny_sprite={pokemon.back_shiny_sprite}
+          front_shiny_sprite={pokemon.front_shiny_sprite}
+          height_pokemon={pokemon.height_pokemon}
+          weight_pokemon={pokemon.weight_pokemon}
         />
       )
     })
@@ -56,7 +65,7 @@ class GraphqlClientDrupal extends Component {
 
       {/* TODO // Show Query examples in UI */}
 
-        {Villains}
+        {Pokemons}
 
 
       </div>
