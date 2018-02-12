@@ -57,3 +57,34 @@ export default () => ({
   queries,
   resolvers
 });
+
+/*
+
+query reference //
+
+{
+  pokemons {
+    id
+    nid
+    pokemon_id
+    title
+    back_shiny_sprite
+    front_shiny_sprite
+    height_pokemon
+    weight_pokemon
+    abilities {
+      id
+      type
+      name
+      description
+    }
+    ref_types {
+      id
+      type
+      name
+      description
+    }
+  }
+}
+
+*/
