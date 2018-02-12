@@ -19,6 +19,24 @@ const query = gql`
       front_shiny_sprite
       height_pokemon
       weight_pokemon
+      hp
+      attack
+      defense
+      special_attack
+      special_defense
+      speed
+      abilities {
+        id
+        type
+        name
+        description
+      }
+      ref_types {
+        id
+        type
+        name
+        description
+      }
     }
   }
 `;

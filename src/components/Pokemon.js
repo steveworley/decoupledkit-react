@@ -13,30 +13,59 @@ class Pokemon extends Component {
     e.preventDefault();
     // this.setState({showinfo: !this.state.showinfo })
   }
+
+
+  taxonomies(title, el) {
+    return (
+      <div>
+        {title}
+        {
+          el.map((item, index) => (
+            <div className="rows-terms" key={index}>
+              {item['name'] ? <div className="name">Name: {item['name']}</div> : null}
+              {item['description'] ? <div className="description">Description: {ReactHtmlParser(item['description'])}</div> : null}
+            </div>
+          ))
+        }
+      </div>
+    );
+  }
+
+
   render() {
 
-    const { id, nid, pokemon_id, title, back_shiny_sprite, front_shiny_sprite, height_pokemon, weight_pokemon } = this.props
+    const {
+      id,
+      nid,
+      pokemon_id,
+      title,
+      back_shiny_sprite,
+      front_shiny_sprite,
+      height_pokemon,
+      weight_pokemon,
+      hp,
+      attack,
+      defense,
+      special_attack,
+      special_defense,
+      speed,
+      abilities,
+      ref_types
+    } = this.props
+
+    const abilities_data = this.taxonomies('Abilities', abilities);
+    const types_data = this.taxonomies('Types', ref_types);
+
     //const classes = this.state.showinfo ? 'show' : 'hide'
     // const nemesisList = (nemesis) ? nemesis.join(", ") : '';
 
-    // console.log('this.props', this.props);
+    console.log('this.props ===>', this.props);
 
     return (
       <div className="pokemon clearfix">
         <span className="api-source-drupal">Drupal API</span>
         <h4><a href="#" onClick={this.showInfo.bind(this)} >{title} </a></h4>
         <div className="pokemon-container clearfix"> {/* className={classes} */}
-
-          {/*
-          {id}
-          {nid}
-          {pokemon_id}
-          {title}
-          {back_shiny_sprite}
-          {front_shiny_sprite}
-          {height_pokemon}
-          {weight_pokemon}
-          */}
 
           <div className="row row-img">
             <div className="label">Images</div>
@@ -65,6 +94,21 @@ class Pokemon extends Component {
             <div className="label">Weight</div>
             {weight_pokemon}
           </div>
+
+          <div className="row">
+            {hp} <br />
+            {attack}  <br />
+            {defense}  <br />
+            {special_attack}  <br />
+            {special_defense}  <br />
+            {speed}  <br />
+
+            {abilities_data}
+
+            {types_data}
+
+          </div>
+
 
           {/* {ReactHtmlParser(description)} */}
 

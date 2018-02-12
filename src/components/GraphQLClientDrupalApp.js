@@ -23,14 +23,7 @@ class GraphqlClientDrupal extends Component {
 
     const { data } = this.props;
     const Pokemons = data.map((pokemon, i) => {
-      // id
-      // nid
-      // pokemon_id
-      // title
-      // back_shiny_sprite
-      // front_shiny_sprite
-      // height_pokemon
-      // weight_pokemon
+
       return (
         <Pokemon key={i}
           id={pokemon.id}
@@ -41,6 +34,14 @@ class GraphqlClientDrupal extends Component {
           front_shiny_sprite={pokemon.front_shiny_sprite}
           height_pokemon={pokemon.height_pokemon}
           weight_pokemon={pokemon.weight_pokemon}
+          hp={pokemon.hp}
+          attack={pokemon.attack}
+          defense={pokemon.defense}
+          special_attack={pokemon.special_attack}
+          special_defense={pokemon.special_defense}
+          speed={pokemon.speed}
+          abilities={pokemon.abilities}
+          ref_types={pokemon.ref_types}
         />
       )
     })
@@ -63,7 +64,7 @@ class GraphqlClientDrupal extends Component {
         </ul>
 
 
-      {/* TODO // Show Query examples in UI */}
+        {/* TODO // Show Query examples in UI */}
 
         {Pokemons}
 

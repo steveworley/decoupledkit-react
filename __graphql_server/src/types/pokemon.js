@@ -11,6 +11,12 @@ const schema = `
     front_shiny_sprite: String
     height_pokemon: Int
     weight_pokemon: Int
+    hp: Int
+    attack: Int
+    defense: Int
+    special_attack: Int
+    special_defense: Int
+    speed: Int
     abilities: [Ability]
     ref_types: [Ref_Type]
   }
@@ -31,10 +37,18 @@ export class Model {
     this.front_shiny_sprite = attributes.field_front_shiny_sprite;
     this.height_pokemon = attributes.field_height_pokemon;
     this.weight_pokemon = attributes.field_weight_pokemon;
+    this.hp = attributes.field_hp;
+    this.attack = attributes.field_attack;
+    this.defense = attributes.field_defense;
+    this.special_attack = attributes.field_special_attack;
+    this.special_defense = attributes.field_special_defense;
+    this.speed = attributes.field_speed;
     this.abilities = [];
     this.types = [];
   }
 }
+
+
 const pokemons = () => PokemonApi.pokemons();
 const pokemon = (_, { nid }) => pokemons().then(json => {
   return json.find(pokemon => pokemon.nid === nid);
@@ -72,6 +86,12 @@ query reference //
     front_shiny_sprite
     height_pokemon
     weight_pokemon
+    hp
+    attack
+    defense
+    special_attack
+    special_defense
+    speed
     abilities {
       id
       type
