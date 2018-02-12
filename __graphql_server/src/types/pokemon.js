@@ -1,4 +1,5 @@
 import { api as PokemonApi } from '../helper/PokemonApi';
+// import ability from './pokemon_ability';
 
 const schema = `
   type Pokemon {
@@ -10,6 +11,8 @@ const schema = `
     front_shiny_sprite: String
     height_pokemon: Int
     weight_pokemon: Int
+    abilities: [Ability]
+    ref_types: [Ref_Type]
   }
 `;
 
@@ -28,6 +31,8 @@ export class Model {
     this.front_shiny_sprite = attributes.field_front_shiny_sprite;
     this.height_pokemon = attributes.field_height_pokemon;
     this.weight_pokemon = attributes.field_weight_pokemon;
+    this.abilities = [];
+    this.types = [];
   }
 }
 const pokemons = () => PokemonApi.pokemons();
@@ -39,6 +44,10 @@ const resolvers = {
   queries: {
     pokemons,
     pokemon
+  },
+  Pokemon: {
+    abilities: ({ id }) => PokemonApi.abilities(id),
+    ref_types: ({ id }) => PokemonApi.ref_types(id)
   }
 }
 
@@ -46,5 +55,5 @@ export default () => ({
   schema,
   Model,
   queries,
-  resolvers,
+  resolvers
 });

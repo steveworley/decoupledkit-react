@@ -6,14 +6,23 @@ import {
   Model as Pokemon
 } from '../types/pokemon'
 
+import {
+  Model as Ability
+} from '../types/pokemon_ability'
+
+import {
+  Model as Types
+} from '../types/pokemon_types'
+
 class PokemonApi {
 
   constructor() {
     const drupal_url = process.env.DRUPAL_URL;
-
     this.url = drupal_url;
     this._cache = {
-      pokemons: {}
+      pokemons: {},
+      abilities: {},
+      types: {}
     };
   }
 
@@ -35,8 +44,30 @@ class PokemonApi {
       .catch(this.handleErrors);
   }
 
+  abilities(uuid) {
+    const url = this.url + `node/pokemon/${uuid}/field_abilities`;
+    return fetch(url)
+      .then(res => res.json())
+      .then(json => {
+        const abilities = json.data.map(i => new Ability(i));
+        this._cache.abilities[uuid] = abilities;
+        return abilities;
+      })
+      .catch(this.handleErrors);
+  }
+
+  ref_types(uuid) {
+    const url = this.url + `node/pokemon/${uuid}/field_type_pokemon_ref`;
+    return fetch(url)
+      .then(res => res.json())
+      .then(json => {
+        const types = json.data.map(i => new Types(i));
+        this._cache.types[uuid] = types;
+        return types;
+      })
+      .catch(this.handleErrors);
+  }
+
 }
 
-// This is the singleton pattern for NodeJS - this will allow all types to use
-// the same instance of MarvelApi.
 export let api = new PokemonApi();
