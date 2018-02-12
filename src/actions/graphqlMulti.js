@@ -1,5 +1,8 @@
 import gql from 'graphql-tag'
-import { createApolloFetch } from 'apollo-fetch'
+
+import { ApolloClient } from 'apollo-client';
+import { HttpLink } from 'apollo-link-http';
+import { InMemoryCache } from 'apollo-cache-inmemory';
 
 export const BEGIN_GRAPHQL_MULTI = 'BEGIN_GRAPHQL_MULTI'
 export const END_GRAPHQL_MULTI = 'END_GRAPHQL_MULTI'
@@ -8,36 +11,35 @@ export const UPDATE_END_GRAPHQL_MULTI = 'UPDATE_END_GRAPHQL_MULTI'
 export const MESSAGE_GRAPHQL_MULTI = 'MESSAGE_GRAPHQL_MULTI';
 export const MESSAGE_CLEAR_GRAPHQL_MULTI = 'MESSAGE_CLEAR_GRAPHQL_MULTI';
 
-const fetch = createApolloFetch({
-  uri: 'http://localhost:8082/graphql'
+const client = new ApolloClient({
+  link: new HttpLink({uri: 'http://localhost:8082/graphql'}),
+  cache: new InMemoryCache()
 })
 
-function query() {
-  return {
-    query: gql`
-      query {
-        heroes {
+function fetchAll() {
+  return gql`
+    query Heroes {
+      heroes {
+        id
+        name
+        description
+        image
+        villains {
           id
-          name
+          title
           description
           image
-          villains {
-            id
-            title
-            description
-            image
-            nemesis
-          }
-          comics {
-            id
-            title
-            description
-            image
-          }
+          nemesis
+        }
+        comics {
+          id
+          title
+          description
+          image
         }
       }
-    `
-  }
+    }
+  `
 }
 
 const update = () => {
@@ -58,13 +60,7 @@ const create = () => {
         name
         description
         image
-        villains {
-          id
-          title
-          description
-          image
-          nemesis
-        }
+        villains {}
         comics {
           id
           title
@@ -102,14 +98,15 @@ function clearMessage() {
 
 export function fetchGraphql() {
   return dispatch => {
+    const query = fetchAll();
     dispatch(sendMessage('Fetching data from the server!'))
-    return fetch(query())
-      .then(graphql => {
-        const { data: { heroes } } = graphql
+
+    return client.query({ query })
+      .then(data => {
+        const { data: { heroes } } = data
         dispatch(clearMessage())
         dispatch(endAction(heroes))
       })
-      .catch(err => console.log(err))
   }
 }
 
@@ -119,7 +116,7 @@ export function updateGrpahql(id, name) {
     dispatch(sendMessage(`Preparing to update ${id}'s name to ${name}`))
     const variables = { id, input: { name }  }
     const query = update()
-    return fetch({ query, variables })
+    return client.query({ query, variables })
       .then(graphql => {
         const { data: { createHero } } = graphql
         dispatch(endUpdate(createHero))
@@ -134,7 +131,7 @@ export function createGraphql(name) {
     const variables = { input: { name }}
     const query = create()
     dispatch(sendMessage(`Preparing to add ${name}`))
-    return fetch({ query, variables })
+    return client.query({ query, variables })
       .then(graphql => {
         dispatch(sendMessage(`Successfully added ${name} refreshing data from the server`))
         dispatch(fetchGraphql())

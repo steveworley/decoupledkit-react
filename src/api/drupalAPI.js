@@ -41,7 +41,6 @@ class drupalAPI {
   }
 
   static deleteNode(API_LOC = types.DRUPAL_API_LOC) {
-    // console.log('DELETING NODE ==>', API_LOC)
     return fetch(API_LOC, { method: 'DELETE', headers })
       .then(res => res.json())
       .catch(err => console.log(err))
@@ -53,10 +52,8 @@ class drupalAPI {
       body: JSON.stringify(data),
       headers
     }).then(response => {
-      //console.log('this is response');
       return response.json();
     }).catch(error => {
-      //console.log('this is error');
       return error;
     });
   }
@@ -121,7 +118,6 @@ class drupalAPI {
         return new Promise(resolve => resolve(response.data))
       })
       .catch(err => {
-        console.log(err)
         return fetch(API_LOC, { headers })
           .then(res => res.json())
           .then(json => {

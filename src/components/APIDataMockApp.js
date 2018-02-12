@@ -21,22 +21,7 @@ class APIDataMockApp extends React.Component {
     };
   }
 
-  componentDidMount() {
-  }
-
-
-  handleClick(event) {
-    //let value = event.target.value;
-  }
-
-  handleChange(event) {
-    // let value = event.target.value;
-  }
-
   render() {
-
-    //    const graphql_data = this.props.graphql.data;
-
     return (
 
       <div className="holder">
