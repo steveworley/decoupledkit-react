@@ -65,7 +65,7 @@ class MarvelApi {
       .then(res => res.json())
       .then(json => {
         const comics = json.data.results.map(i => new Comic(i));
-        this._cache.comics[id] = comics;
+        // this._cache.comics[id] = comics;
         return comics;
       })
       .catch(() => this._cache.comics[id]);

@@ -1,6 +1,6 @@
 
 const schema = `
-  type Comic {
+  type Comic @cacheControl(maxAge: 30) {
     id: ID!
     title: String!
     issueNumber: Int
