@@ -101,7 +101,6 @@ class APIDataFailoverApp extends Component {
 
 export function mapStateToProps(state) {
   const { drupalLoadReducer: { caches, localStorage, indexedDb } } = state || { drupalLoadReducer: { caches: {}, localStorage: {}, indexedDb: {}} }
-  console.log("STATE ===>", state)
   return {caches, localStorage, indexedDb}
 }
 

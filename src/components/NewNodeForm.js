@@ -70,8 +70,6 @@ class NewNodeForm extends Component {
     const { title, body, field_history_and_background, formErrors } = this.state
     const { onSubmit } = this.props
 
-    console.log(this.state)
-
     return (
       <form onSubmit={this.handleSubmit} className="errors">
         <div className="row clearfix">
