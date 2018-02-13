@@ -18,25 +18,19 @@ const client = new ApolloClient({
 
 function fetchAll() {
   return gql`
-    query Heroes {
+    query {
       heroes {
         id
         name
         description
         image
-        villains {
-          id
-          title
-          description
-          image
-          nemesis
-        }
         comics {
           id
           title
-          description
           image
+          __typename
         }
+        __typename
       }
     }
   `
@@ -99,8 +93,6 @@ function clearMessage() {
 export function fetchGraphql() {
   return dispatch => {
     const query = fetchAll();
-    dispatch(sendMessage('Fetching data from the server!'))
-
     return client.query({ query })
       .then(data => {
         const { data: { heroes } } = data

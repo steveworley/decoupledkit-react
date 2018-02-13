@@ -30,9 +30,6 @@ engine.start();
 // this ensures that the express server will spawn the necessary apollo engine
 // process when the application is starting and allows us to use cache hinting
 // when defining schema options.
-//
-// We can add apiKey to configuration to send telemetry information back to
-// Apollo Engine Server so we can break down the server.
 app.use(engine.expressMiddleware())
 
 // Ensure that the server can handle CORS requests.
@@ -47,6 +44,8 @@ app.use(cors());
  */
 app.use('/graphql', bodyParser.json(), graphqlExpress({
   schema,
+  tracing: true,
+  context: {},
   cacheControl: true
 }));
 

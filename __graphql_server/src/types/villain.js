@@ -1,7 +1,7 @@
 import { api as DrupalApi } from '../helper/DrupalApi';
 
 const schema = `
-  type Villain {
+  type Villain @cacheControl(maxAge: 30) {
     id: ID!
     title: String
     description: String
