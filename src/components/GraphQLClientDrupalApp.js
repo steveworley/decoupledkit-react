@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import '../styles/graphqlclientdrupal.scss';
 import * as actions from '../actions/graphqlclientActions';
+import '../styles/pokemon.scss';
 
 // Should have called this module character :( haha...  :)
 import Pokemon from './Pokemon'
@@ -23,7 +24,6 @@ class GraphqlClientDrupal extends Component {
 
     const { data } = this.props;
     const Pokemons = data.map((pokemon, i) => {
-
       return (
         <Pokemon key={i}
           id={pokemon.id}
@@ -46,27 +46,44 @@ class GraphqlClientDrupal extends Component {
       )
     })
 
+    console.log('actions', );
+
     return (
 
       <div className="holder">
 
-        <h4>Using GraphQL to query a Headless Drupal Instance</h4>
+        <h4>Using GraphQL with a Drupal JSON API</h4>
 
         <p>
-          <b>Story:</b> As a developer, I would like to understand the usefullness of utilizing a GraphQL server when retrieving data from a Drupal JSON API source.
+          <b>Story:</b> As a developer, I would like to understand the usefulness of utilizing a GraphQL server when retrieving data from a Drupal JSON API source.
+          I would like to understand how to set up the proper types and schema definitions to display this data. Using this GraphQL server,
+          illustrates the benefits of consolidating multiple API data points within the type definitions and/or schemas.
+          Using this React application, show how to retrieve the designated queries from the GraphQL server.
         </p>
 
-        <ul>
-          <li>Setup a common data schema as a single content types in Drupal using the Headless Lightning distro located at https://github.com/acquia-pso/javascript-ps-starter-headlessdrupal</li>
-          <li>Using the sample GraphQL server application in "__graphql_server", set up the proper types and schema definitions to display this data.</li>
-          <li>Using this GraphQL server, illustrates the benefits of consolidating multiple API data points within the type definitions and/or schemas.</li>
-          <li>Using this React application, show how to retrieve the designated queries from the GraphQL server.</li>
-        </ul>
+          {/* - - - - - - - - - - - - - - - - - - - - - - - - */}
 
+        <h5>Retrieving information from GraphQL</h5>
 
-        {/* TODO // Show Query examples in UI */}
+        <p>
+          The following component illustrates the retrieval of data from the GraphQL endpoint which can be tested at
+          <a href="http://localhost:8082/graphql">http://localhost:8082/graphql</a>.
+           The schemas have been constructed within the GraphQL server to accommodate queries in order to retrieve information which can be cached and stored to minimize roundtrips to the Drupal API endpoint(s).
+          </p>
+
+        <div className="docs-refs clearfix">
+          <div className="query-display">
+            <span>Query sent to GraphQL server</span>
+            {actions.query.loc.source.body}
+          </div>
+          <img className="architecture-img" src={require('../img/graphql-single-chart.png?1')} />
+        </div>
 
         {Pokemons}
+
+        {/* - - - - - - - - - - - - - - - - - - - - - - - - */}
+
+        {/* TODO: add different query for data comparision */}
 
 
       </div>

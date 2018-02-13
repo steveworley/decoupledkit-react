@@ -12,7 +12,7 @@ const client = new ApolloClient({
   cache: new InMemoryCache()
 })
 
-const query = gql`
+export const query = gql`
   query {
     pokemons {
       id
