@@ -12,7 +12,7 @@ class Hero extends Component {
   }
 
   render() {
-    const { name, image, description, comics, villains } = this.props;
+    const { name, image, description, comics } = this.props;
 
     const Comics = comics.map(comic => {
       return (
@@ -25,20 +25,20 @@ class Hero extends Component {
       )
     })
 
-    const Villains = villains.map(villain => {
-      return (
-        <Villain
-          key={villain.id}
-          name={villain.title}
-          image={villain.image}
-          description={villain.description}
-        />
-      )
-    })
+    // const Villains = villains.map(villain => {
+    //   return (
+    //     <Villain
+    //       key={villain.id}
+    //       name={villain.title}
+    //       image={villain.image}
+    //       description={villain.description}
+    //     />
+    //   )
+    // })
 
     return (
       <div className="hero">
-        <h2>{name}</h2>
+        <h2>{name}<span className="api-source api-source-drupal">Drupal API</span></h2>
         <div className="col">
           <div className="row">
             <div className="label">{"Image"}</div>
@@ -62,7 +62,7 @@ class Hero extends Component {
           </div>
           */}
           <div className="comics">
-            <div className="label">{"Appearances"}</div>
+            <div className="label"><span className="api-source api-source-marvel">Marvel API</span>{"Appearances"}</div>
             {Comics}
           </div>
         </div>

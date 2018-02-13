@@ -16,6 +16,20 @@
 
 .hero {
   clear: both;
+  overflow: hidden;
+  margin: 1em 0;
+  padding: 1em;
+  -webkit-box-shadow: 0px 0px 11px 0px #a1a1a1;
+  box-shadow: 0px 0px 11px 0px #a1a1a1;
+  .api-source-drupal {
+    float: right;
+    font-size: 14px;
+  }
+  .api-source-marvel {
+    background: purple;
+    font-size: 14px;
+    float: right;
+  }
 }
 
 .villains,
@@ -32,6 +46,22 @@
   }
 }
 
+.comic{
+  overflow: hidden;
+  padding: 3px;
+  &.active {
+    background: #efefef;
+  }
+  a {
+    display: block;
+  }
+  a:hover {
+    background: #efefef;
+  }
+  .row {
+    padding: 10px;
+  }
+}
 
 .messages {
   position: fixed;

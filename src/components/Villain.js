@@ -21,7 +21,7 @@ class Villain extends Component {
 
     return (
       <div className="villain clearfix">
-        <span className="api-source-drupal">Drupal API</span>
+        <span className="api-source api-source-drupal">Drupal API</span>
         <h4><a href="#" onClick={this.showInfo.bind(this)} >{name} </a></h4>
         <div className="villain-container clearfix"> {/* className={classes} */}
           <div className="row row-img">

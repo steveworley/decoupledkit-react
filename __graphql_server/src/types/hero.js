@@ -36,8 +36,8 @@ const schema = `
     name: String!
     image: String
     description: String
-    villains: [Villain]
-    comics: [Comic]
+    villains: [Villain] @cacheControl(maxAge: 30)
+    comics: [Comic] @cacheControl(maxAge: 30)
   }
 
   input HeroName {
