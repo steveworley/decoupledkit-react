@@ -22,7 +22,7 @@ class Comic extends Component {
             <p><strong>{"Image"}</strong></p>
             <p style={{textAlign:"center"}}><img src={image} /></p>
           </div>
-          <div class="col">
+          <div className="col">
             <p><strong>{"Title"}</strong> <span className="api-source api-source-marvel">Marvel API</span></p>
             {title}
             <p><strong>{"Description"}</strong></p>
