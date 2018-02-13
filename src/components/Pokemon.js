@@ -73,7 +73,7 @@ class Pokemon extends Component {
 
     return (
       <div className={outerclasses}>
-        <span className="api-source-drupal">Drupal API</span>
+        <span className="api-source-graphql">GraphQL</span>
         <h4><a href="#" onClick={this.showInfo.bind(this)} >{title} <span>(click to expand)</span></a></h4>
         <div className="pokemon-container clearfix">
 
