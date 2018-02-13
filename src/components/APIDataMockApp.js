@@ -2,26 +2,29 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import '../styles/apidatamock.scss';
-import * as actions from '../actions/graphqlclientActions';
+import * as actions from '../actions/graphqlMockActions';
 
 /*eslint-disable no-console */
 
 class APIDataMockApp extends React.Component {
 
-  constructor(props, store) {
-    super(props, store);
-    this.handleClick = this.handleClick.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.state = {
-      graphql_data: [],
-      show_villains: false,
-      filter_villain_id: '',
-      id_error: false,
-      query_display: false,
-    };
+  componentDidMount() {
+    this.props.actions.fetchUsersAction()
   }
 
   render() {
+    const { data } = this.props
+    const Users = data.map(user => {
+      return (
+        <div className="user-container">
+          <div className="label">Name</div>
+          <p>{user.name}</p>
+          <div className="label">Email</div>
+          <p>{user.email}</p>
+        </div>
+      )
+    })
+
     return (
 
       <div className="holder">
@@ -38,6 +41,8 @@ class APIDataMockApp extends React.Component {
           <li>Show a comparison of the Mock API and the correct API to communicate the parity when developing an application.</li>
         </ul>
 
+        { Users }
+
       </div>
 
     );
@@ -45,9 +50,8 @@ class APIDataMockApp extends React.Component {
 }
 
 export function mapStateToProps(state) {
-  return {
-    graphql: state.graphql
-  };
+  const { graphqlMockReducer: { data, msg } } = state
+  return { data, msg }
 }
 
 export function MapDispatchToProps(dispatch) {

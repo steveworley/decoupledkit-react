@@ -1,13 +1,23 @@
-import { bundle } from 'graphql-modules';
-import { makeExecutableSchema } from 'graphql-tools';
+import { bundle } from 'graphql-modules'
+import { makeExecutableSchema, addMockFunctionsToSchema } from 'graphql-tools'
 
-import heroes from './types/hero';
-import villains from './types/villain';
-import comics from './types/comic';
-import pokemon from './types/pokemon';
-import abilities from './types/pokemon_ability';
-import types from './types/pokemon_types';
+import heroes from './types/hero'
+import villains from './types/villain'
+import comics from './types/comic'
+import users from './types/user'
 
-const modules = [heroes, villains, comics, pokemon, abilities, types];
+import mocks from './mocks'
 
-export default makeExecutableSchema(bundle(modules));
+const modules = [heroes, villains, comics, users]
+
+const schema = makeExecutableSchema(bundle(modules))
+
+if (process.env.MOCK) {
+  addMockFunctionsToSchema({
+    schema,
+    mocks,
+    preserveResolvers: true
+  })
+}
+
+export default schema;
