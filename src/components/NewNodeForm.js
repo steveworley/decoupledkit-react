@@ -73,6 +73,7 @@ class NewNodeForm extends Component {
     return (
       <form onSubmit={this.handleSubmit} className="errors">
         <div className="row clearfix">
+          <span className="api-source-drupal">Drupal API</span>
           <h5>Create a Node</h5>
           <ul className="form-errors">
             {Object.keys(formErrors).map((fieldName, i) => {

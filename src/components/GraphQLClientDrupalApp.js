@@ -67,7 +67,7 @@ class GraphqlClientDrupal extends Component {
 
         <p>
           The following component illustrates the retrieval of data from the GraphQL endpoint which can be tested at
-          <a href="http://localhost:8082/graphql">http://localhost:8082/graphql</a>.
+          <a target="_blank" href="http://localhost:8082/graphiql">http://localhost:8082/graphiql</a>.
            The schemas have been constructed within the GraphQL server to accommodate queries in order to retrieve information which can be cached and stored to minimize roundtrips to the Drupal API endpoint(s).
           </p>
 

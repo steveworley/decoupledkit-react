@@ -121,6 +121,8 @@ class Node extends Component {
 
         <div className="existing-node clearfix">
 
+          <span className="api-source-drupal">Drupal API</span>
+
           <h5>Current Node</h5>
 
           <div className="nid">
