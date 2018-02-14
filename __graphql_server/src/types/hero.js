@@ -1,10 +1,13 @@
-import heroesList from '../../data/heroes'
-import villainList from '../../data/villains';
 import { api as MarvelApi } from '../helper/MarvelApi';
+import { api as DrupalApi } from '../helper/DrupalApi'
 
 // Additional Type definitions that are used by this module.
 import villains from './villain';
 import comics from './comic';
+
+import villainList from '../../data/villains'
+
+const heroList = [];
 
 /**
  * --- Schema definition for the type ---
@@ -58,7 +61,7 @@ const schema = `
  */
 const queries = `
   heroes: [Hero]
-  hero(id: Int!): Hero
+  hero(id: ID!): Hero
 `;
 
 
@@ -91,9 +94,9 @@ const mutations = `
  * key for the GraphQL server to have access to them.
  */
 
-const heroes = () => heroesList;
+const heroes = () => DrupalApi.characters()
 
-const hero = (_, { id }) => heroesList.find(hero => hero.id === id);
+const hero = (_, { id }) => DrupalApi.characters(id)
 
 const updateHero = (_, { id, input }) => {
   const _hero = hero(_, { id })
@@ -152,7 +155,13 @@ const resolvers = {
       }
       return badGuys;
     },
-    comics: ({ id }) => MarvelApi.comics(id)
+    comics: ({ name }) => MarvelApi.characters(name).then(({ data: { results } }) => {
+      if (typeof results[0] === 'undefined') {
+        return []
+      }
+      const { id } = results[0]
+      return MarvelApi.comics(id)
+    })
   }
 }
 
@@ -163,13 +172,14 @@ const resolvers = {
  * api, etc.) into the schema known by GraphQL.
  */
 export class Model {
-  constructor({ id, name, description, thumbnail }) {
-    this.id = id;
-    this.name = name;
-    this.description = description;
-    this.image = `${thumbnail.path}.${thumbnail.extension}`;
-    this.villains = [];
-    this.comics = [];
+  constructor({ id, attributes }) {
+    this.id = id
+    this.name = attributes.title
+    this.description = attributes.field_description.value
+    this.image = attributes.field_image_reference
+    this.nid = attributes.nid
+    this.villains = attributes.field_nemesis
+    this.comics = []
   }
 }
 /** ---- */

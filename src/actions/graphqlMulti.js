@@ -16,25 +16,28 @@ const client = new ApolloClient({
   cache: new InMemoryCache()
 })
 
-function fetchAll() {
-  return gql`
-    query {
-      heroes {
+export const fetchAll = gql`
+  query {
+    heroes {
+      id
+      name
+      description
+      image
+      __typename
+      comics {
+        __typename        
         id
-        name
-        description
+        title
         image
-        comics {
-          id
-          title
-          image
-          __typename
+        description
+        sales {
+          issue
+          count
         }
-        __typename
       }
     }
-  `
-}
+  }
+`
 
 const update = () => {
   return gql`
@@ -92,13 +95,12 @@ function clearMessage() {
 
 export function fetchGraphql() {
   return dispatch => {
-    const query = fetchAll();
-    return client.query({ query })
+    return client.query({ query: fetchAll })
       .then(data => {
         const { data: { heroes } } = data
-        dispatch(clearMessage())
         dispatch(endAction(heroes))
       })
+      .catch(err => console.log(err))
   }
 }
 

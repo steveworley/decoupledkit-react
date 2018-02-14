@@ -1,3 +1,5 @@
+import comicSale from './comicSale'
+import { api as ComicSalesApi } from '../helper/ComicSalesApi'
 
 const schema = `
   type Comic @cacheControl(maxAge: 30) {
@@ -6,8 +8,15 @@ const schema = `
     issueNumber: Int
     description: String
     image: String
+    sales: [ComicSale]
   }
 `;
+
+const resolvers = {
+  Comic: {
+    sales: (({title}) => ComicSalesApi.fetch(title))
+  }
+}
 
 /**
  * --- CLASS MODEL ---
@@ -27,5 +36,7 @@ export class Model {
 /** ---- */
 
 export default () => ({
-  schema
+  schema,
+  resolvers,
+  modules: [comicSale]
 });

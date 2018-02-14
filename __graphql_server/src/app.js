@@ -14,7 +14,7 @@ const engine = new Engine({engineConfig: {
   stores: [{
     "name": "publicResponseCache",
     "inMemory": {
-      "cacheSize": 10485760
+      "cacheSize": 100000000
     }
   }],
   queryCache: {"publicFullQueryStore": "publicResponseCache"}

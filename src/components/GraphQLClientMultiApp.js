@@ -30,6 +30,7 @@ class GraphQLClientMulti extends React.Component {
   render() {
     const { data, message } = this.props
     let messages = ''
+
     const Heroes = data.map(hero => {
       return (
         <Hero
@@ -43,7 +44,7 @@ class GraphQLClientMulti extends React.Component {
       )
     })
 
-    if (message != '') {
+    if (!!message) {
       messages = (<div className="messages"><div className="message-inner">{message}</div></div>)
     }
 
@@ -64,6 +65,14 @@ class GraphQLClientMulti extends React.Component {
           <li>Using this GraphQL server, illustrates the benefits of consolidating multiple API data points within the type definitions and/or schemas.</li>
           <li>Using this React application, show how to retrieve the designated queries from the GraphQL server.</li>
         </ul>
+
+        <div className="docs-refs clearfix">
+          <div className="query-display">
+            <span>Query sent to GraphQL server</span>
+            {actions.fetchAll.loc.source.body}
+          </div>
+          <img className="architecture-img" src={require('../img/graphql-multi-backend.svg?1')} />
+        </div>
 
         <CreateHeroForm handleSubmit={this.handleSubmit.bind(this)} />
 
