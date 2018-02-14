@@ -29,8 +29,6 @@ class MarvelApi {
 
     this.url = 'http://gateway.marvel.com/v1/public';
     this.params = `ts=${ts}&apikey=${publicKey}&hash=${hash}`;
-
-    this._cache = { characters: [], comics: {}};
   }
 
   handleErrors(error) {
@@ -47,25 +45,16 @@ class MarvelApi {
 
     return fetch(url)
       .then(res => res.json())
-      .then(json => {
-        //console.log('json.data.results.map(i => new Character(i))', json.data.results.map(i => new Character(i)));
-        return json.data.results.map(i => new Character(i))
-      })
       .catch(this.handleErrors);
   }
 
   comics(id) {
     const url = `${this.url}/characters/${id}/comics?${this.params}`;
 
-    if (this._cache.comics[id]) {
-      return this._cache.comics[id];
-    }
-
     return fetch(url)
       .then(res => res.json())
       .then(json => {
         const comics = json.data.results.map(i => new Comic(i));
-        // this._cache.comics[id] = comics;
         return comics;
       })
       .catch(() => this._cache.comics[id]);

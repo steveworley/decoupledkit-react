@@ -1,3 +1,4 @@
+import comicSale from './comicSale'
 
 const schema = `
   type Comic @cacheControl(maxAge: 30) {
@@ -6,8 +7,32 @@ const schema = `
     issueNumber: Int
     description: String
     image: String
+    sales: [ComicSale]
   }
 `;
+
+const resolvers = {
+  Comic: {
+    sales: (({title}) => {
+      return fetch('https://comichron-data.github.io/api/titles.json')
+        .then(res => res.json)
+        .then((json) => {
+          const issue = json.find((el) => {
+            return el.title.indexOf(title) > -1
+          })
+
+          if (issue.length === 0) {
+            // We haven't found the title in the JSON.
+            return issue
+          }
+
+          return fetch(`https://comichron-data.github.io/api/titles/${issue.id}/by-issue.json`)
+            .then(res => res.json)
+            .then(json => json.records)
+        })
+    })
+  }
+}
 
 /**
  * --- CLASS MODEL ---
@@ -27,5 +52,6 @@ export class Model {
 /** ---- */
 
 export default () => ({
-  schema
+  schema,
+  modules: [comicSale]
 });

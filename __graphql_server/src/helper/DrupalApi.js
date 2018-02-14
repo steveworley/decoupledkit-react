@@ -4,40 +4,31 @@ import fetch from 'node-fetch'
 // that represents the GraphQL Schema for the type in the graphql server.
 import {
   Model as Character
-} from '../types/villain'
+} from '../types/hero'
 
 class DrupalApi {
 
   constructor() {
-    const drupal_url = process.env.DRUPAL_URL;
-
-    this.url = drupal_url;
-    this._cache = {
-      characters: {},
-      comics: {}
-    };
+    this.url = process.env.DRUPAL_URL
   }
 
   handleErrors(error) {
-    console.error(error);
+    console.error(error)
   }
 
   characters(nid = null) {
-    const url = this.url + 'node/marvel_characters/';
+    const url = this.url + 'node/marvel_characters/'
     return fetch(url)
       .then(res => res.json())
       .then(json => {
-        return json;
-      }).then(json => {
-        const characterList = json.data.map(i => new Character(i));
-        this._cache.characters = characterList; // store in cache
-        return characterList;
+        const characterList = json.data.map(i => new Character(i))
+        return characterList
       })
-      .catch(this.handleErrors);
+      .catch(this.handleErrors)
   }
 
 }
 
 // This is the singleton pattern for NodeJS - this will allow all types to use
 // the same instance of MarvelApi.
-export let api = new DrupalApi();
+export let api = new DrupalApi()
