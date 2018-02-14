@@ -11,9 +11,19 @@ class Comic extends Component {
     this.setState({showinfo: !this.state.showinfo})
   }
   render() {
-    const { title, description, image } = this.props
+    const { title, description, image, sales } = this.props
     const classes = this.state.showinfo ? 'row show' : 'row hide'
     const containerClass = this.state.showinfo ? 'comic active' : 'comic'
+
+    const Sales = sales.map(sale => {
+      return (
+        <tr>
+          <td>{sale.issue}</td>
+          <td>{sale.count}</td>
+        </tr>
+      )
+    })
+
     return (
       <div className={containerClass}>
         <p><a href="#" onClick={this.onClick.bind(this)}>{title}</a></p>
@@ -27,6 +37,17 @@ class Comic extends Component {
             {title}
             <p><strong>{"Description"}</strong></p>
             {description}
+          </div>
+          <div style={{clear: "both"}}>
+            <p><strong>{"Sales"}</strong> <span className="api-source api-source-sales">Comic Sales API</span></p>
+            <table>
+              <tr>
+                <th>Issue</th>
+                <th>Count</th>
+              </tr>
+              { Sales }
+            </table>
+          
           </div>
         </div>
       </div>

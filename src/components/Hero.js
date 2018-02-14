@@ -21,6 +21,7 @@ class Hero extends Component {
           title={comic.title}
           image={comic.image}
           description={comic.description}
+          sales={comic.sales}
         />
       )
     })
