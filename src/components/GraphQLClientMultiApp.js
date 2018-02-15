@@ -17,6 +17,7 @@ class GraphQLClientMulti extends React.Component {
 
   componentDidMount() {
     this.props.actions.fetchGraphql()
+    this.props.actions.lookahead()
   }
 
   handleClick(event) {
@@ -28,7 +29,7 @@ class GraphQLClientMulti extends React.Component {
   }
 
   render() {
-    const { data, message } = this.props
+    const { data, message, lookahead } = this.props
     let messages = ''
 
     const Heroes = data.map(hero => {
@@ -74,7 +75,10 @@ class GraphQLClientMulti extends React.Component {
           <img className="architecture-img" src={require('../img/graphql-multi-backend.svg?1')} />
         </div>
 
-        <CreateHeroForm handleSubmit={this.handleSubmit.bind(this)} />
+        <CreateHeroForm 
+          handleSubmit={this.handleSubmit.bind(this)} 
+          lookahead={lookahead}
+        />
 
         {Heroes}
 
@@ -87,8 +91,8 @@ class GraphQLClientMulti extends React.Component {
 }
 
 export function mapStateToProps(state) {
-  const { graphqlMultiReducer: { data, message } } = state
-  return { data, message };
+  const { graphqlMultiReducer: { data, message, lookahead } } = state
+  return { data, message, lookahead };
 }
 
 export function MapDispatchToProps(dispatch) {

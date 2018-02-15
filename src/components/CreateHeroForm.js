@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import Select from 'react-select';
+
+import '../styles/select.scss'
 
 class CreateHeroForm extends Component {
   constructor(props) {
@@ -9,8 +12,8 @@ class CreateHeroForm extends Component {
     this.onSubmit = this.onSubmit.bind(this)
   }
 
-  onUpdate(event) {
-    this.setState({name: event.target.value})
+  onUpdate(selected) {
+    this.setState({ name: selected.name})
   }
 
   onSubmit(event) {
@@ -22,12 +25,22 @@ class CreateHeroForm extends Component {
   }
 
   render() {
-    const { name } = this.state;
+    const { lookahead } = this.props
+    const { name } = this.state
+
     return (
       <form onSubmit={this.onSubmit}>
         <div className="row">
           <div className="label">{"Name"}</div>
-          <input type="text" value={name} onChange={this.onUpdate} />
+          <Select
+            name="hero-name"
+            value={name}
+            onChange={this.onUpdate}
+            options={lookahead}
+            valueKey='name'
+            labelKey='name'
+            openOnClick={false}
+          />
           <p style={{fontSize: "small"}}>Enter a valid Marvel character, this will instruct the graphQL server to update its database with values from the Marvel API based on the hero name.</p>
           <input type="submit" value={`Add ${name}`} />
         </div>

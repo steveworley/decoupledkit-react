@@ -10,6 +10,8 @@ export const UPDATE_START_GRAPHQL_MULTI = 'UPDATE_START_GRAPHQL_MULTI'
 export const UPDATE_END_GRAPHQL_MULTI = 'UPDATE_END_GRAPHQL_MULTI'
 export const MESSAGE_GRAPHQL_MULTI = 'MESSAGE_GRAPHQL_MULTI';
 export const MESSAGE_CLEAR_GRAPHQL_MULTI = 'MESSAGE_CLEAR_GRAPHQL_MULTI';
+export const BEGIN_LOOKAHEAD = 'BEGIN_LOOKAHEAD'
+export const RECIEVE_LOOKAHEAD = 'RECIEVE_LOOKAHEAD'
 
 const client = new ApolloClient({
   link: new HttpLink({uri: 'http://localhost:8082/graphql'}),
@@ -57,7 +59,6 @@ const create = () => {
         name
         description
         image
-        villains {}
         comics {
           id
           title
@@ -68,6 +69,14 @@ const create = () => {
     }
   `
 }
+
+const lookaheadQuery = gql`
+  query {
+    marvel {
+      name
+    }
+  }
+`
 
 function beginAction() {
   return { type: BEGIN_GRAPHQL_MULTI, data: [] }
@@ -93,6 +102,10 @@ function clearMessage() {
   return { type: MESSAGE_CLEAR_GRAPHQL_MULTI, message: '' }
 }
 
+function sendLookahead(lookahead) {
+  return { type: RECIEVE_LOOKAHEAD, lookahead }
+}
+
 export function fetchGraphql() {
   return dispatch => {
     return client.query({ query: fetchAll })
@@ -109,8 +122,8 @@ export function updateGrpahql(id, name) {
     dispatch(beginUpdate());
     dispatch(sendMessage(`Preparing to update ${id}'s name to ${name}`))
     const variables = { id, input: { name }  }
-    const query = update()
-    return client.query({ query, variables })
+    const mutation = update()
+    return client.mutate({ mutation, variables })
       .then(graphql => {
         const { data: { createHero } } = graphql
         dispatch(endUpdate(createHero))
@@ -123,12 +136,25 @@ export function updateGrpahql(id, name) {
 export function createGraphql(name) {
   return dispatch => {
     const variables = { input: { name }}
-    const query = create()
+    const mutation = create()
     dispatch(sendMessage(`Preparing to add ${name}`))
-    return client.query({ query, variables })
+    return client.mutate({ mutation, variables })
       .then(graphql => {
         dispatch(sendMessage(`Successfully added ${name} refreshing data from the server`))
         dispatch(fetchGraphql())
+      })
+      .catch(err => console.log(err))
+  }
+}
+
+export function lookahead(search) {
+  return dispatch => {
+    return client.query({
+      query: lookaheadQuery,
+      variables: { name: search }
+    })
+      .then(graphql => {
+        return dispatch(sendLookahead(graphql.data.marvel))
       })
       .catch(err => console.log(err))
   }

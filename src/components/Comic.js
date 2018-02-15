@@ -17,7 +17,7 @@ class Comic extends Component {
 
     const Sales = sales.map(sale => {
       return (
-        <tr>
+        <tr key={sale.issue}>
           <td>{sale.issue}</td>
           <td>{sale.count}</td>
         </tr>
@@ -41,11 +41,13 @@ class Comic extends Component {
           <div style={{clear: "both"}}>
             <p><strong>{"Sales"}</strong> <span className="api-source api-source-sales">Comic Sales API</span></p>
             <table>
-              <tr>
-                <th>Issue</th>
-                <th>Count</th>
-              </tr>
-              { Sales }
+              <tbody>
+                <tr>
+                  <th>Issue</th>
+                  <th>Count</th>
+                </tr>
+                { Sales }
+              </tbody>
             </table>
           
           </div>
