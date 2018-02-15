@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import ReactHtmlParser from 'react-html-parser'
-// import PropTypes from 'prop-types'
 
 class Pokemon extends Component {
   constructor(props) {

@@ -5,6 +5,7 @@ import '../styles/graphqlclientdrupal.scss';
 import * as actions from '../actions/graphqlclientActions';
 import '../styles/pokemon.scss';
 import Pokemon from './Pokemon'
+import PokemonCompare from './PokemonCompare'
 
 /*eslint-disable no-console */
 
@@ -12,29 +13,10 @@ class GraphqlClientDrupal extends Component {
 
   constructor(props) {
     super(props);
-    this.handleClickStats = this.handleClickStats.bind(this);
-    this.state = {
-      compare_a: [],
-      compare_b: [],
-    };
   }
 
   componentDidMount() {
     this.props.actions.fetchData();
-  }
-
-  handleClickStats(event) {
-    event.preventDefault();
-    const { data } = this.props;
-    const nid = event.target.getAttribute("data-nid");
-    const group_option = event.target.getAttribute("data-option-group");
-    let selectedPokemon = data.filter((data) => {
-      return data.nid == nid;
-    })
-
-    console.log('event.classList', event);
-
-    return (group_option == 'a') ? this.setState({ compare_a: selectedPokemon }) : this.setState({ compare_b: selectedPokemon });
   }
 
   render() {
@@ -63,112 +45,10 @@ class GraphqlClientDrupal extends Component {
       )
     });
 
-    const pokemongroup_a = data.map((pokemon, i) => {
-      const currentclass = ((this.state.compare_a[0] !== undefined) && (this.state.compare_a[0].nid == pokemon.nid)) ? 'active' : 'non';
-      return (
-        <img key={i} href="#" className={currentclass} onClick={this.handleClickStats} data-option-group="a" data-nid={pokemon.nid} src={pokemon.front_shiny_sprite} />
-      )
-    });
+    // console.log('this.state ==>', this.state);
+    // console.log('this.props ==>', this.props);
 
-    const pokemongroup_b = data.map((pokemon, i) => {
-      const currentclass = ((this.state.compare_b[0] !== undefined) && (this.state.compare_b[0].nid == pokemon.nid)) ? 'active' : 'non';
-      return (
-        <img key={i} href="#" className={currentclass} onClick={this.handleClickStats} data-option-group="b" data-nid={pokemon.nid} src={pokemon.front_shiny_sprite} />
-      )
-    });
-
-    const displaystats = (el) => {
-      let stats = el.map((pokemon, i) => {
-        return (
-          <div className="stats-items" data-nid={pokemon.nid} key={i}>
-            <div className="title">{pokemon.title}</div>
-            <div><span>HP</span> <span>{pokemon.hp}</span></div>
-            <div><span>Attack</span> <span>{pokemon.attack}</span></div>
-            <div><span>Defense</span> <span>{pokemon.defense}</span></div>
-            <div><span>Special Attack</span> <span>{pokemon.special_attack}</span></div>
-            <div><span>Special Defense</span> <span>{pokemon.special_defense}</span></div>
-            <div><span>Speed</span> <span>{pokemon.speed}</span></div>
-          </div>
-        )
-      });
-      return stats;
-    }
-
-    const valueResults = (a, b, el) => {
-      const option_a = a[0][el], option_b = b[0][el];
-      if (option_a != option_b) {
-        return (option_a > option_b) ? 'left' : 'right';
-      } else {
-        return 'middle';
-      }
-    }
-
-    const comparingstats = (a, b) => {
-      if ((a && b) === undefined) return;
-      let obj = {
-        hp: valueResults(a, b, 'hp'),
-        attack: valueResults(a, b, 'attack'),
-        defense: valueResults(a, b, 'defense'),
-        special_attack: valueResults(a, b, 'special_attack'),
-        special_defense: valueResults(a, b, 'special_defense'),
-        speed: valueResults(a, b, 'speed'),
-      }
-      return obj;
-    }
-
-    const displayComparison = (el) => {
-      if (el === undefined) return;
-      let liftArray = [el];
-      let stats = liftArray.map((el, i) => {
-        return (
-          <div className="comparing-results-row" data-nid={el.nid} key={i}>
-            <div>&nbsp;</div>
-            <div className={el.hp}>&nbsp;</div>
-            <div className={el.attack}>&nbsp;</div>
-            <div className={el.defense}>&nbsp;</div>
-            <div className={el.special_attack}>&nbsp;</div>
-            <div className={el.special_defense}>&nbsp;</div>
-            <div className={el.speed}>&nbsp;</div>
-          </div>
-        )
-      });
-      return stats;
-    }
-
-    const compare_stats = (state) => {
-
-      if (!state.compare_a.length || !state.compare_b.length) return;
-
-      const a = state.compare_a;
-      const b = state.compare_b;
-      const displaystats_a = displaystats(a);
-      const displaystats_b = displaystats(b);
-      const compareResults = comparingstats(state.compare_a, state.compare_b);
-      const compareRow = displayComparison(compareResults);
-
-      if (displayComparison === undefined) return;
-
-      if (a.length && b.length) {
-        return (
-          <div className="results-wrapper">
-            <div className="leftside-group-a">
-              {displaystats_a}
-            </div>
-            <div className="middleside-group">
-              {compareRow}
-            </div>
-            <div className="leftside-group-b">
-              {displaystats_b}
-            </div>
-          </div>
-        )
-      }
-    };
-
-    console.log('this.state ==>', this.state);
-    console.log('this.props ==>', this.props);
-
-    const displayStatsEl = compare_stats(this.state);
+    const dataset = this.props.data;
 
     return (
 
@@ -183,40 +63,10 @@ class GraphqlClientDrupal extends Component {
           Using this React application, show how to retrieve the designated queries from the GraphQL server.
         </p>
 
-
-        {/* - - - - - - - - - - - - - - - - - - - - - - - - */}
-
-        <div className="compare-pokemon clearfix">
-          <div className="inside">
-            <div className="option-rows option-a">
-              <div className="label">Group A</div>
-              {pokemongroup_a}
-            </div>
-            <div className="option-rows option-b">
-              <div className="label">Group B</div>
-              {pokemongroup_b}
-            </div>
-            <div className="comparing-stats-row clearfix">
-              {displayStatsEl}
-            </div>
-          </div>
-        </div>
-
-
-        {/* - - - - - - - - - - - - - - - - - - - - - - - - */}
-
-
-
-        {/* - - - - - - - - - - - - - - - - - - - - - - - - */}
-
-        <h5>Retrieving information from GraphQL</h5>
-
         <p>
-          The following component illustrates the retrieval of data from the GraphQL endpoint which can be
-           tested at <a target="_blank" href="http://localhost:8082/graphiql">http://localhost:8082/graphiql</a>.
-           The schemas have been constructed within the GraphQL server to accommodate queries in order to retrieve information which can be
-            cached and stored to minimize roundtrips to the Drupal API endpoint(s).
-          </p>
+          <a href="#one">Example 1: Retrieving Information From GraphQL To Display</a> <br />
+          <a href="#two">Example 2: Utilizing & Interacting With Data From GraphQL</a> <br />
+        </p>
 
         <div className="docs-refs clearfix">
           <div className="query-display">
@@ -226,8 +76,36 @@ class GraphqlClientDrupal extends Component {
           <img className="architecture-img" src={require('../img/graphql-single-chart.png?1')} />
         </div>
 
+        <hr />
+
+        {/* - - - - - - - - - - - - - - - - - - - - - - - - */}
+
+        <a name="one"></a>
+        <h5>Retrieving Information From GraphQL To Display</h5>
+
+        <p>
+          The following component illustrates the retrieval of data from the GraphQL endpoint which can be
+           tested at <a href="http://localhost:8082/graphiql">http://localhost:8082/graphiql</a>.
+           The schemas have been constructed within the GraphQL server to accommodate queries in order to retrieve information which can be
+            cached and stored to minimize roundtrips to the Drupal API endpoint(s).
+          </p>
+
         {Pokemons}
 
+        {/* - - - - - - - - - - - - - - - - - - - - - - - - */}
+
+
+        <a name="two"></a>
+        <h5>Utilizing & Interacting With Data From GraphQL</h5>
+
+        <p>
+          The following component illustrates a simple case of comparing and contrasting data based on user input.
+          In this example, we will compare two Pokemon characters to simulate comparing data from matching data sets.
+          </p>
+
+        {dataset.length ? (
+          <PokemonCompare dataset={dataset} />
+        ) : ''}
 
       </div>
     );
