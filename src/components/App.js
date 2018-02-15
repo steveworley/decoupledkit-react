@@ -22,7 +22,7 @@ class App extends React.Component {
             <li><NavLink exact to="/" activeStyle={activeStyle}>Home</NavLink></li>
             <li><NavLink to="/drupalcrud" activeStyle={activeStyle}>Drupal CRUD</NavLink></li>
             <li><NavLink to="/graphqlclientsingle" activeStyle={activeStyle}>GraphQL Client (Single)</NavLink></li>
-            <li><NavLink to="/graphqlclientmulti" activeStyle={activeStyle}>GraphQL Client (Multi)</NavLink></li>
+            <li><NavLink to="/graphqlclientmulti" activeStyle={activeStyle}>GraphQL Client (Multiple)</NavLink></li>
             {/* <li><NavLink to="/proxydataapi" activeStyle={activeStyle}>Proxy API Data</NavLink></li> */}
             <li><NavLink to="/apidatafailover" activeStyle={activeStyle}>API Data Failover</NavLink></li>
             <li><NavLink to="/apidatamock" activeStyle={activeStyle}>API Data Mock</NavLink></li>
