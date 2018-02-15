@@ -18,9 +18,30 @@ dotenv will not override environment defined variables with those in the file.
 @see https://github.com/motdotla/dotenv/issues/133#issuecomment-321779690
 */
 
+/**
+ * Mavel API Abstraction class.
+ * 
+ * @class MarvelApi
+ */
 class MarvelApi {
 
+  /**
+   * Build the instance and prepare API credentials.
+   *
+   *  @function constructor
+   */
   constructor() {
+    /**
+     * ---- ENVIRONMENT VARIABLES ----
+     * dotenv stores configuration variables in a local .env file. This allows us to
+     * store API credentials locally and rely on environment variables in production
+     * to store important credentials.
+     * 
+     * dotenv will not override environment defined variables with those in the file.
+     * 
+     * @see https://github.com/motdotla/dotenv
+     * @see https://github.com/motdotla/dotenv/issues/133#issuecomment-321779690
+     */
     const privateKey = process.env.API_PRIVATE_KEY;
     const publicKey = process.env.API_PUBLIC_KEY;
 
@@ -31,12 +52,32 @@ class MarvelApi {
     this.params = `ts=${ts}&apikey=${publicKey}&hash=${hash}`;
   }
 
+  /**
+   * Generic error handler.
+   * 
+   * This will log errors to the GraphQL console. This could be expanded to
+   * log to a file that could the be ingested by a log parser for better
+   * reporting.
+   * 
+   * @function handleError
+   */
   handleErrors(error) {
     console.log(error);
   }
 
+  /**
+   * Fetch a character list from Marvel.
+   * 
+   * @function characters
+   * 
+   * @param {String} name
+   *   A character name which will be queried for.
+   * 
+   * @return {Promise}
+   *   Returns a promise that resolves to new characters.
+   */
   characters(name = null) {
-    let params = this.params
+    let params = this.params + '&limit=100'
     if (!!name) {
       params += `&name=${name}`
     }
@@ -48,6 +89,18 @@ class MarvelApi {
       .catch(this.handleErrors);
   }
 
+
+  /**
+   * Fetch a comic list from Marvel.
+   * 
+   * @function comics
+   * 
+   * @param {Int} id
+   *   A character id which will be queried for.
+   * 
+   * @return {Promise}
+   *   Returns a promise that resolves to a comic list.
+   */
   comics(id) {
     const url = `${this.url}/characters/${id}/comics?${this.params}`;
 

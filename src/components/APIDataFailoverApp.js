@@ -17,6 +17,19 @@ class APIDataFailoverApp extends Component {
     this.onIndexedDbClick = this.onIndexedDbClick.bind(this)
     this.onCacheClick = this.onCacheClick.bind(this)
 
+    /**
+     * Flags to determine if the current browser supports the different client
+     * side caching mechanisms.
+     * 
+     * Caches seems the most flexible and easiest to implement when caching API
+     * requests, however it doesn't cache arbitrary data for arbitrary data
+     * caching (perhaps a single field from an API etc.) local storage would 
+     * be better. 
+     * 
+     * IndexedDB is great for storing application states - it provides a 
+     * relational database per client that loads your application. This is
+     * great for offline applications but will be overkill in most use cases.
+     */
     this.state = {
       canCache: ('caches' in window),
       canLocalStorage: ('localStorage' in window),
@@ -46,14 +59,7 @@ class APIDataFailoverApp extends Component {
     }
 
     if (localStorage) {
-      // Unsure why Object spread wasn't working for this object.
-      LocalStorage = (<Node onChangeHandler={() => {}}
-        nid={localStorage.attributes.nid}
-        title={localStorage.attributes.title}
-        body={localStorage.attributes.body}
-        field_history_and_background={localStorage.attributes.field_history_and_background}
-        image=''
-      />)
+      LocalStorage = (<Node onChangeHandler={() => {}} {...localStorage.attributes} />)
     }
 
     if (indexedDb) {

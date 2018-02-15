@@ -14,38 +14,82 @@ function handleErrors(response) { // todo: implement better 500 errors for missi
 }
 
 class drupalAPI {
+
+  /**
+   * Fetch all nodes from a given type.
+   * 
+   * The caches API stores a request in cache ready to be served the next time
+   * the browser requests the URL. It can store either a URL or a Request object
+   * (which is what fetch builds) so that it can replay the request.
+   * 
+   * If the request is not found in the cache, we will build a Request object
+   * add it to the cache and then return the known promise.
+   * 
+   * @param {String} API_LOC 
+   *   The API URL.
+   * 
+   * @return {Promise}
+   */
   static getAllDrupal(API_LOC = types.DRUPAL_API_LOC) {
     return caches.match(API_LOC)
       .then(response => {
-        console.debug('MATCHING CACHE ===>', response)
         if (!response) {
           const request = fetch(API_LOC, { headers })
-          return caches.add(request).then(response => response.json)
+          return caches.add(request).then(response => response.json())
         }
         return response.json()
       })
   }
 
+  /**
+   * Perform a request to fetch Drupal images.
+   * 
+   * @param {String} API_LOC 
+   * 
+   * @return {Promise}
+   */
   static getAllDrupalImg(API_LOC = types.DRUPAL_API_LOC) {
-    return fetch(API_LOC, { headers }).then(handleErrors).then(response => {
+    return fetch(API_LOC, { headers }).then(response => {
       return response.json();
     }).catch(error => {
       return error;
     });
   }
 
+  /**
+   * Perform a request to create a Drupal node.
+   * 
+   * @param {String} API_LOC 
+   * 
+   * @return {Promise}
+   */
   static createNode(API_LOC = types.DRUPAL_API_LOC, data = {}) {
     return fetch(API_LOC, { method: 'POST', body: JSON.stringify(data), headers })
       .then(res => res.json())
       .catch(err => console.log(err))
   }
 
+  /**
+   * Perform a request to delete a Drupal node.
+   * 
+   * @param {String} API_LOC 
+   * 
+   * @return {Promise}
+   */
   static deleteNode(API_LOC = types.DRUPAL_API_LOC) {
     return fetch(API_LOC, { method: 'DELETE', headers })
       .then(res => res.json())
       .catch(err => console.log(err))
   }
 
+
+  /**
+   * Perform a request to update a Drupal node.
+   * 
+   * @param {String} API_LOC 
+   * 
+   * @return {Promise}
+   */
   static updateDrupal(API_LOC = types.DRUPAL_API_LOC, data) {
     return fetch(API_LOC, {
       method: 'PATCH',
@@ -58,6 +102,20 @@ class drupalAPI {
     });
   }
 
+
+  /**
+   * Perform a request to upload an image to Drupal.
+   * 
+   * This requires jsonapi_file to be enabled in Drupal. This module allows us
+   * to send base64encoded representations of the file directly to the json
+   * api and have the unencoded and stored.
+   * 
+   * @see https://www.drupal.org/project/jsonapi_file
+   * 
+   * @param {String} API_LOC 
+   * 
+   * @return {Promise}
+   */
   static uploadImages(API_LOC = types.DRUPAL_API_LOC, filebin, name) {
     // FileReader creats a base64encoded string that decorates with the file
     // type and method and will look like data:image/jpeg;base64 this is
@@ -85,6 +143,27 @@ class drupalAPI {
     }).catch(error => console.log(error))
   }
 
+  /**
+   * Load data from local storage.
+   * 
+   * This attempts to load the given API_LOC form local storage, if there is
+   * an entry found in the browsers storage it will be returned via a promise 
+   * (so the action can be chained with .then()). If the API_LOC is not found
+   * in the local storage object, it will perform a request to the json api
+   * server to fetch the data and then store that information in local storage. 
+   * 
+   * Local storage can store simple key:value pairs and the value cannot be
+   * complex objects, so we have to JSON.stringify before inserting.
+   * 
+   * @see https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage
+   * @see https://developers.google.com/web/tools/chrome-devtools/manage-data/local-storage
+   * 
+   * @param {String} API_LOC 
+   *   The API url to request.
+   * 
+   * @return {Promise}
+   *   A promise that will resolve to the result of the fetch request.
+   */
   static loadLocalStorage(API_LOC) {
     if (localStorage.getItem(API_LOC)) {
       // Expecting a promise - localStorage is synchronous so it will return the
@@ -104,6 +183,30 @@ class drupalAPI {
       })
   }
 
+
+  /**
+   * Cache example that relies on IndexedDB to store the result.
+   * 
+   * We have opted to use the Dexie package here as this wraps the indexeddb
+   * api in Promises so we have consistency with how these methods return
+   * data to the actions.
+   * 
+   * This method handles creating the indexeddb database if it doesn't
+   * exist and loading from the cache if the path is recognised. As with
+   * local storage indexeddb doesn't store complex objects types. It can
+   * however store JSON objects unlike local storage so we are able to
+   * insert the response directly into the table.
+   * 
+   * Both Google and Mozilla suggest the indexedDB API is complicated and
+   * suggest abstracting it with various recommended packages.
+   * 
+   * @see http://dexie.org/
+   * @see https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API
+   * @see https://developers.google.com/web/ilt/pwa/working-with-indexeddb
+   * 
+   * @param {String} API_LOC
+   *   The 
+   */
   static loadIndexedDB(API_LOC) {
     // Create the indexedDB.
     const db = new Dexie('test-db')

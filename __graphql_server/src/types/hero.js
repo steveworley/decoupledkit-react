@@ -112,11 +112,23 @@ const updateHero = (_, { id, input }) => {
 
 const createHero = (_, { input }) => {
   const { name } = input;
-  return MarvelApi.characters(name).then(characters => {
-    if (characters.length > 0) {
-      heroesList.push(characters[0]);
+
+  return MarvelApi.characters(name).then(json => {
+    if (json.data.count === 0) {
+      throw new Error(`${name} could not be entered`)
     }
-    return heroesList
+
+    const character = json.data.results[0]
+    const characterData = {
+      title: character.name,
+      body: { 
+        value: character.description,
+        format: "rich_text" 
+      },
+      field_image_reference: `${character.thumbnail.path}.${character.thumbnail.extension}`
+    }
+
+    return DrupalApi.createCharacter(characterData)
   })
 }
 /** --- **/
