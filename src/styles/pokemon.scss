@@ -4,7 +4,9 @@
   margin-bottom: 25px;
   -webkit-box-shadow: 0px 0px 11px 0px #a1a1a1;
   box-shadow: 0px 0px 11px 0px #a1a1a1;
-  &.minimal .pokemon-container { // fading affect
+  padding-bottom: 25px;
+  &.minimal .pokemon-container {
+    // fading affect
     position: relative;
     height: 250px;
     overflow: hidden;
@@ -125,16 +127,15 @@ img.architecture-img {
   margin: 0 0 15px 0;
 }
 
-
 div.docs-refs {
   padding-bottom: 20px;
   img {
-    float:left;
+    float: left;
   }
 }
 
 .query-display {
-  float:left;
+  float: left;
   font-family: monospace;
   white-space: pre;
   font-size: 75%;
@@ -149,5 +150,114 @@ div.docs-refs {
     padding: 3px;
     color: #fff;
     font-weight: bold;
+  }
+}
+
+.compare-pokemon {
+  display: block;
+  width: 100%;
+  >.inside {
+    display: block;
+    width: 100%;
+    max-width: 800px;
+    float: left;
+  }
+  .option-rows {
+    width: 49%;
+    display: inline-block;
+    border: 1px solid #d3d3d3;
+    padding: 10px;
+    .label {
+      width: 100%;
+      margin-bottom: 12px;
+    }
+    &:first-child {
+      margin-right: 2%;
+    }
+    img {
+      max-width: 17%;
+      border-radius: 20%;
+      overflow: hidden;
+      border: 1px solid #d3d3d3;
+      margin: 4px;
+      cursor: pointer;
+      &.active {
+        background: #add8e6;
+      }
+    }
+  }
+  .comparing-stats-row {
+    border: 1px solid #d3d3d3;
+    margin: 10px 0;
+    .results-wrapper>div {
+      float: left;
+      display: inline-block;
+      width: 35%;
+    }
+    .results-wrapper>div.middleside-group {
+      width: 30%;
+      margin-left: 0;
+      margin-right: 0;
+    }
+    .comparing-results-row>div:first-child {
+      height: 29px;
+    }
+    .comparing-results-row>div {
+      width: 100%;
+      background: white;
+      display: block;
+      line-height: 23px;
+      position: relative;
+    }
+    .comparing-results-row .left {
+      background: #d0ede4;
+      &:after {
+        content: "< winner";
+        position: absolute;
+        text-align: center;
+        width: 93%;
+        font-size: 85%;
+      }
+    }
+    .comparing-results-row .right {
+      background: #e0ecbd;
+      &:after {
+        content: "winner >";
+        position: absolute;
+        text-align: center;
+        width: 93%;
+        font-size: 85%;
+      }
+    }
+    .comparing-results-row .middle {
+      background: #efefef;
+      &:after {
+        content: "tie";
+        position: absolute;
+        text-align: center;
+        width: 93%;
+        font-size: 85%;
+      }
+    }
+  }
+  .stats-items {
+    .title {
+      background: #1779ba;
+      color: #fff;
+      padding: 3px;
+      font-weight: bold;
+      text-transform: capitalize;
+    }
+    >div {
+      border-top: 1px solid lightgrey;
+      line-height: 22px;
+      span {
+        padding: 2px 3px;
+      }
+      span:first-child {
+        background: #eaecec;
+        border-right: 1px solid #d3d3d3;
+      }
+    }
   }
 }
