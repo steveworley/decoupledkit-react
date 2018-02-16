@@ -16,6 +16,7 @@ class APIDataFailoverApp extends Component {
     this.onLocalStorageClick = this.onLocalStorageClick.bind(this)
     this.onIndexedDbClick = this.onIndexedDbClick.bind(this)
     this.onCacheClick = this.onCacheClick.bind(this)
+    this.onClearCachesClick = this.onClearCachesClick.bind(this)
 
     /**
      * Flags to determine if the current browser supports the different client
@@ -47,6 +48,10 @@ class APIDataFailoverApp extends Component {
 
   onLocalStorageClick(event) {
     this.props.actions.loadSingleLocalStorage()
+  }
+
+  onClearCachesClick(event) {
+    this.props.actions.clearClientCaches()
   }
 
   render() {
@@ -89,6 +94,7 @@ class APIDataFailoverApp extends Component {
           {canCache ? (<input type="button" onClick={this.onCacheClick} value={"Load from cache"} />) : <span>Cache API is unavailable use a newer browser.</span>}
           {canIndexedDb ? (<input type="button" onClick={this.onIndexedDbClick} value={"Load from IndexedDB"} />) : <span>IndexedDB API is unavailable use a newer browser.</span>}
           {canLocalStorage ? (<input type="button" onClick={this.onLocalStorageClick} value={"Load from LocalStorage"} />) : <span>LocalStorage API is unavailable use a newer browser.</span>}
+          <input type="button" onClick={this.onClearCachesClick} value={"Clear caches"} />
         </div>
 
         <div className={"node-rows"}>

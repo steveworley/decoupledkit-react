@@ -31,17 +31,7 @@ class drupalAPI {
    * @return {Promise}
    */
   static getAllDrupal(API_LOC = types.DRUPAL_API_LOC) {
-    return caches.match(API_LOC)
-      .then(response => {
-        if (!response) {
-          const request = fetch(API_LOC, { headers })
-          caches.open('window-cache-v2').then(cache => {
-            cache.add(API_LOC).then(() => console.log('cache added'))
-          })
-          return request.then(res => res.json())
-        }
-        return response.json()
-      })
+    return fetch(API_LOC, { headers }).then(res => res.json()).catch(err => console.log(err))
   }
 
   /**
@@ -147,6 +137,32 @@ class drupalAPI {
   }
 
   /**
+   * Load data from the browsers cache.
+   * 
+   * This attempts to load the given API_LOC from the browsers cache. If 
+   * the cache does not exist it will open the cache bin and store the 
+   * request there ready for the next request.
+   * 
+   * @param {String} API_LOC 
+   *   The API location.
+   * 
+   * @see service-worker.js
+   */
+  static loadCache(API_LOC = types.DRUPAL_API_LOC) {
+    return caches.match(API_LOC)
+      .then(response => {
+        if (!response) {
+          const request = fetch(API_LOC, { headers })
+          caches.open('window-cache-v2').then(cache => {
+            cache.add(API_LOC).then(() => console.log('cache added'))
+          })
+          return request.then(res => res.json())
+        }
+        return response.json()
+      })
+  }
+
+  /**
    * Load data from local storage.
    * 
    * This attempts to load the given API_LOC form local storage, if there is
@@ -231,6 +247,17 @@ class drupalAPI {
             return new Promise(resolve => resolve(json))
           })
       })
+  }
+
+  static clearCaches() {
+    // Clear the caches.
+    caches.keys().then(cacheNames => {
+      cacheNames.map(cacheName => {
+        caches.delete(cacheName)
+      })
+    })
+    localStorage.clear()
+    Dexie.delete('test-db')
   }
 
 }
