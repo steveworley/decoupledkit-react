@@ -50,7 +50,7 @@ export function clearClientCaches() {
     dispatch({type: RECEIVE_DRUPAL_SINGLE_LOCAL_STORAGE, localStorage: null})
     dispatch({type: RECEIVE_DRUPAL_SINGLE_CACHE, caches: null})
     dispatch({type: RECEIVE_DRUPAL_SINGLE_INDEXEDDB, indexedDb: null})
-    setTimeout(() => { dispatch(clearMessage()) }, 3000)    
+    setTimeout(() => { dispatch(clearMessage()) }, 3000)
   }
 }
 
@@ -225,7 +225,8 @@ export function doLoadDrupalData() {
 
         let initialReturn = JSON.parse(JSON.stringify(result));
 
-        dispatch(receiveDrupalData(initialReturn));
+        // @STEVE: still having the images loading unless I comment this out, so lets sync up about this.
+        // dispatch(receiveDrupalData(initialReturn));
 
         initialReturn = null; // GC.
 
