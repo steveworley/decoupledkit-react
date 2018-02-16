@@ -4,9 +4,9 @@ import {
   RECEIVE_DRUPAL_IMAGES,
   DRUPAL_CRUD_MESSAGE_SEND,
   DRUPAL_CRUD_MESSAGE_CLEAR,
-  RECEIVE_DURPAL_SINGLE_CACHE,
-  RECEIVE_DURPAL_SINGLE_LOCAL_STORAGE,
-  RECEIVE_DURPAL_SINGLE_INDEXEDDB
+  RECEIVE_DRUPAL_SINGLE_CACHE,
+  RECEIVE_DRUPAL_SINGLE_LOCAL_STORAGE,
+  RECEIVE_DRUPAL_SINGLE_INDEXEDDB
 } from '../actions/drupalAPIActions';
 
 const initialState = {
@@ -21,13 +21,13 @@ export default function drupalLoadReducer(state = initialState, action) {
     case RECEIVE_DRUPAL_DATA:
       return { ...state, data: action.data }
 
-    case RECEIVE_DURPAL_SINGLE_CACHE:
+    case RECEIVE_DRUPAL_SINGLE_CACHE:
       return { ... state, caches: action.caches }
 
-    case RECEIVE_DURPAL_SINGLE_LOCAL_STORAGE:
+    case RECEIVE_DRUPAL_SINGLE_LOCAL_STORAGE:
       return { ...state, localStorage: action.localStorage }
 
-    case RECEIVE_DURPAL_SINGLE_INDEXEDDB:
+    case RECEIVE_DRUPAL_SINGLE_INDEXEDDB:
       return { ...state, indexedDb: action.indexedDb }
 
     case RECEIVE_DRUPAL_IMAGES:
