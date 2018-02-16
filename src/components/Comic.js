@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import ReactHtmlParser from 'react-html-parser'
 import PropTypes from 'prop-types'
 
 class Comic extends Component {
@@ -36,7 +37,7 @@ class Comic extends Component {
             <p><strong>{"Title"}</strong> <span className="api-source api-source-marvel">Marvel API</span></p>
             {title}
             <p><strong>{"Description"}</strong></p>
-            <p dangerouslySetInnerHTML={{__html: description}}></p>
+            {ReactHtmlParser(description)}
           </div>
           <div style={{clear: "both"}}>
             <p><strong>{"Sales"}</strong> <span className="api-source api-source-sales">Comic Sales API</span></p>

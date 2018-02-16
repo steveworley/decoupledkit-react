@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-
+import ReactHtmlParser from 'react-html-parser'
 import '../styles/hero.scss'
-
-import Villain from './Villain';
+// import Villain from './Villain';
 import Comic from './Comic';
 
 class Hero extends Component {
@@ -26,17 +25,6 @@ class Hero extends Component {
       )
     })
 
-    // const Villains = villains.map(villain => {
-    //   return (
-    //     <Villain
-    //       key={villain.id}
-    //       name={villain.title}
-    //       image={villain.image}
-    //       description={villain.description}
-    //     />
-    //   )
-    // })
-
     return (
       <div className="hero">
         <h2>{name}<span className="api-source api-source-drupal">Drupal API</span></h2>
@@ -53,15 +41,8 @@ class Hero extends Component {
           </div>
           <div className="row">
             <div className="label">{"Description"}</div>
-            <p>{description}</p>
+            {ReactHtmlParser(description)}
           </div>
-          {/* @STEVE: hiding for now until we decide how to blend these */}
-          {/*
-          <div className="villains">
-            <div className="label">{"Villains"}</div>
-            {Villains}
-          </div>
-          */}
           <div className="comics">
             <div className="label"><span className="api-source api-source-marvel">Marvel API</span>{"Appearances"}</div>
             {Comics}
