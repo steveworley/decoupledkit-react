@@ -31,7 +31,7 @@ class CreateHeroForm extends Component {
     return (
       <form onSubmit={this.onSubmit}>
         <div className="row">
-          <div className="label">{"Name"}</div>
+          <div className="label">{"Add Name >"}</div>
           <Select
             name="hero-name"
             value={name}

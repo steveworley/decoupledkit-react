@@ -71,13 +71,14 @@ class GraphQLClientMulti extends React.Component {
           <img style={{maxHeight: '420px'}} className="architecture-img" src={require('../img/graphql-multi-backend.svg?1')} />
         </div>
 
-        <h4>Proxying data with GraphQL</h4>
-        <p>The below form shows how to send a mutation to the GraphQL server. Mutations are a pattern defined by GraphQL to allow data updates to be sent and handled by the GraphQL server. This example showcases using data from one of the other attached systems and replicating the data in Drupal.</p>
-
-        <CreateHeroForm 
-          handleSubmit={this.handleSubmit.bind(this)} 
-          lookahead={lookahead}
-        />
+        <div className="comic-form-wrapper">
+          <h4>Proxying data with GraphQL</h4>
+          <p>The below form shows how to send a mutation to the GraphQL server. Mutations are a pattern defined by GraphQL to allow data updates to be sent and handled by the GraphQL server. This example showcases using data from one of the other attached systems and replicating the data in Drupal.</p>
+          <CreateHeroForm
+            handleSubmit={this.handleSubmit.bind(this)}
+            lookahead={lookahead}
+          />
+        </div>
 
         {Heroes}
 

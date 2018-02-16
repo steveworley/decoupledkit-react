@@ -28,7 +28,7 @@ class Hero extends Component {
     return (
       <div className="hero">
         <h2>{name}<span className="api-source api-source-drupal">Drupal API</span></h2>
-        <div className="col">
+        <div className="col col-image">
           <div className="row">
             <div className="label">{"Image"}</div>
             <div className="image"><img src={image} /></div>
