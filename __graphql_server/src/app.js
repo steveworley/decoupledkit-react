@@ -58,6 +58,8 @@ app.get('/', function(req, res) {
   res.send('This is a GraphQL Demo Server ~ !<br><a href="/graphiql">click here</a> to test with the GraphQL API UI.');
 });
 
+// TODO // add all the queries in documentation
+
 /* --- */
 
 /*eslint-disable no-console */
