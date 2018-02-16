@@ -13,8 +13,11 @@ import casual from 'casual'
  */
 export default {
   User: () => ({
-    name: casual.name,
+    name: casual.full_name,
     email: casual.email,
-    accountNumber: casual.integer
+    accountNumber: casual.integer,
+    first_name: casual.first_name,
+    last_name: casual.last_name,
+    country: casual.country
   })
 }

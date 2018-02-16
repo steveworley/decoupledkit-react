@@ -19,6 +19,10 @@ const fetchAll = () => {
       users {
         name
         email
+        first_name
+        last_name
+        email
+        country
         id
       }
     }

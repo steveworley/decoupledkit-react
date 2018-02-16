@@ -7,8 +7,10 @@ const schema = `
   type User @cacheControl(maxAge: 30) {
     id: ID!
     name: String!
+    first_name: String!
+    last_name: String!
     email: String!
-    accountNumber: Int!
+    country: String!
   }
 `
 

@@ -13,14 +13,21 @@ class APIDataMockApp extends React.Component {
   }
 
   render() {
-    const { data } = this.props
-    const Users = data.map(user => {
+    const { data } = this.props;
+
+    const mockUsers = data.map((user, i) => {
       return (
-        <div className="user-container">
-          <div className="label">Name</div>
+        <div key={i} className="user-container">
+          <div className="label">Full Name</div>
           <p>{user.name}</p>
+          <div className="label">First Name</div>
+          <p>{user.first_name}</p>
+          <div className="label">Last Name</div>
+          <p>{user.last_name}</p>
           <div className="label">Email</div>
           <p>{user.email}</p>
+          <div className="label">Country</div>
+          <p>{user.country}</p>
         </div>
       )
     })
@@ -41,7 +48,7 @@ class APIDataMockApp extends React.Component {
           <li>Show a comparison of the Mock API and the correct API to communicate the parity when developing an application.</li>
         </ul>
 
-        { Users }
+        {mockUsers}
 
       </div>
 
