@@ -26,9 +26,7 @@ export const fetchAll = gql`
       name
       description
       image
-      __typename
       comics {
-        __typename        
         id
         title
         image

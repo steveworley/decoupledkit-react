@@ -34,13 +34,13 @@ const heroList = [];
  * the querability of fields for the given type.
  */
 const schema = `
-  type Hero @cacheControl(maxAge: 30) {
+  type Hero @cacheControl(maxAge: 240) {
     id: ID!
     name: String!
     image: String
     description: String
-    villains: [Villain] @cacheControl(maxAge: 30)
-    comics: [Comic] @cacheControl(maxAge: 30)
+    villains: [Villain] @cacheControl(maxAge: 240)
+    comics: [Comic] @cacheControl(maxAge: 240)
   }
 
   input HeroName {

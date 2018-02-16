@@ -12,7 +12,7 @@ import { api as MarvelApi } from '../helper/MarvelApi'
  * --- Schema definition ---
  */
 const schema = `
-  type Marvel @cacheControl(maxAge: 30) {
+  type Marvel @cacheControl(maxAge: 240) {
     id: Int!
     name: String!
   }

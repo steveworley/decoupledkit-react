@@ -35,7 +35,10 @@ class drupalAPI {
       .then(response => {
         if (!response) {
           const request = fetch(API_LOC, { headers })
-          return caches.add(request).then(response => response.json())
+          caches.open('window-cache-v2').then(cache => {
+            cache.add(API_LOC).then(() => console.log('cache added'))
+          })
+          return request.then(res => res.json())
         }
         return response.json()
       })
