@@ -56,24 +56,23 @@ class GraphQLClientMulti extends React.Component {
         <h4>Using GraphQL to query a data from both a Headless Drupal source and external non-Drupal API.</h4>
 
         <p>
-          <b>Story:</b> As a developer, I would like to understand the usefullness of utilizing a GraphQL server combine data from multiple API endpoints.
+          <b>Story:</b> As a developer, I would like to understand the usefullness of utilizing a GraphQL server combine data from multiple API endpoints. I would like to understand how to setup the proper types and schema defintions to display this data. Using the GraphQL server we can demonstrate accessing information from different systems and exposing the data through a single interface for attached clients (this React application).
         </p>
-
-        <ul>
-          <li>Setup a common data schema as a single content types in Drupal using the Headless Lightning distro located at https://github.com/acquia-pso/javascript-ps-starter-headlessdrupal</li>
-          <li>Identify another non-Drupal API services to mirror the topic of the Drupal content type.</li>
-          <li>Using the sample GraphQL server application in "__graphql_server", set up the proper types and schema definitions to display data from both the Drupal API and the non-Drupal API.</li>
-          <li>Using this GraphQL server, illustrates the benefits of consolidating multiple API data points within the type definitions and/or schemas.</li>
-          <li>Using this React application, show how to retrieve the designated queries from the GraphQL server.</li>
-        </ul>
 
         <div className="docs-refs clearfix">
           <div className="query-display">
             <span>Query sent to GraphQL server</span>
             {actions.fetchAll.loc.source.body}
           </div>
-          <img className="architecture-img" src={require('../img/graphql-multi-backend.svg?1')} />
+          <div className="query-display">
+            <span>Mutation sent to GraphQL server</span>
+            {actions.create.loc.source.body}
+          </div>
+          <img style={{maxHeight: '420px'}} className="architecture-img" src={require('../img/graphql-multi-backend.svg?1')} />
         </div>
+
+        <h4>Proxying data with GraphQL</h4>
+        <p>The below form shows how to send a mutation to the GraphQL server. Mutations are a pattern defined by GraphQL to allow data updates to be sent and handled by the GraphQL server. This example showcases using data from one of the other attached systems and replicating the data in Drupal.</p>
 
         <CreateHeroForm 
           handleSubmit={this.handleSubmit.bind(this)} 

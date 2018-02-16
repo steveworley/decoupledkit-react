@@ -50,30 +50,26 @@ const update = () => {
   `
 }
 
-const create = () => {
-  return gql`
-    mutation CreateHero($input: HeroName!) {
-      createHero(input: $input) {
+export const create = gql`
+  mutation CreateHero($input: HeroName!) {
+    createHero(input: $input) {
+      id
+      name
+      description
+      image
+      comics {
         id
-        name
-        description
+        title
         image
-        __typename
-        comics {
-          __typename        
-          id
-          title
-          image
-          description
-          sales {
-            issue
-            count
-          }
+        description
+        sales {
+          issue
+          count
         }
       }
     }
-  `
-}
+  }
+`
 
 const lookaheadQuery = gql`
   query {
@@ -145,9 +141,8 @@ export function updateGrpahql(id, name) {
 export function createGraphql(name) {
   return dispatch => {
     const variables = { input: { name }}
-    const mutation = create()
     dispatch(sendMessage(`Preparing to add ${name}`))
-    return client.mutate({ mutation, variables })
+    return client.mutate({ mutation: create, variables })
       .then(graphql => {
         dispatch(sendMessage(`Successfully added ${name} refreshing data from the server`))
         dispatch(updateCharacterList(graphql.data.createHero))
