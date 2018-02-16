@@ -87,7 +87,7 @@ class DrupalApi {
       body: JSON.stringify(data)
     })
       .then(res => res.json())
-      .then(json => json.data.map(i => new Character(i)))
+      .then(json => new Character(json.data))
       .catch(this.handleErrors)
   }
 

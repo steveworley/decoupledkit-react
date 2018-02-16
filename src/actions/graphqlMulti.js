@@ -8,6 +8,7 @@ export const BEGIN_GRAPHQL_MULTI = 'BEGIN_GRAPHQL_MULTI'
 export const END_GRAPHQL_MULTI = 'END_GRAPHQL_MULTI'
 export const UPDATE_START_GRAPHQL_MULTI = 'UPDATE_START_GRAPHQL_MULTI'
 export const UPDATE_END_GRAPHQL_MULTI = 'UPDATE_END_GRAPHQL_MULTI'
+export const UPDATE_CHARACTER_LIST = 'UPDATE_CHARACTER_LIST'
 export const MESSAGE_GRAPHQL_MULTI = 'MESSAGE_GRAPHQL_MULTI';
 export const MESSAGE_CLEAR_GRAPHQL_MULTI = 'MESSAGE_CLEAR_GRAPHQL_MULTI';
 export const BEGIN_LOOKAHEAD = 'BEGIN_LOOKAHEAD'
@@ -59,11 +60,17 @@ const create = () => {
         name
         description
         image
+        __typename
         comics {
+          __typename        
           id
           title
-          description
           image
+          description
+          sales {
+            issue
+            count
+          }
         }
       }
     }
@@ -106,6 +113,10 @@ function sendLookahead(lookahead) {
   return { type: RECIEVE_LOOKAHEAD, lookahead }
 }
 
+function updateCharacterList(character) {
+  return { type: UPDATE_CHARACTER_LIST, character }
+}
+
 export function fetchGraphql() {
   return dispatch => {
     return client.query({ query: fetchAll })
@@ -141,7 +152,8 @@ export function createGraphql(name) {
     return client.mutate({ mutation, variables })
       .then(graphql => {
         dispatch(sendMessage(`Successfully added ${name} refreshing data from the server`))
-        dispatch(fetchGraphql())
+        dispatch(updateCharacterList(graphql.data.createHero))
+        setTimeout(() => dispatch(clearMessage()), 2000)
       })
       .catch(err => console.log(err))
   }
