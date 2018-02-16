@@ -34,13 +34,13 @@ const heroList = [];
  * the querability of fields for the given type.
  */
 const schema = `
-  type Hero @cacheControl(maxAge: 30) {
+  type Hero @cacheControl(maxAge: 240) {
     id: ID!
     name: String!
     image: String
     description: String
-    villains: [Villain] @cacheControl(maxAge: 30)
-    comics: [Comic] @cacheControl(maxAge: 30)
+    villains: [Villain] @cacheControl(maxAge: 240)
+    comics: [Comic] @cacheControl(maxAge: 240)
   }
 
   input HeroName {
@@ -76,7 +76,7 @@ const queries = `
  */
 const mutations = `
   updateHero(id: Int! input:HeroName!): Hero
-  createHero(input:HeroName!):[Hero]
+  createHero(input:HeroName!): Hero 
 `
 
 /**
@@ -119,13 +119,12 @@ const createHero = (_, { input }) => {
     }
 
     const character = json.data.results[0]
+
     const characterData = {
       title: character.name,
-      body: { 
-        value: character.description,
-        format: "rich_text" 
-      },
-      field_image_reference: `${character.thumbnail.path}.${character.thumbnail.extension}`
+      field_description: character.description,
+      field_image_reference: `${character.thumbnail.path}.${character.thumbnail.extension}`,
+      field_marvel_id: character.id
     }
 
     return DrupalApi.createCharacter(characterData)
@@ -187,7 +186,7 @@ export class Model {
   constructor({ id, attributes }) {
     this.id = id
     this.name = attributes.title
-    this.description = attributes.field_description.value
+    this.description = attributes.field_description !== null ? attributes.field_description.value : ''
     this.image = attributes.field_image_reference
     this.nid = attributes.nid
     this.villains = attributes.field_nemesis

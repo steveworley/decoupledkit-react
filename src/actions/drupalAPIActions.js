@@ -35,11 +35,22 @@ export function clearMessage() {
 
 export function loadSingleCache() {
   return dispatch => {
-    drupalAPI.getAllDrupal(`${DRUPAL_API_LOC}/bc2153d4-3426-4983-a33e-d57934dec3fa`)
+    drupalAPI.loadCache(`${DRUPAL_API_LOC}/bc2153d4-3426-4983-a33e-d57934dec3fa`)
       .then(response => {
         const { data } = response
         dispatch({type: RECEIVE_DRUPAL_SINGLE_CACHE, caches: data})
       })
+  }
+}
+
+export function clearClientCaches() {
+  return dispatch => {
+    drupalAPI.clearCaches()
+    dispatch(sendMessage('Caches cleared'))
+    dispatch({type: RECEIVE_DRUPAL_SINGLE_LOCAL_STORAGE, localStorage: null})
+    dispatch({type: RECEIVE_DRUPAL_SINGLE_CACHE, caches: null})
+    dispatch({type: RECEIVE_DRUPAL_SINGLE_INDEXEDDB, indexedDb: null})
+    setTimeout(() => { dispatch(clearMessage()) }, 3000)    
   }
 }
 

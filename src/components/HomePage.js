@@ -32,7 +32,7 @@ const HomePage = () => {
 
          <p><strong>GraphQL Client (Multiple)</strong><br />
         This page builds upon the previous example by synthesizing non-Drupal and Drupal API data with GraphQL by combining multiple sources.
-         GraphQL serves the combination of data points into proper structures to for retrieval of data, as well as GraphQL <a href="http://graphql.org/learn/queries/#mutations" target="_blank"> mutations</a>.
+         GraphQL serves the combination of data points into proper structures for retrieval of data, as well as GraphQL <a href="http://graphql.org/learn/queries/#mutations" target="_blank"> mutations</a>.
           This component also addresses scenarios around caching and performance by using the <a href="https://www.apollographql.com/engine/" target="_blank"> Apollo Client</a> layer.
          </p>
 

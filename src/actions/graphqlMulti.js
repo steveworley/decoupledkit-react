@@ -8,6 +8,7 @@ export const BEGIN_GRAPHQL_MULTI = 'BEGIN_GRAPHQL_MULTI'
 export const END_GRAPHQL_MULTI = 'END_GRAPHQL_MULTI'
 export const UPDATE_START_GRAPHQL_MULTI = 'UPDATE_START_GRAPHQL_MULTI'
 export const UPDATE_END_GRAPHQL_MULTI = 'UPDATE_END_GRAPHQL_MULTI'
+export const UPDATE_CHARACTER_LIST = 'UPDATE_CHARACTER_LIST'
 export const MESSAGE_GRAPHQL_MULTI = 'MESSAGE_GRAPHQL_MULTI';
 export const MESSAGE_CLEAR_GRAPHQL_MULTI = 'MESSAGE_CLEAR_GRAPHQL_MULTI';
 export const BEGIN_LOOKAHEAD = 'BEGIN_LOOKAHEAD'
@@ -25,9 +26,7 @@ export const fetchAll = gql`
       name
       description
       image
-      __typename
       comics {
-        __typename        
         id
         title
         image
@@ -51,24 +50,26 @@ const update = () => {
   `
 }
 
-const create = () => {
-  return gql`
-    mutation CreateHero($input: HeroName!) {
-      createHero(input: $input) {
+export const create = gql`
+  mutation CreateHero($input: HeroName!) {
+    createHero(input: $input) {
+      id
+      name
+      description
+      image
+      comics {
         id
-        name
-        description
+        title
         image
-        comics {
-          id
-          title
-          description
-          image
+        description
+        sales {
+          issue
+          count
         }
       }
     }
-  `
-}
+  }
+`
 
 const lookaheadQuery = gql`
   query {
@@ -106,6 +107,10 @@ function sendLookahead(lookahead) {
   return { type: RECIEVE_LOOKAHEAD, lookahead }
 }
 
+function updateCharacterList(character) {
+  return { type: UPDATE_CHARACTER_LIST, character }
+}
+
 export function fetchGraphql() {
   return dispatch => {
     return client.query({ query: fetchAll })
@@ -136,12 +141,12 @@ export function updateGrpahql(id, name) {
 export function createGraphql(name) {
   return dispatch => {
     const variables = { input: { name }}
-    const mutation = create()
     dispatch(sendMessage(`Preparing to add ${name}`))
-    return client.mutate({ mutation, variables })
+    return client.mutate({ mutation: create, variables })
       .then(graphql => {
         dispatch(sendMessage(`Successfully added ${name} refreshing data from the server`))
-        dispatch(fetchGraphql())
+        dispatch(updateCharacterList(graphql.data.createHero))
+        setTimeout(() => dispatch(clearMessage()), 2000)
       })
       .catch(err => console.log(err))
   }

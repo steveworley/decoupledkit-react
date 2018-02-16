@@ -36,10 +36,11 @@ class Comic extends Component {
             <p><strong>{"Title"}</strong> <span className="api-source api-source-marvel">Marvel API</span></p>
             {title}
             <p><strong>{"Description"}</strong></p>
-            {description}
+            <p dangerouslySetInnerHTML={{__html: description}}></p>
           </div>
           <div style={{clear: "both"}}>
             <p><strong>{"Sales"}</strong> <span className="api-source api-source-sales">Comic Sales API</span></p>
+            {(Sales.length > 0) ? (
             <table>
               <tbody>
                 <tr>
@@ -49,7 +50,7 @@ class Comic extends Component {
                 { Sales }
               </tbody>
             </table>
-          
+            ) : <p>Could not locate sales information</p>}
           </div>
         </div>
       </div>

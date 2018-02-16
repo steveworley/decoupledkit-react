@@ -3,7 +3,8 @@ import {
   END_GRAPHQL_MULTI,
   MESSAGE_GRAPHQL_MULTI,
   MESSAGE_CLEAR_GRAPHQL_MULTI,
-  RECIEVE_LOOKAHEAD
+  RECIEVE_LOOKAHEAD,
+  UPDATE_CHARACTER_LIST
 } from '../actions/graphqlMulti'
 
 export default function graphqlMultiReducer(state = {data: [], message: null, lookahead: []}, action) {
@@ -18,6 +19,12 @@ export default function graphqlMultiReducer(state = {data: [], message: null, lo
     case RECIEVE_LOOKAHEAD:
       const { lookahead } = action;
       return { ...state, lookahead }
+    
+    case UPDATE_CHARACTER_LIST:
+      const { character } = action
+      const newState = JSON.parse(JSON.stringify(state))
+      newState.data.push(character)
+      return newState
 
     case MESSAGE_GRAPHQL_MULTI:
     case MESSAGE_CLEAR_GRAPHQL_MULTI:
