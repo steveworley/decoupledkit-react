@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import '../styles/apidatamock.scss';
 import * as actions from '../actions/graphqlMockActions';
 
+import Client from './Client'
+
 /*eslint-disable no-console */
 
 class APIDataMockApp extends React.Component {
@@ -17,18 +19,7 @@ class APIDataMockApp extends React.Component {
 
     const mockUsers = data.map((user, i) => {
       return (
-        <div key={i} className="user-container">
-          <div className="label">Full Name</div>
-          <p>{user.name}</p>
-          <div className="label">First Name</div>
-          <p>{user.first_name}</p>
-          <div className="label">Last Name</div>
-          <p>{user.last_name}</p>
-          <div className="label">Email</div>
-          <p>{user.email}</p>
-          <div className="label">Country</div>
-          <p>{user.country}</p>
-        </div>
+        <Client key={i} firstName={user.first_name} lastName={user.last_name} email={user.email} country={user.country} uuid={i} />
       )
     })
 

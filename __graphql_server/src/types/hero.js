@@ -39,6 +39,7 @@ const schema = `
     name: String!
     image: String
     description: String
+    marvelId: Int
     villains: [Villain] @cacheControl(maxAge: 240)
     comics: [Comic] @cacheControl(maxAge: 240)
   }
@@ -166,13 +167,7 @@ const resolvers = {
       }
       return badGuys;
     },
-    comics: ({ name }) => MarvelApi.characters(name).then(({ data: { results } }) => {
-      if (typeof results[0] === 'undefined') {
-        return []
-      }
-      const { id } = results[0]
-      return MarvelApi.comics(id)
-    })
+    comics: ({ marvelId }) => MarvelApi.comics(marvelId)
   }
 }
 
@@ -191,6 +186,7 @@ export class Model {
     this.nid = attributes.nid
     this.villains = attributes.field_nemesis
     this.comics = []
+    this.marvelId = attributes.field_marvel_id
   }
 }
 /** ---- */

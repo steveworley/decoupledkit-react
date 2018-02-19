@@ -1,0 +1,27 @@
+.buttons {
+  padding-bottom: 0.5em;
+  margin-bottom: 1em;
+  border-bottom: 1px dotted lightgray;
+
+  ul {
+    display: flex;
+    list-style: none;
+    margin: 0;
+
+    li { 
+      padding: 1em;
+      position: relative;
+      padding-bottom: 2em;
+
+      input[type="button"] {
+        position: absolute;
+        bottom: 0;
+      }
+    }
+  }
+}
+
+input[type="button"].danger {
+  background: lightblue;
+  color: #333;
+}
