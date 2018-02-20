@@ -30,14 +30,8 @@ class APIDataMockApp extends React.Component {
         <h4>Mocking APIs for local development</h4>
         <p>
           <b>Story:</b> As a developer, I want understand the usefulness of using a Mock API when developing API-reliant applications in React.
+           I would like to understand how this Mock API is constructed and executed for local build tasks only, when using a local variable in my .env file.
         </p>
-
-        <ul>
-          <li>Setup a common data schema as a single content types in Drupal using the Headless Lightning distro located at https://github.com/acquia-pso/javascript-ps-starter-headlessdrupal</li>
-          <li>After the content type has been create, emulate the API schema for that content type to mirror.</li>
-          <li>Setup a local Mock API server in the application that only runs for development build tasks.</li>
-          <li>Show a comparison of the Mock API and the correct API to communicate the parity when developing an application.</li>
-        </ul>
 
         {mockUsers}
 

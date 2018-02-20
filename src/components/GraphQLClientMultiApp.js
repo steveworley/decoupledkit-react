@@ -68,7 +68,7 @@ class GraphQLClientMulti extends React.Component {
             <span>Mutation sent to GraphQL server</span>
             {actions.create.loc.source.body}
           </div>
-          <img style={{maxHeight: '420px'}} className="architecture-img" src={require('../img/graphql-multi-backend.svg?1')} />
+          <img style={{ maxHeight: '420px' }} className="architecture-img" src={require('../img/graphql-multi-backend.svg?1')} />
         </div>
 
         <div className="comic-form-wrapper">
@@ -80,9 +80,15 @@ class GraphQLClientMulti extends React.Component {
           />
         </div>
 
-        {Heroes}
+        <br />
+        <hr />
 
-        {messages}
+        <h4>List of Marvel Characters</h4>
+
+        <div className="herolisting-wrapper">
+          {Heroes}
+          {messages}
+        </div>
 
       </div>
 

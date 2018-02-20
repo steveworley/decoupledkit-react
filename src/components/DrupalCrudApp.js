@@ -50,21 +50,21 @@ class DrupalCrudApp extends React.Component {
       <div>
         <h4>Drupal CRUD Component</h4>
         <p>
-          <b>Story:</b> As a developer, I want to understand common CRUD operations when interacting with the Drupal JSON API endpoints.
+          <b>Story:</b> As a developer, I want to understand common CRUD operations when interacting with Drupals JSON API endpoints from a Headless Lightning Drupal instance. I would like these tasks are broken out by core CRUD (Create, Read, Update, Delete) tasks for rich text and images fields. I do not want to replace Drupal strengths around content authoring, but rather seeks to understand workflows around interacting with API content.
         </p>
-
-        <ul>
-          <li>Setup a common data schema as a single content types in Drupal using the Headless Lightning distro located at https://github.com/acquia-pso/javascript-ps-starter-headlessdrupal</li>
-          <li>Show the ability to create a new node of that content type (create)</li>
-          <li>Show a list of the available nodes to choose from. (read)</li>
-          <li>Show the ability to update an existing node of that content type (update)</li>
-          <li>Show the ability to delete a node of that content type (delete)</li>
-        </ul>
+        <p><a href="#newnode">Example 1: Creating a new node</a> <br />
+        <a href="#reviewupdate">Example 2: Review & Update and existing Node</a> <br />
+        <a href="#delete">Example 2: Delete an existing Node</a> <br />
+        </p>
+        <br />
         <div className={"node-rows"}>
+        <a name="newnode"></a>
           <NewNodeForm onSubmit={this.onNewNodeSubmit.bind(this)} />
         </div>
         <div className={"node-rows"}>
+          <a name="reviewupdate"></a>
           {nodeList}
+          <a name="delete"></a>
         </div>
         {Message}
       </div>
