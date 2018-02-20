@@ -12,7 +12,7 @@ class Client extends Component {
       <figure className={classes}>
         <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/331810/sample87.jpg" />
         <figcaption>
-          <img src={require('../img/people.svg?1')} alt="profile-sample4" class="profile" />
+          <img src={require('../img/people.svg?1')} alt="profile-sample4" className="profile" />
           <h3>{firstName} {lastName}</h3>
           <p><a href="mailto:{email}">{email}</a></p>
           <p>{country}</p>
@@ -28,7 +28,7 @@ Client.propTypes = {
   country: PropTypes.string,
   firstName: PropTypes.string.isRequired,
   lastName: PropTypes.string.isRequired,
-  uuid: PropTypes.string.isRequired
+  uuid: PropTypes.number.isRequired
 }
 
 export default Client

@@ -41,7 +41,7 @@ class Hero extends Component {
           </div>
           <div className="row">
             <div className="label">{"Description"}</div>
-            {ReactHtmlParser(description)}
+            {(description) ? ReactHtmlParser(description) : 'No description available'}
           </div>
           <div className="comics">
             <div className="label"><span className="api-source api-source-marvel">Marvel API</span>{"Appearances"}</div>
