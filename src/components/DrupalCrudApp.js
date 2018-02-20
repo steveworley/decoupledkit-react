@@ -53,8 +53,8 @@ class DrupalCrudApp extends React.Component {
           <b>Story:</b> As a developer, I want to understand common CRUD operations when interacting with Drupals JSON API endpoints from a Headless Lightning Drupal instance. I would like these tasks are broken out by core CRUD (Create, Read, Update, Delete) tasks for rich text and images fields. I do not want to replace Drupal strengths around content authoring, but rather seeks to understand workflows around interacting with API content.
         </p>
         <p><a href="#newnode">Example 1: Creating a new node</a> <br />
-        <a href="#reviewupdate">Example 2: Review & Update and existing Node</a> <br />
-        <a href="#delete">Example 2: Delete an existing Node</a> <br />
+        <a href="#reviewupdate">Example 2 & 3: Review and Update and existing Node</a> <br />
+        <a href="#delete">Example 4: Delete an existing Node</a> <br />
         </p>
         <br />
         <div className={"node-rows"}>
