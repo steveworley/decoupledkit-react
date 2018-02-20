@@ -83,11 +83,12 @@ class DrupalApi {
 
     return fetch(`${this.url}node/marvel_characters`, {
       method: 'POST',
-      headers: Object.assign(this.headers, { Authorization: 'Basic ' + btoa('api:test')}),
+      headers: this.headers,
       body: JSON.stringify(data)
     })
       .then(res => { 
         if (res.status === 403) {
+          console.log(JSON.stringify(data))
           throw new Error('Forbidden')
         }
         return res.json()

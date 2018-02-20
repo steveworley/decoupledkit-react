@@ -194,12 +194,13 @@ class drupalAPI {
       })
     }
 
-    return fetch(API_LOC, { headers })
+    return fetch(API_LOC)
       .then(res => res.json())
       .then(json => {
         localStorage.setItem(API_LOC, JSON.stringify(json))
         return new Promise((resolve) => resolve(json))
       })
+      .catch(err => console.log(err))
   }
 
 
@@ -240,12 +241,13 @@ class drupalAPI {
         return new Promise(resolve => resolve(response.data))
       })
       .catch(err => {
-        return fetch(API_LOC, { headers })
+        return fetch(API_LOC)
           .then(res => res.json())
           .then(json => {
             db.table('requests').add({path: API_LOC, data: json})
             return new Promise(resolve => resolve(json))
           })
+          .catch(err => console.log(err))    
       })
   }
 

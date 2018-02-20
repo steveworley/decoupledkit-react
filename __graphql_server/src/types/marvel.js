@@ -8,6 +8,8 @@
 
 import { api as MarvelApi } from '../helper/MarvelApi'
 
+import characters from '../../data/characters.json'
+
 /**
  * --- Schema definition ---
  */
@@ -33,7 +35,7 @@ const queries = `
  * 100 as per the API requirements and as demonstration this will show
  * enough characters.
  */
-const marvel = () => MarvelApi.characters().then(json => json.data.results)
+const marvel = () => characters
 
 /**
  * --- Resolvers ---
