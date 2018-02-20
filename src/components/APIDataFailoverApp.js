@@ -127,6 +127,8 @@ class APIDataFailoverApp extends Component {
 
           </ul>
           <p style={{marginTop: "1em", textAlign: "right" }}><input type="button" className="danger" onClick={this.onClearCachesClick} value={"Clear caches"} /></p>
+          
+          <p className="note"><strong>Note:</strong> only the requests to the backend API's are cached in the demo, images will rely on regular HTTP caching methods and may need to load for the initial request, if images are key to the performance of your application you can look to send <code>base64encoded</code> representations from the API and have those stored with these caching mechanisms</p>
         </div>
 
         <div className={"node-rows"}>
