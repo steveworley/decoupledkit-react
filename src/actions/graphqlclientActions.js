@@ -1,97 +1,65 @@
-import gql from 'graphql-tag';
-import * as types from './graphqlclientTypes';
-const {
-  createApolloFetch
-} = require('apollo-fetch');
+import gql from 'graphql-tag'
 
-export function loadGraphQLSuccess(graphql) {
-  return {
-    type: types.CREATE_GRAPHQL,
-    graphql
-  };
-}
+import { ApolloClient } from 'apollo-client';
+import { HttpLink } from 'apollo-link-http';
+import { InMemoryCache } from 'apollo-cache-inmemory';
 
-const fetch = createApolloFetch({
-  uri: 'http://localhost:8082/graphql',
-});
+export const BEGIN_GRAPHQL = 'BEGIN_GRAPHQL'
+export const RECEIVE_GRAPHQL = 'RECEIVE_GRAPHQL'
 
-function default_query() {
-  return {
-    query: gql`
-      query {
-        allVillains {
-          id
-          name
-        }
-      }`
-  };
-}
+const client = new ApolloClient({
+  link: new HttpLink({ uri: 'http://localhost:8082/graphql' }),
+  cache: new InMemoryCache()
+})
 
-function full_query() {
-  return {
-    query: gql`
-      query {
-        allVillains {
-          id
-          name
-          age
-          weight
-          image
-          description
-          powers
-          first_appearance
-        }
-      }`
-  };
-}
-
-function filter_by_id(id) {
-  return {
-    query: gql`
-      query {
-        villain(id: ${id}) {
-          id
-          name
-          age
-          weight
-          image
-          description
-          powers
-          first_appearance
-        }
-      }`
-  };
-}
-
-function count_query() {
-  return {
-    query: gql`
-      query {
-        totalVillains
-      }`
-  };
-}
-
-export function match_queries(query, id = 0) {
-  switch (query) {
-    case 'total_villains':
-      return count_query();
-    case 'full_list':
-      return full_query();
-    case 'filter_by_id':
-      return filter_by_id(id);
-    case 'default':
-      return default_query();
-    default:
-      return default_query();
+export const query = gql`
+  query {
+    pokemons {
+      id
+      nid
+      pokemon_id
+      title
+      back_shiny_sprite
+      front_shiny_sprite
+      height_pokemon
+      weight_pokemon
+      hp
+      attack
+      defense
+      special_attack
+      special_defense
+      speed
+      abilities {
+        id
+        type
+        name
+        description
+      }
+      ref_types {
+        id
+        type
+        name
+        description
+      }
+    }
   }
+`;
+
+const beginFetch = () => {
+  return { type: BEGIN_GRAPHQL, data: [] }
 }
 
-export function loadGraphQL(queries = 'default', id = 0) {
-  return function (dispatch) {
-    return fetch(match_queries(queries, id)).then(graphql => {
-      // console.log('graphql.data ====> ', graphql.data);
-      return dispatch(loadGraphQLSuccess(graphql));
-    });
-  };
+const receiveFetch = (data) => {
+  return { type: RECEIVE_GRAPHQL, data }
+}
+
+export function fetchData(id = null) {
+  return dispatch => {
+    dispatch(beginFetch())
+    return client.query({ query }).then(graphql => {
+      const { data: { pokemons } } = graphql
+      dispatch(receiveFetch(pokemons))
+    })
+      .catch(err => console.log(err))
+  }
 }

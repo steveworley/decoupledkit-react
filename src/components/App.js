@@ -6,7 +6,7 @@ import HomePage from './HomePage';
 import DrupalCrudPage from '../containers/DrupalCrudPage';
 import GraphQLClientDrupalPage from '../containers/GraphQLClientDrupalPage';
 import GraphQLClientMultiPage from '../containers/GraphQLClientMultiPage';
-import ProxyDataAPIPage from '../containers/ProxyDataAPIPage';
+// import ProxyDataAPIPage from '../containers/ProxyDataAPIPage';
 import APIDataFailoverPage from '../containers/APIDataFailoverPage';
 import APIDataMockPage from '../containers/APIDataMockPage';
 
@@ -22,8 +22,8 @@ class App extends React.Component {
             <li><NavLink exact to="/" activeStyle={activeStyle}>Home</NavLink></li>
             <li><NavLink to="/drupalcrud" activeStyle={activeStyle}>Drupal CRUD</NavLink></li>
             <li><NavLink to="/graphqlclientsingle" activeStyle={activeStyle}>GraphQL Client (Single)</NavLink></li>
-            <li><NavLink to="/graphqlclientmulti" activeStyle={activeStyle}>GraphQL Client (Multi)</NavLink></li>
-            <li><NavLink to="/proxydataapi" activeStyle={activeStyle}>Proxy API Data</NavLink></li>
+            <li><NavLink to="/graphqlclientmulti" activeStyle={activeStyle}>GraphQL Client (Multiple)</NavLink></li>
+            {/* <li><NavLink to="/proxydataapi" activeStyle={activeStyle}>Proxy API Data</NavLink></li> */}
             <li><NavLink to="/apidatafailover" activeStyle={activeStyle}>API Data Failover</NavLink></li>
             <li><NavLink to="/apidatamock" activeStyle={activeStyle}>API Data Mock</NavLink></li>
             {/* <li><NavLink to="/app" activeStyle={activeStyle}>Application</NavLink></li> */}
@@ -35,7 +35,7 @@ class App extends React.Component {
             <Route path="/drupalcrud" component={DrupalCrudPage} />
             <Route path="/graphqlclientsingle" component={GraphQLClientDrupalPage} />
             <Route path="/graphqlclientmulti" component={GraphQLClientMultiPage} />
-            <Route path="/proxydataapi" component={ProxyDataAPIPage} />
+            {/* <Route path="/proxydataapi" component={ProxyDataAPIPage} /> */}
             <Route path="/apidatafailover" component={APIDataFailoverPage} />
             <Route path="/apidatamock" component={APIDataMockPage} />
             {/* <Route path="/app" component={SampleAppPage} /> */}

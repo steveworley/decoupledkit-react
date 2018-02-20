@@ -1,14 +1,17 @@
 import { combineReducers } from 'redux';
-import users from './userReducer';
-import number from './incrementReducer';
-import starwars from './starwarsReducer';
-import graphql from './graphqlclientReducer';
+
+import drupalLoadReducer from './drupalLoadReducer'
+import graphqlMultiReducer from './graphqlMulti'
+import graphqlSingle from './graphqlclientReducer'
+import graphqlMockReducer from './graphqlMockReducer'
+import failoverReducer from './failoverReducer'
 
 const rootReducer = combineReducers({
-  users,
-  number,
-  starwars,
-  graphql
+  drupalLoadReducer,
+  graphqlMultiReducer,
+  graphqlSingle,
+  graphqlMockReducer,
+  failoverReducer
 });
 
 export default rootReducer;

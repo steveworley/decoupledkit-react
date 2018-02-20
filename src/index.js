@@ -5,13 +5,11 @@ import { render } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 import configureStore, { history } from './store/configureStore';
 import Root from './components/Root';
-import {loadStarWars} from './actions/starwarsActions';
 
 import './styles/baseline.scss';
 require('./favicon.ico');
 
 const store = configureStore();
-store.dispatch(loadStarWars());
 
 render(
   <AppContainer>

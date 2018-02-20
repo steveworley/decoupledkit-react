@@ -100,6 +100,13 @@ export default {
         ]
       },
       {
+        test: /\.css$/,
+        loaders: [
+          'style-loader',
+          'css-loader?modules'
+        ]
+      },
+      {
         test: /(\.css|\.scss|\.sass|\.less)$/,
         use: [
           'style-loader',
@@ -116,7 +123,7 @@ export default {
               ],
               sourceMap: true
             }
-          },{
+          }, {
             loader: 'less-loader',
             options: {
               includePaths: [path.resolve(__dirname, 'src', 'less')],
