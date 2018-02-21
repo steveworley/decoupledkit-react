@@ -137,6 +137,25 @@ class drupalAPI {
   }
 
   /**
+    * Fetch all nodes IDs from a given type for use as a utility function.
+    *
+    * @param {String} API_LOC
+    *   The API URL.
+    *
+    * @return {Promise}
+    */
+  static getDrupalIDs(API_LOC = types.DRUPAL_API_LOC) {
+    return fetch(API_LOC, { headers }).then(response => {
+      return response.json();
+    }).then(res => {
+      const IDs = res.data.map(el => {
+        return el.id;
+      })
+      return IDs;
+    }).catch(err => console.log(err))
+  }
+
+  /**
    * Load data from the browsers cache.
    *
    * This attempts to load the given API_LOC from the browsers cache. If
@@ -231,7 +250,7 @@ class drupalAPI {
     // Create the indexedDB.
     const db = new Dexie('test-db')
     db.version(1).stores({
-    	requests: 'path, data'
+      requests: 'path, data'
     });
 
     db.open().catch(err => console.error('UNABLE TO OPEN DB', err))
@@ -244,10 +263,10 @@ class drupalAPI {
         return fetch(API_LOC)
           .then(res => res.json())
           .then(json => {
-            db.table('requests').add({path: API_LOC, data: json})
+            db.table('requests').add({ path: API_LOC, data: json })
             return new Promise(resolve => resolve(json))
           })
-          .catch(err => console.log(err))    
+          .catch(err => console.log(err))
       })
   }
 
