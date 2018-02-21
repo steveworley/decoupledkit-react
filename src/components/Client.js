@@ -16,7 +16,7 @@ class Client extends Component {
           <h3>{firstName} {lastName}</h3>
           <p><a href="mailto:{email}">{email}</a></p>
           <p>{country}</p>
-          { type ? <span className="badge">{type}</span> : '' }
+          {type ? <span className="badge">{type}</span> : ''}
         </figcaption>
       </figure>
     )
@@ -28,7 +28,8 @@ Client.propTypes = {
   country: PropTypes.string,
   firstName: PropTypes.string.isRequired,
   lastName: PropTypes.string.isRequired,
-  uuid: PropTypes.number.isRequired
+  // TODO: see what this is requiring as both string || number...
+  // uuid: PropTypes.number.isRequired
 }
 
 export default Client
