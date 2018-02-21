@@ -8,10 +8,11 @@ const headers = {
   'Authorization': 'Basic ' + btoa('apitest:apitest') // username:password from http://local.decoupledkit.com/admin/access/users
 }
 
-function handleErrors(response) { // todo: implement better 500 errors for missing images
-  if (!response.ok) { throw Error('response.statusText', response.statusText); }
-  return response;
-}
+// todo: implement better 500 errors for missing images
+// function handleErrors(response) {
+//   if (!response.ok) { throw Error('response.statusText', response.statusText); }
+//   return response;
+// }
 
 class drupalAPI {
 
@@ -207,9 +208,9 @@ class drupalAPI {
       // Expecting a promise - localStorage is synchronous so it will return the
       // data as it sees it in the store. We wrap this in a simple promise so
       // have a unified way to handle this call.
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => { // , reject
         const json = JSON.parse(localStorage.getItem(API_LOC))
-        resolve(json)
+        resolve(json);
       })
     }
 
@@ -255,11 +256,11 @@ class drupalAPI {
 
     db.open().catch(err => console.error('UNABLE TO OPEN DB', err))
 
-    return db.table('requests').where('path').equals(API_LOC)
-      .first(response => {
+    return db.table('requests').where('path').equals(API_LOC).first(response => {
         return new Promise(resolve => resolve(response.data))
       })
       .catch(err => {
+        console.log(err);
         return fetch(API_LOC)
           .then(res => res.json())
           .then(json => {

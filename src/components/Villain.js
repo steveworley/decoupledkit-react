@@ -1,29 +1,29 @@
 import React, { Component } from 'react'
 import ReactHtmlParser from 'react-html-parser'
-// import PropTypes from 'prop-types'
+import PropTypes from 'prop-types'
 
 import '../styles/villain.scss'
 
 class Villain extends Component {
+
   constructor(props) {
-    super(props)
-    //this.state = { showinfo: false }
+    super(props);
   }
+
   showInfo(e) {
     e.preventDefault();
-    // this.setState({showinfo: !this.state.showinfo })
   }
+
   render() {
 
-    const { name, description, image, nemesis } = this.props
-    //const classes = this.state.showinfo ? 'show' : 'hide'
+    const { name, description, image, nemesis } = this.props;
     const nemesisList = (nemesis) ? nemesis.join(", ") : '';
 
     return (
       <div className="villain clearfix">
         <span className="api-source api-source-drupal">Drupal API</span>
         <h4><a href="#" onClick={this.showInfo.bind(this)} >{name} </a></h4>
-        <div className="villain-container clearfix"> {/* className={classes} */}
+        <div className="villain-container clearfix">
           <div className="row row-img">
             <div className="label">Image</div>
             <p style={{ textAlign: "center" }}> <img src={image} /></p>
@@ -46,6 +46,13 @@ class Villain extends Component {
       </div>
     )
   }
+}
+
+Villain.propTypes = {
+  name: PropTypes.string,
+  description: PropTypes.string,
+  image: PropTypes.string,
+  nemesis: PropTypes.array,
 }
 
 export default Villain;

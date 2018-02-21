@@ -18,11 +18,10 @@ class NewNodeForm extends Component {
   }
 
   handleSubmit(event) {
+    event.preventDefault();
     const { onSubmit } = this.props
     const { title, body, field_history_and_background } = this.state
     const formErrors = {}
-
-    event.preventDefault()
 
     if (title == '') {
       formErrors.title = 'You need to enter a title'
@@ -37,8 +36,8 @@ class NewNodeForm extends Component {
     }
 
     if (Object.keys(formErrors).length > 0) {
-      this.setState({ formErrors })
-      return
+      this.setState({ formErrors });
+      return;
     }
 
     onSubmit(this.state);
@@ -50,8 +49,8 @@ class NewNodeForm extends Component {
     })
   }
 
-  onDrop(accepted, rejected) {
-    const uploadedFile = this.state.uploadedFile;
+  onDrop(accepted) { // rejected
+    // const uploadedFile = this.state.uploadedFile;
     accepted.forEach(file => {
       const Reader = new FileReader();
       Reader.readAsDataURL(file)
@@ -68,7 +67,7 @@ class NewNodeForm extends Component {
 
   render() {
     const { title, body, field_history_and_background, formErrors } = this.state
-    const { onSubmit } = this.props
+    // const { onSubmit } = this.props
 
     return (
       <form onSubmit={this.handleSubmit} className="errors">
@@ -88,13 +87,13 @@ class NewNodeForm extends Component {
             <div className="label">{"Body"}</div>
             <ReactQuill
               value={body}
-              onChange={function (text, medium) { this.setState({ 'body': text }) }.bind(this)}
+              onChange={function (text) { this.setState({ 'body': text }) }.bind(this)}
             />
           </div>
           <div className="label">{"History and Background"}</div>
           <ReactQuill
             value={field_history_and_background}
-            onChange={function (text, medium) { this.setState({ 'field_history_and_background': text }) }.bind(this)}
+            onChange={function (text) { this.setState({ 'field_history_and_background': text }) }.bind(this)}
           />
           <div className="label">{"Image"}</div>
           <span className="img-preview">
@@ -108,6 +107,13 @@ class NewNodeForm extends Component {
       </form>
     );
   }
+}
+
+NewNodeForm.propTypes = {
+  onChangeHandler: PropTypes.string,
+  handleSubmit: PropTypes.func,
+  onDrop: PropTypes.func,
+  onSubmit: PropTypes.func
 }
 
 export default NewNodeForm;

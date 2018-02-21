@@ -28,6 +28,7 @@ Client.propTypes = {
   country: PropTypes.string,
   firstName: PropTypes.string.isRequired,
   lastName: PropTypes.string.isRequired,
+  type: PropTypes.string
   // TODO: see what this is requiring as both string || number...
   // uuid: PropTypes.number.isRequired
 }

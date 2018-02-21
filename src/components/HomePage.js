@@ -4,10 +4,11 @@ const HomePage = () => {
   return (
     <div className="boxy float-left clearfix">
       <h4>Welcome to the React Decoupled Kit</h4>
-      <p>The Decoupled Kit was built to explore and communicate common workflows when building headless applications with Drupal's API.  This application is intended for multiple reasons, but
-      primarily as an exercise to help developers understand best practices when combining popular architectural pieces with <a href="https://dri.es/how-to-decouple-drupal-in-2018" target="_blank">Decoupled Drupal</a>, <a href="http://graphql.org" rel="noopener noreferrer" target="_blank">GraphQL</a>,
+      <p>The Decoupled Kit was built to explore and communicate common workflows when building headless applications with Drupals API.
+       This application is intended for multiple reasons, but
+       primarily as an exercise to help developers understand best practices when combining popular architectural pieces with <a href="https://dri.es/how-to-decouple-drupal-in-2018" target="_blank" rel="noopener noreferrer">Decoupled Drupal</a>, <a href="http://graphql.org" rel="noopener noreferrer" target="_blank">GraphQL</a>,
        and <a href="https://reactjs.org" rel="noopener noreferrer" target="_blank">React</a>.
-       We have also included a <a href="https://github.com/acquia-pso/decoupledkit-drupal" rel="noopener noreferrer" target="_blank">sibling repository</a> to provide all the necessary data schemas, which are used by this React application and the GraphQL server located in sub-folder "__graphql_server".
+       We have also included a <a href="https://github.com/acquia-pso/decoupledkit-drupal" rel="noopener noreferrer" target="_blank">sibling repository</a> to provide all the necessary data schemas, which are used by this React application and the GraphQL server located in sub-folder __graphql_server.
       </p>
 
       <p>

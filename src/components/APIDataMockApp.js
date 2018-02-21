@@ -1,12 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import '../styles/apidatamock.scss';
 import * as actions from '../actions/graphqlMockActions';
-
-import Client from './Client'
-
-/*eslint-disable no-console */
+import Client from './Client';
+import '../styles/apidatamock.scss';
 
 class APIDataMockApp extends React.Component {
 
@@ -27,7 +25,7 @@ class APIDataMockApp extends React.Component {
 
       <div className="holder">
 
-        <h4>Mocking APIs for local development</h4>
+        <h4>Mocking APIs for local developmenta</h4>
         <p>
           <b>Story:</b> As a developer, I want understand the usefulness of using a Mock API when developing API-reliant applications in React.
            I would like to understand how this Mock API is constructed and executed for local build tasks only, when using a local variable in my .env file.
@@ -39,6 +37,11 @@ class APIDataMockApp extends React.Component {
 
     );
   }
+}
+
+APIDataMockApp.propTypes = {
+  data: PropTypes.array.isRequired,
+  actions: PropTypes.object.isRequired
 }
 
 export function mapStateToProps(state) {

@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-
+import PropTypes from 'prop-types'
+import * as actions from '../actions/failoverActions';
+import Client from './Client';
 import '../styles/apidatafailover.scss';
-import * as actions from '../actions/failoverActions'
-
-import Client from './Client'
 
 /*eslint-disable no-console */
 
@@ -39,19 +38,19 @@ class APIDataFailoverApp extends Component {
     }
   }
 
-  onCacheClick(event) {
+  onCacheClick() {
     this.props.actions.fetchCache()
   }
 
-  onIndexedDbClick(event) {
+  onIndexedDbClick() {
     this.props.actions.fetchIndexedDb()
   }
 
-  onLocalStorageClick(event) {
+  onLocalStorageClick() {
     this.props.actions.fetchLocalStorage()
   }
 
-  onClearCachesClick(event) {
+  onClearCachesClick() {
     this.props.actions.clearCaches()
   }
 
@@ -111,7 +110,7 @@ class APIDataFailoverApp extends Component {
             {canIndexedDb ? (
               <li>
                 <h4>window.indexedDb</h4>
-                <p><a target="_blank" rel="noopener noreferrer" href="https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API">IndexedDB</a> uses local HDD space to create a relational databse for a web application. It is used to store and retrieve javascript objects by a known key. To begin with IndexedDB you need to open a connection to the database and then specify a schema, after which you can interact with the database as you would a SQL-based RDBMS. The IndexedDB API is complex and doesn't use the Promise API, but there are packages like <a target="_blank" rel="noopener noreferrer" href="http://dexie.org/">Dexie</a> which provide this functionality.</p>
+                <p><a target="_blank" rel="noopener noreferrer" href="https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API">IndexedDB</a> uses local HDD space to create a relational databse for a web application. It is used to store and retrieve javascript objects by a known key. To begin with IndexedDB you need to open a connection to the database and then specify a schema, after which you can interact with the database as you would a SQL-based RDBMS. The IndexedDB API is complex and does not use the Promise API, but there are packages like <a target="_blank" rel="noopener noreferrer" href="http://dexie.org/">Dexie</a> which provide this functionality.</p>
                 <input type="button" onClick={this.onIndexedDbClick} value={"Load from IndexedDB"} />
               </li>) : <li>IndexedDB API is unavailable use a newer browser.</li>}
 
@@ -119,7 +118,7 @@ class APIDataFailoverApp extends Component {
           <p className="clear-caches"><input type="button" className="danger" onClick={this.onClearCachesClick} value={"Clear All Caches"} /></p>
 
           <p className="note">
-            <strong>Note:</strong> only the requests to the backend API's are cached in the demo, images will rely on regular HTTP caching methods and may need to load for the initial request,
+            <strong>Note:</strong> only the requests to the backend APIs are cached in the demo, images will rely on regular HTTP caching methods and may need to load for the initial request,
            if images are key to the performance of your application you can look to send <code>base64encoded</code> representations from the API and have those stored with these caching mechanisms
           <br />
             <strong>Note:</strong>Caches may need to be warmed prior to loading from cache. As this is client side caching it will need to be done by each client that connects to the application.
@@ -136,6 +135,11 @@ class APIDataFailoverApp extends Component {
 
     );
   }
+}
+
+APIDataFailoverApp.propTypes = {
+  actions: PropTypes.object.isRequired,
+  key: PropTypes.string,
 }
 
 export function mapStateToProps(state) {

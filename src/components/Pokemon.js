@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types';
 import ReactHtmlParser from 'react-html-parser'
 
 class Pokemon extends Component {
@@ -11,7 +12,6 @@ class Pokemon extends Component {
     this.setState({ showfull: !this.state.showfull });
   }
 
-
   taxonomies(title, el) {
     return (
       <div>
@@ -19,7 +19,7 @@ class Pokemon extends Component {
         {
           el.map((item, index) => (
             <div className="rows-terms" key={index}>
-              {item['name'] ? <div className="name"> {item['name']}</div> : null}  {/* Name: */}
+              {item['name'] ? <div className="name"> {item['name']}</div> : null}
               {item['description'] ? <div className="description">Description: {ReactHtmlParser(item['description'])}</div> : null}
             </div>
           ))
@@ -52,7 +52,7 @@ class Pokemon extends Component {
 
   render() {
 
-    const { id, nid, pokemon_id, title, back_shiny_sprite, front_shiny_sprite, height_pokemon, weight_pokemon, abilities, ref_types } = this.props;
+    const { pokemon_id, title, back_shiny_sprite, front_shiny_sprite, height_pokemon, weight_pokemon, abilities, ref_types } = this.props;
 
     const abilities_data = this.taxonomies('Abilities', abilities);
     const types_data = this.taxonomies('Types', ref_types);
@@ -67,8 +67,6 @@ class Pokemon extends Component {
     ), stats = this.base_stats(statsObj);
 
     const outerclasses = (this.state.showfull ? 'full' : 'minimal') + ' pokemon clearfix';
-
-    // console.log('this.props ===>', this.props);
 
     return (
       <div className={outerclasses}>
@@ -127,5 +125,25 @@ class Pokemon extends Component {
     )
   }
 }
+
+Pokemon.propTypes = {
+  id: PropTypes.string.isRequired,
+  nid: PropTypes.number.isRequired,
+  pokemon_id: PropTypes.number.isRequired,
+  title: PropTypes.string.isRequired,
+  back_shiny_sprite: PropTypes.string,
+  front_shiny_sprite: PropTypes.string,
+  height_pokemon: PropTypes.number,
+  weight_pokemon: PropTypes.number,
+  abilities: PropTypes.array,
+  ref_types: PropTypes.array,
+  hp: PropTypes.number,
+  attack: PropTypes.number,
+  defense: PropTypes.number,
+  special_attack: PropTypes.number,
+  special_defense: PropTypes.number,
+  speed: PropTypes.number
+}
+
 
 export default Pokemon;

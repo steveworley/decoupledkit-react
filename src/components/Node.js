@@ -43,7 +43,7 @@ class Node extends Component {
     event.preventDefault();
   }
 
-  handleRemoveNode(event) {
+  handleRemoveNode() {
     const { onRemoveHandler } = this.props;
     const { uuid } = this.state;
     onRemoveHandler(uuid);
@@ -53,8 +53,8 @@ class Node extends Component {
     this.setState({ [name]: text });
   }
 
-  onDrop(acceptedFiles, RejectedFiles) {
-    const uploadedFiles = this.state.uploadedFiles;
+  onDrop(acceptedFiles) { // RejectedFiles
+    // const uploadedFiles = this.state.uploadedFiles;
     acceptedFiles.forEach(file => {
       const Reader = new FileReader()
       Reader.readAsDataURL(file)
@@ -70,8 +70,9 @@ class Node extends Component {
   }
 
   render() {
+
     const { showUpdateForm, nid, title, body, field_history_and_background, image } = this.state;
-    // console.log('this.state ==>', this.state);
+
     return (
       <div className="row clearfix">
 
@@ -90,12 +91,12 @@ class Node extends Component {
               <p className="label"><strong>{"Body"}</strong></p>
               <ReactQuill
                 value={body.value ? body.value : body}
-                onChange={function (text, medium) { this._handleEditorChange(text, 'body') }.bind(this)}
+                onChange={function (text) { this._handleEditorChange(text, 'body') }.bind(this)}
               />
               <p className="label"><strong>{"History and Background"}</strong></p>
               <ReactQuill
                 value={field_history_and_background.value ? field_history_and_background.value : field_history_and_background}
-                onChange={function (text, medium) { this._handleEditorChange(text, 'field_history_and_background') }.bind(this)}
+                onChange={function (text) { this._handleEditorChange(text, 'field_history_and_background') }.bind(this)}
               />
               <p className="label"><strong>{"Images"}</strong></p>
               <span className="img-preview">
@@ -166,7 +167,8 @@ Node.propTypes = {
   body: PropTypes.shape({
     value: PropTypes.string.isRequired
   }),
-  image: PropTypes.string
+  image: PropTypes.string,
+  onRemoveHandler: PropTypes.func
 }
 
 export default Node;
