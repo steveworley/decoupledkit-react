@@ -21,7 +21,7 @@
     "mocha": true
   },
   "rules": {
-    "no-console": 1,
+    "no-console": "off",
     "no-undef": 1,
     "react/jsx-uses-react": 1,
     "react/jsx-uses-vars": 1,
