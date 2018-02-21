@@ -90,7 +90,7 @@ class APIDataFailoverApp extends Component {
         <p>
           <b>Story:</b> As a developer, I want to understand common tools and techniques for scenarios in which my application depends on an API(s) which is unavailable.
         </p>
-        <p>Caches may need to be warmed prior to loading from cache. As this is client side caching it will need to be done by each client that connects to the application.</p>
+        <p></p>
 
         <div className="caching-buttons">
           <ul>
@@ -116,9 +116,14 @@ class APIDataFailoverApp extends Component {
               </li>) : <li>IndexedDB API is unavailable use a newer browser.</li>}
 
           </ul>
-          <p style={{ marginTop: "1em", textAlign: "right" }}><input type="button" className="danger" onClick={this.onClearCachesClick} value={"Clear caches"} /></p>
+          <p className="clear-caches"><input type="button" className="danger" onClick={this.onClearCachesClick} value={"Clear All Caches"} /></p>
 
-          <p className="note"><strong>Note:</strong> only the requests to the backend API's are cached in the demo, images will rely on regular HTTP caching methods and may need to load for the initial request, if images are key to the performance of your application you can look to send <code>base64encoded</code> representations from the API and have those stored with these caching mechanisms</p>
+          <p className="note">
+            <strong>Note:</strong> only the requests to the backend API's are cached in the demo, images will rely on regular HTTP caching methods and may need to load for the initial request,
+           if images are key to the performance of your application you can look to send <code>base64encoded</code> representations from the API and have those stored with these caching mechanisms
+          <br />
+            <strong>Note:</strong>Caches may need to be warmed prior to loading from cache. As this is client side caching it will need to be done by each client that connects to the application.
+          </p>
         </div>
 
         <div className={"node-rows"}>
