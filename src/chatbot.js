@@ -139,20 +139,20 @@ function getPokemon() {
       }
     }
   `
-  return !!pkmnData ? new Promise(resolve => resolve(pkmnData)) : graphqlFetch(query)
+  return pkmnData ? new Promise(resolve => resolve(pkmnData)) : graphqlFetch(query)
 }
 
 /*
 * Function to handle v1 webhook requests from Dialogflow
 */
-function processV1Request (request, response) {
+function processV1Request(request, response) {
   let action = request.body.result.action; // https://dialogflow.com/docs/actions-and-parameters
   let parameters = request.body.result.parameters; // https://dialogflow.com/docs/actions-and-parameters
-  let inputContexts = request.body.result.contexts; // https://dialogflow.com/docs/contexts
+  // let inputContexts = request.body.result.contexts; // https://dialogflow.com/docs/contexts
   let requestSource = (request.body.originalRequest) ? request.body.originalRequest.source : undefined;
-  let pokemons = [];
+  // let pokemons = [];
   const googleAssistantRequest = 'google'; // Constant to identify Google Assistant requests
-  const app = new DialogflowApp({request: request, response: response});
+  const app = new DialogflowApp({ request: request, response: response });
   // Create handlers for Dialogflow actions as well as a 'default' handler
   const actionHandlers = {
     // The default welcome intent has been matched, welcome the user (https://dialogflow.com/docs/events#default_welcome_intent)
@@ -184,7 +184,7 @@ function processV1Request (request, response) {
       })(parameters.stat, parameters['comparison-keyword'])
 
       const stat = ((stat) => {
-        const map = {height: 'height_pokemon', weight: 'weight_pokemon'}
+        const map = { height: 'height_pokemon', weight: 'weight_pokemon' }
         stat = stat.toLowerCase().replace(/ /g, '_')
         return map[stat] ? map[stat] : stat
       })(paramStat)
@@ -196,25 +196,25 @@ function processV1Request (request, response) {
             return [mon, pkmn[stat]]
           } else {
             res = `Whoa! Are you sure these are all Pokemon ${compareMons.join(', ')}?`
-            requestSource === googleAssistantRequest ? sendGoogleResponse(res) : sendResponse(res)   
+            requestSource === googleAssistantRequest ? sendGoogleResponse(res) : sendResponse(res)
             throw new Error('Undefined Pokemon')
           }
         })
-        
+
         compare = compare.filter(n => n != undefined)
-        
+
         if (compare.length === 0) {
           res = `Whoa! Are you sure these are all Pokemon ${compareMons.join(', ')}?`
-          return requestSource === googleAssistantRequest ? sendGoogleResponse(res) : sendResponse(res)          
+          return requestSource === googleAssistantRequest ? sendGoogleResponse(res) : sendResponse(res)
         }
-        
+
         compare.sort((a, b) => b[1] - a[1])
-        
+
         res = compare.map((pkmn, i) => {
           return i === 0 ? `${pkmn[0]} has better ${paramStat} (${pkmn[1]}) than` : `${i > 1 ? 'or' : ''} ${pkmn[0]} (${pkmn[1]})`
         }).join(' ')
         return requestSource === googleAssistantRequest ? sendGoogleResponse(res) : sendResponse(res)
-      }).catch(err => { 
+      }).catch(() => { // err
         res = 'I\'m not actually sure what happened here...'
         requestSource === googleAssistantRequest ? sendGoogleResponse(res) : sendResponse(res)
       })
@@ -227,7 +227,7 @@ function processV1Request (request, response) {
       let mon = null
 
       const stat = ((stat) => {
-        const map = {height: 'height_pokemon', weight: 'weight_pokemon'}
+        const map = { height: 'height_pokemon', weight: 'weight_pokemon' }
         stat = stat.toLowerCase().replace(/ /g, '_')
         return map[stat] ? map[stat] : stat
       })(parameters.stat)
@@ -275,8 +275,8 @@ function processV1Request (request, response) {
 
   // Run the proper handler function to handle the request from Dialogflow
   actionHandlers[action]();
-    // Function to send correctly formatted Google Assistant responses to Dialogflow which are then sent to the user
-  function sendGoogleResponse (responseToUser) {
+  // Function to send correctly formatted Google Assistant responses to Dialogflow which are then sent to the user
+  function sendGoogleResponse(responseToUser) {
     if (typeof responseToUser === 'string') {
       app.ask(responseToUser); // Google Assistant response
     } else {
@@ -298,7 +298,7 @@ function processV1Request (request, response) {
     }
   }
   // Function to send correctly formatted responses to Dialogflow which are then sent to the user
-  function sendResponse (responseToUser) {
+  function sendResponse(responseToUser) {
     // if the response is a string send it as a response to the user
     if (typeof responseToUser === 'string') {
       let responseJson = {};
