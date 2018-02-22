@@ -103,7 +103,7 @@ class APIDataFailoverApp extends Component {
             {canLocalStorage ? (
               <li>
                 <h4>window.localStorage</h4>
-                <p><a target="_blank" rel="noopener noreferrer" href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage">Local storage</a> allows the browser to store imple <code>key:value</code> pairs. These values can be string reprsentations of JSON objects however you are limited by the storage size. Local storage shares a storage capacity with Session Storage and can not exceed 10mb.</p>
+                <p><a target="_blank" rel="noopener noreferrer" href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage">Local storage</a> allows the browser to store simple <code>key:value</code> pairs. These values can be string reprsentations of JSON objects however you are limited by the storage size. Local storage shares a storage capacity with Session Storage and can not exceed 10mb.</p>
                 <input type="button" onClick={this.onLocalStorageClick} value={"Load from LocalStorage"} />
               </li>) : <li>LocalStorage API is unavailable use a newer browser.</li>}
 
