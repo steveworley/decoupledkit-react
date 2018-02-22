@@ -9,6 +9,7 @@ import GraphQLClientMultiPage from '../containers/GraphQLClientMultiPage';
 // import ProxyDataAPIPage from '../containers/ProxyDataAPIPage';
 import APIDataFailoverPage from '../containers/APIDataFailoverPage';
 import APIDataMockPage from '../containers/APIDataMockPage';
+import ChatBotPage from '../containers/ChatBotPage'
 
 import NotFoundPage from './NotFoundPage';
 
@@ -26,6 +27,7 @@ class App extends React.Component {
             {/* <li><NavLink to="/proxydataapi" activeStyle={activeStyle}>Proxy API Data</NavLink></li> */}
             <li><NavLink to="/apidatafailover" activeStyle={activeStyle}>API Data Failover</NavLink></li>
             <li><NavLink to="/apidatamock" activeStyle={activeStyle}>API Data Mock</NavLink></li>
+            <li><NavLink to="/chatbot" activeStyle={activeStyle}>Chatbot Integration</NavLink></li>
             {/* <li><NavLink to="/app" activeStyle={activeStyle}>Application</NavLink></li> */}
           </ul>
         </div>
@@ -38,6 +40,7 @@ class App extends React.Component {
             {/* <Route path="/proxydataapi" component={ProxyDataAPIPage} /> */}
             <Route path="/apidatafailover" component={APIDataFailoverPage} />
             <Route path="/apidatamock" component={APIDataMockPage} />
+            <Route path="/chatbot" component={ChatBotPage} />
             {/* <Route path="/app" component={SampleAppPage} /> */}
             <Route component={NotFoundPage} />
           </Switch>

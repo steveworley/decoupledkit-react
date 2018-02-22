@@ -17,7 +17,7 @@ class APIDataMockApp extends React.Component {
 
     const mockUsers = data.map((user, i) => {
       return (
-        <Client key={i} firstName={user.first_name} lastName={user.last_name} email={user.email} country={user.country} uuid={i} />
+        <Client key={i} firstName={user.first_name} lastName={user.last_name} email={user.email} country={user.country} uuid='not-a-real-uuid' />
       )
     })
 
