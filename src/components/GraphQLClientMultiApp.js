@@ -1,11 +1,11 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import '../styles/graphqlclientdrupal.scss'
 import * as actions from '../actions/graphqlMulti'
-
 import Hero from './Hero'
 import CreateHeroForm from './CreateHeroForm'
+import '../styles/graphqlclientdrupal.scss'
 
 /*eslint-disable no-console */
 
@@ -16,12 +16,8 @@ class GraphQLClientMulti extends React.Component {
   }
 
   componentDidMount() {
-    this.props.actions.fetchGraphql()
-    this.props.actions.lookahead()
-  }
-
-  handleClick(event) {
-    this.props.actions.updateGrpahql('1009220', 'Captain was America');
+    this.props.actions.fetchGraphql();
+    this.props.actions.lookahead();
   }
 
   handleSubmit(hero) {
@@ -29,8 +25,7 @@ class GraphQLClientMulti extends React.Component {
   }
 
   render() {
-    const { data, message, lookahead } = this.props
-    let messages = ''
+    const { data, message, lookahead } = this.props;
 
     const Heroes = data.map(hero => {
       return (
@@ -45,9 +40,7 @@ class GraphQLClientMulti extends React.Component {
       )
     })
 
-    if (!!message) {
-      messages = (<div className="messages"><div className="message-inner">{message}</div></div>)
-    }
+    let messages = (message) ? (<div className="messages"><div className="message-inner">{message}</div></div>) : '';
 
     return (
 
@@ -68,7 +61,7 @@ class GraphQLClientMulti extends React.Component {
             <span>Mutation sent to GraphQL server</span>
             {actions.create.loc.source.body}
           </div>
-          <img style={{maxHeight: '420px'}} className="architecture-img" src={require('../img/graphql-multi-backend.svg?1')} />
+          <img style={{ maxHeight: '420px' }} className="architecture-img" src={require('../img/graphql-multi-backend.svg?1')} />
         </div>
 
         <div className="comic-form-wrapper">
@@ -80,14 +73,28 @@ class GraphQLClientMulti extends React.Component {
           />
         </div>
 
-        {Heroes}
+        <br /> <hr />
 
-        {messages}
+        <h4>List of Marvel Characters</h4>
+
+        <div className="herolisting-wrapper">
+          {Heroes}
+          {messages}
+        </div>
 
       </div>
 
     );
   }
+}
+
+GraphQLClientMulti.propTypes = {
+  createGraphql: PropTypes.func,
+  fetchGraphql: PropTypes.func,
+  lookahead: PropTypes.array,
+  data: PropTypes.array,
+  message: PropTypes.string,
+  actions: PropTypes.object,
 }
 
 export function mapStateToProps(state) {
@@ -102,3 +109,5 @@ export function MapDispatchToProps(dispatch) {
 }
 
 export default connect(mapStateToProps, MapDispatchToProps)(GraphQLClientMulti);
+
+

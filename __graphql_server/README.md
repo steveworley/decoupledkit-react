@@ -1,6 +1,6 @@
-## GraphQL Demo Server
+# GraphQL Demo Server
 
-#### About 
+### About 
 
 This is a GraphQL server application to be used with a [sibling React application](https://github.com/acquia-pso/javascript-ps-starter-react) for demo and training purposes. This application has a simple schema for the display of a handful of Marvel Villain characters. After installation, you can view the GraphQL API UI for testing at  <a href="http://localhost:8082/graphiql">http://localhost:8082/graphiql</a>. The endpoint path to target from an external application is `http://localhost:8082/graphql`.
 
@@ -11,53 +11,182 @@ This is a GraphQL server application to be used with a [sibling React applicatio
 - Babel transpiling 
 
 
-#### Installation 
+### Installation 
 
 - Install <a href="https://yarnpkg.com/lang/en/docs/install/">yarn</a> or also use `npm` for dependencies.
 - Install packages with `yarn install` or `npm install`
 - Run the server with `yarn start` or `npm start` and visit `http://localhost:8082`
 
 
-#### Usage
+### Usage
 
-The GraphQL API UI will provide a method to test queries, which you can then replicate in our secondary application. Here are some quick schema constructs which have been added by default. 
+The GraphQL API UI will provide a method to test queries, which you can then replicate in our secondary application. Below are some quick schema constructs which have been added by default. 
+
+
+#### Show all Marvel characters with the following properties
 
 ```
-# Show all Villains with the following properties
 {
-  allVillains {
+  heroes {
     id
     name
-    age
-    weight
-    image
     description
-    powers
-    first_appearance
+    image
+    comics {
+      id
+      title
+      image
+      description
+      sales {
+        issue
+        count
+      }
+    }
   }
 }
 
 ```
+
+#### Create a new Marvel character with a Mutation
+
 ```
-# Filter villains by ID
-{
-  villain(id: 4) {
+mutation CreateHero($input: HeroName!) {
+  createHero(input: $input) {
     id
+    name
+    description
+    image
+  }
+}
+
+(query variable)
+{
+  "input": {
+    "name": "thor"
+  }
+}
+```
+#### Update Marvel character with a Mutation
+
+```
+mutation UpdateHero($id: Int! $input: HeroName!) {
+  updateHero(id: $id input: $input) {
+    title
+  }
+}
+
+(query variable)
+{
+  "input": {
+    "name": "thor"
+  }
+}
+```
+
+#### Display all Marvel character names
+
+```
+{
+  marvel {
     name
   }
 }
 ```
 
+#### Display all Pokemon characters
+
 ```
-# Show count of Villains
 {
-  totalVillains
+  pokemons {
+    id
+    nid
+    pokemon_id
+    title
+    back_shiny_sprite
+    front_shiny_sprite
+    height_pokemon
+    weight_pokemon
+    hp
+    attack
+    defense
+    special_attack
+    special_defense
+    speed
+    abilities {
+      id
+      type
+      name
+      description
+    }
+    ref_types {
+      id
+      type
+      name
+      description
+    }
+  }
 }
 ```
+
+#### Select Pokemon characters by Drupal NID
+
+```
+{
+  pokemon(nid:27) {
+    id
+    nid
+    pokemon_id
+    title
+    back_shiny_sprite
+    front_shiny_sprite
+    height_pokemon
+    weight_pokemon
+    hp
+    attack
+    defense
+    special_attack
+    special_defense
+    speed
+    abilities {
+      id
+      type
+      name
+      description
+    }
+    ref_types {
+      id
+      type
+      name
+      description
+    }
+  }
+}
+```
+
+#### Display Mocked User data
+
+```
+{
+  users {
+    name
+    email
+    first_name
+    last_name
+    email
+    country
+    id
+  }
+}
+```
+
+<br />
 
 ---------------------------
-<br />
-<img src="https://content.screencast.com/users/BedimStudios/folders/Jing/media/b33ab56b-bbdd-46eb-aada-2bc3c2702361/00002809.png" />
+
+
+**http://localhost:8082/graphiql**
+
+<img src="https://content.screencast.com/users/BedimStudios/folders/Jing/media/01c8189d-44a9-495f-bf0d-8778e3945bbb/00002870.png" />
 
 
 

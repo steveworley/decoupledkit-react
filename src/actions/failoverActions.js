@@ -7,46 +7,47 @@ export const FETCH_INDEXEDDB = 'FETCH_INDEXEDDB'
 const DRUPAL_API_LOC = 'http://local.decoupledkit.com/jsonapi/node/client'
 
 export const fetchCache = () => {
-  const id = "b25a5693-3bb8-4498-9e43-2f5e9940705d"
   return dispatch => {
-    return drupalApi.loadCache(`${DRUPAL_API_LOC}/${id}`)
-      .then(json => {
+    drupalApi.getDrupalIDs(`${DRUPAL_API_LOC}`).then(IDs => {
+      const ID = IDs[0]; // load first index to test
+      return drupalApi.loadCache(`${DRUPAL_API_LOC}/${ID}`).then(json => {
         const { data } = json
         return dispatch({ type: FETCH_CACHE, data })
       })
-      .catch(err => console.log(err))      
+    }).catch(err => console.log(err));
   }
 }
 
 export const fetchLocalStorage = () => {
-  const id = "565b3ef8-9f10-4f59-8870-d9d5f685f253"
   return dispatch => {
-    return drupalApi.loadLocalStorage(`${DRUPAL_API_LOC}/${id}`)
-      .then(json => {
-        const { data } = json
-        return dispatch({ type: FETCH_LOCAL_STORAGE, data })
-      })
-      .catch(err => console.log(err))
+    drupalApi.getDrupalIDs(`${DRUPAL_API_LOC}`).then(IDs => {
+      const ID = IDs[1]; // load second index to test
+      return drupalApi.loadLocalStorage(`${DRUPAL_API_LOC}/${ID}`)
+        .then(json => {
+          const { data } = json
+          return dispatch({ type: FETCH_LOCAL_STORAGE, data })
+        });
+    }).catch(err => console.log(err));
   }
 }
 
 export const fetchIndexedDb = () => {
-  const id = "9cb8d6b3-6754-4fd3-89ca-2a6c08e91ed1"
   return dispatch => {
-    return drupalApi.loadIndexedDB(`${DRUPAL_API_LOC}/${id}`)
-      .then(json => {
+    drupalApi.getDrupalIDs(`${DRUPAL_API_LOC}`).then(IDs => {
+      const ID = IDs[2]; // load third index to test
+      return drupalApi.loadIndexedDB(`${DRUPAL_API_LOC}/${ID}`).then(json => {
         const { data } = json
         return dispatch({ type: FETCH_INDEXEDDB, data })
-      })
-      .catch(err => console.log(err))      
+      });
+    }).catch(err => console.log(err));
   }
 }
 
-export const clearCaches = () => { 
+export const clearCaches = () => {
   const keys = [FETCH_CACHE, FETCH_LOCAL_STORAGE, FETCH_INDEXEDDB]
   return dispatch => {
     keys.forEach((type) => {
-      dispatch({ type, data: null})
+      dispatch({ type, data: null })
     })
   }
 }

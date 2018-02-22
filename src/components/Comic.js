@@ -4,8 +4,8 @@ import PropTypes from 'prop-types'
 
 class Comic extends Component {
   constructor(props) {
-    super(props)
-    this.state = { showinfo: false }
+    super(props);
+    this.state = { showinfo: false };
   }
   onClick(e) {
     e.preventDefault()
@@ -57,6 +57,13 @@ class Comic extends Component {
       </div>
     )
   }
+}
+
+Comic.propTypes = {
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string,
+  image: PropTypes.string,
+  sales: PropTypes.array,
 }
 
 export default Comic;

@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 class PokemonCompare extends Component {
   constructor(props) {
@@ -22,7 +23,6 @@ class PokemonCompare extends Component {
     })
     return (group_option == 'a') ? this.setState({ compare_a: selectedPokemon }) : this.setState({ compare_b: selectedPokemon });
   }
-
 
   render() {
 
@@ -132,8 +132,6 @@ class PokemonCompare extends Component {
 
     const displayStatsEl = compare_stats(this.state);
 
-    // console.log('this.state for Pokemon Compare ==>', this.state);
-
     return (
       <div>
         <div className="compare-pokemon clearfix">
@@ -154,6 +152,10 @@ class PokemonCompare extends Component {
       </div>
     )
   }
+}
+
+PokemonCompare.propTypes = {
+  dataset: PropTypes.array.isRequired
 }
 
 export default PokemonCompare;

@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import ReactHtmlParser from 'react-html-parser'
 import '../styles/hero.scss'
-// import Villain from './Villain';
 import Comic from './Comic';
 
 class Hero extends Component {
@@ -41,7 +40,7 @@ class Hero extends Component {
           </div>
           <div className="row">
             <div className="label">{"Description"}</div>
-            {ReactHtmlParser(description)}
+            {(description) ? ReactHtmlParser(description) : 'No description available'}
           </div>
           <div className="comics">
             <div className="label"><span className="api-source api-source-marvel">Marvel API</span>{"Appearances"}</div>
@@ -54,5 +53,11 @@ class Hero extends Component {
 
 }
 
+Hero.propTypes = {
+  name: PropTypes.string,
+  image: PropTypes.string,
+  description: PropTypes.string,
+  comics: PropTypes.array
+}
 
 export default Hero;

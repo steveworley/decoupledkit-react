@@ -8,10 +8,11 @@ const headers = {
   'Authorization': 'Basic ' + btoa('apitest:apitest') // username:password from http://local.decoupledkit.com/admin/access/users
 }
 
-function handleErrors(response) { // todo: implement better 500 errors for missing images
-  if (!response.ok) { throw Error('response.statusText', response.statusText); }
-  return response;
-}
+// todo: implement better 500 errors for missing images
+// function handleErrors(response) {
+//   if (!response.ok) { throw Error('response.statusText', response.statusText); }
+//   return response;
+// }
 
 class drupalAPI {
 
@@ -137,6 +138,25 @@ class drupalAPI {
   }
 
   /**
+    * Fetch all nodes IDs from a given type for use as a utility function.
+    *
+    * @param {String} API_LOC
+    *   The API URL.
+    *
+    * @return {Promise}
+    */
+  static getDrupalIDs(API_LOC = types.DRUPAL_API_LOC) {
+    return fetch(API_LOC, { headers }).then(response => {
+      return response.json();
+    }).then(res => {
+      const IDs = res.data.map(el => {
+        return el.id;
+      })
+      return IDs;
+    }).catch(err => console.log(err))
+  }
+
+  /**
    * Load data from the browsers cache.
    *
    * This attempts to load the given API_LOC from the browsers cache. If
@@ -188,9 +208,9 @@ class drupalAPI {
       // Expecting a promise - localStorage is synchronous so it will return the
       // data as it sees it in the store. We wrap this in a simple promise so
       // have a unified way to handle this call.
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => { // , reject
         const json = JSON.parse(localStorage.getItem(API_LOC))
-        resolve(json)
+        resolve(json);
       })
     }
 
@@ -231,23 +251,23 @@ class drupalAPI {
     // Create the indexedDB.
     const db = new Dexie('test-db')
     db.version(1).stores({
-    	requests: 'path, data'
+      requests: 'path, data'
     });
 
     db.open().catch(err => console.error('UNABLE TO OPEN DB', err))
 
-    return db.table('requests').where('path').equals(API_LOC)
-      .first(response => {
+    return db.table('requests').where('path').equals(API_LOC).first(response => {
         return new Promise(resolve => resolve(response.data))
       })
       .catch(err => {
+        console.log(err);
         return fetch(API_LOC)
           .then(res => res.json())
           .then(json => {
-            db.table('requests').add({path: API_LOC, data: json})
+            db.table('requests').add({ path: API_LOC, data: json })
             return new Promise(resolve => resolve(json))
           })
-          .catch(err => console.log(err))    
+          .catch(err => console.log(err))
       })
   }
 

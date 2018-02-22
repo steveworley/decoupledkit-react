@@ -2,7 +2,6 @@ import drupalAPI from '../api/drupalAPI';
 
 // This should probably be an environment variable.
 export const DRUPAL_API_LOC = 'http://local.decoupledkit.com/jsonapi/node/dogs';
-
 export const LOAD_DRUPAL_DATA = 'LOAD_DRUPAL_DATA';
 export const RECEIVE_DRUPAL_DATA = 'RECEIVE_DRUPAL_DATA';
 export const LOAD_DRUPAL_IMAGES = 'LOAD_DRUPAL_IMAGES';
@@ -12,6 +11,8 @@ export const DRUPAL_CRUD_MESSAGE_CLEAR = 'DRUPAL_CRUD_MESSAGE_CLEAR';
 export const RECEIVE_DRUPAL_SINGLE_CACHE = 'RECEIVE_DRUPAL_SINGLE_CACHE'
 export const RECEIVE_DRUPAL_SINGLE_LOCAL_STORAGE = 'RECEIVE_DRUPAL_SINGLE_LOCAL_STORAGE'
 export const RECEIVE_DRUPAL_SINGLE_INDEXEDDB = 'RECEIVE_DRUPAL_SINGLE_INDEXEDDB'
+export const timeout_seconds = 1000; // 3000
+
 
 export function loadDrupalData() {
   return { type: LOAD_DRUPAL_DATA, data: {} };
@@ -38,42 +39,10 @@ export function loadSingleCache() {
     drupalAPI.loadCache(`${DRUPAL_API_LOC}/bc2153d4-3426-4983-a33e-d57934dec3fa`)
       .then(response => {
         const { data } = response
-        dispatch({type: RECEIVE_DRUPAL_SINGLE_CACHE, caches: data})
+        dispatch({ type: RECEIVE_DRUPAL_SINGLE_CACHE, caches: data })
       })
   }
 }
-
-export function clearClientCaches() {
-  return dispatch => {
-    drupalAPI.clearCaches()
-    dispatch(sendMessage('Caches cleared'))
-    dispatch({type: RECEIVE_DRUPAL_SINGLE_LOCAL_STORAGE, localStorage: null})
-    dispatch({type: RECEIVE_DRUPAL_SINGLE_CACHE, caches: null})
-    dispatch({type: RECEIVE_DRUPAL_SINGLE_INDEXEDDB, indexedDb: null})
-    setTimeout(() => { dispatch(clearMessage()) }, 3000)
-  }
-}
-
-export function loadSingleLocalStorage() {
-  return dispatch => {
-    drupalAPI.loadLocalStorage(`${DRUPAL_API_LOC}/4d78bc0a-7e3c-4bd6-ad21-788278381540`)
-      .then(response => {
-        const { data } = response
-        dispatch({type: RECEIVE_DRUPAL_SINGLE_LOCAL_STORAGE, localStorage: data})
-      })
-  }
-}
-
-export function loadSingleIndexedDB() {
-  return dispatch => {
-    drupalAPI.loadIndexedDB(`${DRUPAL_API_LOC}/4ca316a9-14cd-4e52-89a7-26a93e4b7c84`)
-      .then(response => {
-        const { data } = response
-        dispatch({type: RECEIVE_DRUPAL_SINGLE_INDEXEDDB, indexedDb: data})
-      })
-  }
-}
-
 
 export function updateContent(uuid, attr) {
   const fields = JSON.parse(JSON.stringify(attr));
@@ -96,12 +65,12 @@ export function updateContent(uuid, attr) {
         .then(file => {
           if (file.errors) {
             dispatch(sendMessage(file.errors[0].detail))
-            setTimeout(() => { dispatch(clearMessage()) }, 3000)
+            setTimeout(() => { dispatch(clearMessage()) }, timeout_seconds)
             return
           }
 
-          const { data: { type, attributes }} = file;
-          dispatch(sendMessage(`Files uploaded successfully, updating referneces.`))
+          const { data: { type, attributes } } = file;
+          dispatch(sendMessage(`Files uploaded successfully, updating references.`))
 
           body.data.relationships = {
             field_dog_picture: {
@@ -112,19 +81,19 @@ export function updateContent(uuid, attr) {
             }
           }
 
-          drupalAPI.updateDrupal(`${DRUPAL_API_LOC}/${uuid}`, body).then(res => {
+          drupalAPI.updateDrupal(`${DRUPAL_API_LOC}/${uuid}`, body).then(() => {
             dispatch(doLoadDrupalData())
             dispatch(sendMessage(`Successfull updated ${uuid}`))
-            setTimeout(() => { dispatch(clearMessage()) }, 3000)
+            setTimeout(() => { dispatch(clearMessage()) }, timeout_seconds)
           })
         })
     }
     else {
       dispatch(sendMessage(`Sending a content update for ${uuid}`));
-      drupalAPI.updateDrupal(`${DRUPAL_API_LOC}/${uuid}`, body).then((res) => {
+      drupalAPI.updateDrupal(`${DRUPAL_API_LOC}/${uuid}`, body).then(() => {
         dispatch(doLoadDrupalData());
         dispatch(sendMessage(`Succesfully updated ${uuid}`));
-        setTimeout(() => { dispatch(clearMessage()) }, 3000);
+        setTimeout(() => { dispatch(clearMessage()) }, timeout_seconds);
       });
     }
   }
@@ -157,12 +126,12 @@ export function createContent(item) {
         .then(file => {
           if (file.errors) {
             dispatch(sendMessage(file.errors[0].detail))
-            setTimeout(() => { dispatch(clearMessage()) }, 3000)
+            setTimeout(() => { dispatch(clearMessage()) }, timeout_seconds)
             return
           }
 
-          const { data: { type, attributes }} = file;
-          dispatch(sendMessage(`Files uploaded successfully, updating referneces.`))
+          const { data: { type, attributes } } = file;
+          dispatch(sendMessage(`Files uploaded successfully, updating references.`))
 
           requestBody.data.relationships = {
             field_dog_picture: {
@@ -174,18 +143,18 @@ export function createContent(item) {
           }
 
           drupalAPI.createNode(`${DRUPAL_API_LOC}`, requestBody)
-            .then(res => {
+            .then(() => {
               dispatch(doLoadDrupalData());
               dispatch(sendMessage(`Successfully created the node!`));
-              setTimeout(() => { dispatch(clearMessage()) }, 3000);
+              setTimeout(() => { dispatch(clearMessage()) }, timeout_seconds);
             });
         })
     } else {
       drupalAPI.createNode(`${DRUPAL_API_LOC}`, requestBody)
-        .then(res => {
+        .then(() => {
           dispatch(doLoadDrupalData());
           dispatch(sendMessage(`Successfully created the node!`));
-          setTimeout(() => { dispatch(clearMessage()) }, 3000);
+          setTimeout(() => { dispatch(clearMessage()) }, timeout_seconds);
         });
     }
   }
@@ -195,10 +164,10 @@ export function deleteContent(uuid) {
   return dispatch => {
     dispatch(sendMessage(`Deleting node with ${uuid}`));
     return drupalAPI.deleteNode(`${DRUPAL_API_LOC}/${uuid}`)
-      .then(res => {
+      .then(() => {
         dispatch(sendMessage(`Successfully deleted ${uuid}`));
         dispatch(doLoadDrupalData());
-        setTimeout(() => { dispatch(clearMessage()) }, 3000);
+        setTimeout(() => { dispatch(clearMessage()) }, timeout_seconds);
       });
   }
 }
@@ -223,12 +192,12 @@ export function doLoadDrupalData() {
           return result;
         }, {});
 
-        let initialReturn = JSON.parse(JSON.stringify(result));
+        // let initialReturn = JSON.parse(JSON.stringify(result));
 
         // @STEVE: still having the images loading unless I comment this out, so lets sync up about this.
         // dispatch(receiveDrupalData(initialReturn));
 
-        initialReturn = null; // GC.
+        // initialReturn = null; // GC.
 
         const imageRequests = [];
         Object.keys(result).forEach((uuid) => {
@@ -240,7 +209,7 @@ export function doLoadDrupalData() {
             if (item.hasOwnProperty('data')) { // validate it's not returning "" from 500
               const { data: { attributes }, links: { self } } = item;
               const uuid = self.split('/').splice(-2, 1)[0]; // has to be a better way to get the UUID.
-              result[uuid].image = DRUPAL_API_LOC.replace('\/jsonapi\/node\/dogs', attributes.url);
+              result[uuid].image = DRUPAL_API_LOC.replace('/jsonapi/node/dogs', attributes.url);
             }
           });
           let imageResult = JSON.parse(JSON.stringify(result));
