@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import '../styles/graphqlclientdrupal.scss';
+import PropTypes from 'prop-types'
 import * as actions from '../actions/graphqlclientActions';
 import '../styles/pokemon.scss';
 import Pokemon from './Pokemon'
 import PokemonCompare from './PokemonCompare'
+import '../styles/graphqlclientdrupal.scss';
 
 /*eslint-disable no-console */
 
@@ -45,9 +46,6 @@ class GraphqlClientDrupal extends Component {
       )
     });
 
-    // console.log('this.state ==>', this.state);
-    // console.log('this.props ==>', this.props);
-
     const dataset = this.props.data;
 
     return (
@@ -86,8 +84,8 @@ class GraphqlClientDrupal extends Component {
         <p>
           The following component illustrates the retrieval of data from the GraphQL endpoint which can be
            tested at <a href="http://localhost:8082/graphiql">http://localhost:8082/graphiql</a>.
-           The schemas have been constructed within the GraphQL server to accommodate queries in order to retrieve information which can be
-            cached and stored to minimize roundtrips to the Drupal API endpoint(s).
+          The schemas have been constructed within the GraphQL server to accommodate queries in order to retrieve information which can be
+           cached and stored to minimize roundtrips to the Drupal API endpoint(s).
           </p>
 
         {Pokemons}
@@ -110,6 +108,11 @@ class GraphqlClientDrupal extends Component {
       </div>
     );
   }
+}
+
+GraphqlClientDrupal.propTypes = {
+  data: PropTypes.array,
+  actions: PropTypes.object,
 }
 
 export function mapStateToProps(state) {

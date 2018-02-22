@@ -7,13 +7,13 @@ import '../styles/select.scss'
 class CreateHeroForm extends Component {
   constructor(props) {
     super(props);
-    this.state = {name: ''}
+    this.state = { name: '' }
     this.onUpdate = this.onUpdate.bind(this)
     this.onSubmit = this.onSubmit.bind(this)
   }
 
   onUpdate(selected) {
-    this.setState({ name: selected.name})
+    this.setState({ name: selected.name })
   }
 
   onSubmit(event) {
@@ -21,7 +21,7 @@ class CreateHeroForm extends Component {
     if (this.state.name.length > 0) {
       this.props.handleSubmit(this.state.name)
     }
-    this.setState({name: ''})
+    this.setState({ name: '' })
   }
 
   render() {
@@ -31,7 +31,6 @@ class CreateHeroForm extends Component {
     return (
       <form onSubmit={this.onSubmit}>
         <div className="row">
-          <div className="label">{"Add Name >"}</div>
           <Select
             name="hero-name"
             value={name}
@@ -41,7 +40,7 @@ class CreateHeroForm extends Component {
             labelKey='name'
             openOnClick={false}
           />
-          <p style={{fontSize: "small"}}>Enter a valid Marvel character, this will instruct the graphQL server to update its database with values from the Marvel API based on the hero name.</p>
+          <p style={{ fontSize: "small" }}>Enter a valid Marvel character, this will instruct the GraphQL server to update its database with values from the Marvel API based on the hero name.</p>
           <input type="submit" value={`Add ${name}`} />
         </div>
       </form>
@@ -50,7 +49,8 @@ class CreateHeroForm extends Component {
 }
 
 CreateHeroForm.propTypes = {
-  handleSubmit: PropTypes.func.isRequired
+  handleSubmit: PropTypes.func.isRequired,
+  lookahead: PropTypes.array.isRequired
 }
 
 export default CreateHeroForm

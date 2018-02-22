@@ -5,11 +5,10 @@ import { connect } from 'react-redux'
 import * as actions from '../actions/drupalAPIActions'
 import Node from './node';
 import NewNodeForm from './NewNodeForm';
-
 import '../styles/drupalcrud.scss'
 
-
 class DrupalCrudApp extends React.Component {
+
   componentDidMount() {
     this.props.actions.doLoadDrupalData();
   }
@@ -40,7 +39,7 @@ class DrupalCrudApp extends React.Component {
         />
       );
     })
-    const Message = !!this.props.message ? (
+    const Message = (this.props.message) ? (
       <div className="messages">
         <div className="message-inner">{this.props.message}</div>
       </div>
@@ -74,6 +73,8 @@ class DrupalCrudApp extends React.Component {
 
 DrupalCrudApp.propTypes = {
   actions: PropTypes.object.isRequired,
+  data: PropTypes.object.isRequired,
+  message: PropTypes.string
 };
 
 function mapStateToProps(state) {

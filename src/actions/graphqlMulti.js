@@ -79,9 +79,9 @@ const lookaheadQuery = gql`
   }
 `
 
-function beginAction() {
-  return { type: BEGIN_GRAPHQL_MULTI, data: [] }
-}
+// function beginAction() {
+//   return { type: BEGIN_GRAPHQL_MULTI, data: [] }
+// }
 
 function endAction(data) {
   return { type: END_GRAPHQL_MULTI, data }
@@ -146,7 +146,7 @@ export function createGraphql(name) {
       .then(graphql => {
         dispatch(sendMessage(`Successfully added ${name} refreshing data from the server`))
         dispatch(updateCharacterList(graphql.data.createHero))
-        setTimeout(() => dispatch(clearMessage()), 2000)
+        setTimeout(() => dispatch(clearMessage()), 3000)
       })
       .catch(err => console.log(err))
   }

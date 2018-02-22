@@ -53,7 +53,7 @@ const receiveFetch = (data) => {
   return { type: RECEIVE_GRAPHQL, data }
 }
 
-export function fetchData(id = null) {
+export function fetchData() {
   return dispatch => {
     dispatch(beginFetch())
     return client.query({ query }).then(graphql => {
