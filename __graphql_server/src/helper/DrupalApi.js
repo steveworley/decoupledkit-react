@@ -5,7 +5,7 @@ import btoa from 'btoa'
 // that represents the GraphQL Schema for the type in the graphql server.
 import {
   Model as Character
-} from '../types/hero'
+} from '../types/character'
 
 
 /**
@@ -15,7 +15,7 @@ class DrupalApi {
 
   /**
    * Build the Drupal API class instance.
-   * 
+   *
    * @function constructor
    */
   constructor() {
@@ -29,11 +29,11 @@ class DrupalApi {
 
   /**
    * Generic error handler.
-   * 
+   *
    * This will log errors to the GraphQL console. This could be expanded to
    * log to a file that could the be ingested by a log parser for better
    * reporting.
-   * 
+   *
    * @function handleError
    */
   handleErrors(error) {
@@ -42,12 +42,12 @@ class DrupalApi {
 
   /**
    * Fetch a character list from Drupal.
-   * 
+   *
    * @function characters
-   * 
+   *
    * @param {Int} nid
    *   A valid node ID which will be queried for.
-   * 
+   *
    * @return {Promise}
    *   Returns a promise that resolves to new characters.
    */
@@ -61,15 +61,15 @@ class DrupalApi {
 
   /**
    * Create a character via the JSON API using configured creds.
-   * 
+   *
    * @function createCharacter
-   * 
+   *
    * @param {Object} character
    *   An object that matches the fields expected by JSON API.
-   * 
+   *
    * @return {Promise}
    *   Returns a fetch request that resolves to a single character.
-   * 
+   *
    * @todo Data validation on the JSON object that is given to ensure we have
    * the requried fields to create a node.
    */
@@ -86,7 +86,7 @@ class DrupalApi {
       headers: this.headers,
       body: JSON.stringify(data)
     })
-      .then(res => { 
+      .then(res => {
         if (res.status === 403) {
           console.log(JSON.stringify(data))
           throw new Error('Forbidden')

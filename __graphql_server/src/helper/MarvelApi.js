@@ -4,7 +4,7 @@ import fetch from 'node-fetch'
 // Import classes to assist with formatting the API response into a structure
 // that represents the GraphQL Schema for the type in the graphql server.
 import { Model as Comic } from '../types/comic'
-import { Model as Character } from '../types/hero'
+import { Model as Character } from '../types/character'
 
 /**
 ---- ENVIRONMENT VARIABLES ----
@@ -20,7 +20,7 @@ dotenv will not override environment defined variables with those in the file.
 
 /**
  * Mavel API Abstraction class.
- * 
+ *
  * @class MarvelApi
  */
 class MarvelApi {
@@ -36,9 +36,9 @@ class MarvelApi {
      * dotenv stores configuration variables in a local .env file. This allows us to
      * store API credentials locally and rely on environment variables in production
      * to store important credentials.
-     * 
+     *
      * dotenv will not override environment defined variables with those in the file.
-     * 
+     *
      * @see https://github.com/motdotla/dotenv
      * @see https://github.com/motdotla/dotenv/issues/133#issuecomment-321779690
      */
@@ -54,11 +54,11 @@ class MarvelApi {
 
   /**
    * Generic error handler.
-   * 
+   *
    * This will log errors to the GraphQL console. This could be expanded to
    * log to a file that could the be ingested by a log parser for better
    * reporting.
-   * 
+   *
    * @function handleError
    */
   handleErrors(error) {
@@ -67,12 +67,12 @@ class MarvelApi {
 
   /**
    * Fetch a character list from Marvel.
-   * 
+   *
    * @function characters
-   * 
+   *
    * @param {String} name
    *   A character name which will be queried for.
-   * 
+   *
    * @return {Promise}
    *   Returns a promise that resolves to new characters.
    */
@@ -92,12 +92,12 @@ class MarvelApi {
 
   /**
    * Fetch a comic list from Marvel.
-   * 
+   *
    * @function comics
-   * 
+   *
    * @param {Int} id
    *   A character id which will be queried for.
-   * 
+   *
    * @return {Promise}
    *   Returns a promise that resolves to a comic list.
    */

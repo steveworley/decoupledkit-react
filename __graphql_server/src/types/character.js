@@ -7,7 +7,7 @@ import comics from './comic';
 
 import villainList from '../../data/villains'
 
-const heroList = [];
+const characterList = [];
 
 /**
  * --- Schema definition for the type ---
@@ -20,7 +20,7 @@ const heroList = [];
  *
  * Example:
  * {
- *    hero(id: 1) {
+ *    character(id: 1) {
  *      id
  *      name
  *      comics {
@@ -34,7 +34,7 @@ const heroList = [];
  * the querability of fields for the given type.
  */
 const schema = `
-  type Hero @cacheControl(maxAge: 240) {
+  type Character @cacheControl(maxAge: 240) {
     id: ID!
     name: String!
     image: String
@@ -44,7 +44,7 @@ const schema = `
     comics: [Comic] @cacheControl(maxAge: 240)
   }
 
-  input HeroName {
+  input CharacterName {
     name: String
   }
 `;
@@ -54,15 +54,15 @@ const schema = `
  *
  * @see http://graphql.org/learn/queries/
  * We define ways that we can query for the type defined above here. Typically
- * we will define a single resource accoess (hero) and a bundled access (heroes)
+ * we will define a single resource accoess (character) and a bundled access (characters)
  * and we define the reponse type so GraphQL knows what data it sends back.
  *
  * Return types can be wrapped in array identifiers to indicate an array of the
  * types will be returned.
  */
 const queries = `
-  heroes: [Hero]
-  hero(id: ID!): Hero
+  characters: [Character]
+  character(id: ID!): Character
 `;
 
 
@@ -76,8 +76,8 @@ const queries = `
  * updateing the content.
  */
 const mutations = `
-  updateHero(id: Int! input:HeroName!): Hero
-  createHero(input:HeroName!): Hero 
+  updateCharacter(id: Int! input:CharacterName!): Character
+  createCharacter(input:CharacterName!): Character
 `
 
 /**
@@ -95,23 +95,23 @@ const mutations = `
  * key for the GraphQL server to have access to them.
  */
 
-const heroes = () => DrupalApi.characters()
+const characters = () => DrupalApi.characters()
 
-const hero = (_, { id }) => DrupalApi.characters(id)
+const character = (_, { id }) => DrupalApi.characters(id)
 
-const updateHero = (_, { id, input }) => {
-  const _hero = hero(_, { id })
+const updateCharacter = (_, { id, input }) => {
+  const _character = character(_, { id })
   const { name } = input
 
-  if (!_hero) {
-    throw new Error(`Couldn't find a hero with an id of ${id}`)
+  if (!_character) {
+    throw new Error(`Couldn't find a character with an id of ${id}`)
   }
 
-  _hero.name = name
-  return _hero
+  _character.name = name
+  return _character
 }
 
-const createHero = (_, { input }) => {
+const createCharacter = (_, { input }) => {
   const { name } = input;
 
   return MarvelApi.characters(name).then(json => {
@@ -136,17 +136,17 @@ const createHero = (_, { input }) => {
 const resolvers = {
   queries: {
     // Object shorthand is used to assign our query handlers, in the graphql
-    // query definition above we defined `heroes` and `hero`. For graphql to
+    // query definition above we defined `characters` and `character`. For graphql to
     // properly resolve these, the queries property needs to contain properties
-    // that match- heroes: function() {} and hero: function() {}.
-    heroes,
-    hero
+    // that match- characters: function() {} and character: function() {}.
+    characters,
+    character
   },
   mutations: {
     // As with queries defined mutations need to follow the same rules when
     // defining the mutations.
-    updateHero,
-    createHero
+    updateCharacter,
+    createCharacter
   },
 
   /*
@@ -159,7 +159,7 @@ const resolvers = {
   is expected by the definition (or a promise that will resolve to the expected
   return type).
   */
-  Hero: {
+  Character: {
     villains: ({ villains }) => {
       const badGuys = [];
       for (let villain of villains) {
