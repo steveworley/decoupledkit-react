@@ -8,13 +8,15 @@ const headers = {
   'Authorization': 'Basic ' + btoa('apitest:apitest') // username:password from http://local.decoupledkit.com/admin/access/users
 }
 
-// todo: implement better 500 errors for missing images
-// function handleErrors(response) {
-//   if (!response.ok) { throw Error('response.statusText', response.statusText); }
-//   return response;
-// }
-
 class drupalAPI {
+
+  constructor() {
+    this.headers = {
+      'Accept': 'applicatoin/vnd.api+json',
+      'Content-Type': 'application/vnd.api+json',
+      'Authorization': 'Basic ' + btoa('apitest:apitest')
+    }
+  }
 
   /**
    * Fetch all nodes from a given type.
@@ -32,7 +34,10 @@ class drupalAPI {
    * @return {Promise}
    */
   static getAllDrupal(API_LOC = types.DRUPAL_API_LOC) {
-    return fetch(API_LOC, { headers }).then(res => res.json()).catch(err => console.log(err))
+    return fetch(API_LOC, { headers: this.headers }).then(res => {
+      console.log(res, 'resource')
+      return res.json()
+    }).catch(err => console.log(err))
   }
 
   /**
@@ -43,7 +48,7 @@ class drupalAPI {
    * @return {Promise}
    */
   static getAllDrupalImg(API_LOC = types.DRUPAL_API_LOC) {
-    return fetch(API_LOC, { headers }).then(response => {
+    return fetch(API_LOC, { headers: this.headers }).then(response => {
       return response.json();
     }).catch(error => {
       return error;
@@ -58,7 +63,7 @@ class drupalAPI {
    * @return {Promise}
    */
   static createNode(API_LOC = types.DRUPAL_API_LOC, data = {}) {
-    return fetch(API_LOC, { method: 'POST', body: JSON.stringify(data), headers })
+    return fetch(API_LOC, { method: 'POST', body: JSON.stringify(data), headers: this.headers })
       .then(res => res.json())
       .catch(err => console.log(err))
   }
@@ -71,7 +76,7 @@ class drupalAPI {
    * @return {Promise}
    */
   static deleteNode(API_LOC = types.DRUPAL_API_LOC) {
-    return fetch(API_LOC, { method: 'DELETE', headers })
+    return fetch(API_LOC, { method: 'DELETE', headers: this.headers })
       .then(res => res.json())
       .catch(err => console.log(err))
   }
@@ -88,7 +93,7 @@ class drupalAPI {
     return fetch(API_LOC, {
       method: 'PATCH',
       body: JSON.stringify(data),
-      headers
+      headers: this.headers
     }).then(response => {
       return response.json();
     }).catch(error => {
@@ -131,7 +136,7 @@ class drupalAPI {
     return fetch(API_LOC, {
       method: 'POST',
       body: JSON.stringify(body),
-      headers
+      headers: this.headers
     }).then(response => {
       return response.json()
     }).catch(error => console.log(error))
@@ -146,7 +151,7 @@ class drupalAPI {
     * @return {Promise}
     */
   static getDrupalIDs(API_LOC = types.DRUPAL_API_LOC) {
-    return fetch(API_LOC, { headers }).then(response => {
+    return fetch(API_LOC, { headers: this.headers }).then(response => {
       return response.json();
     }).then(res => {
       const IDs = res.data.map(el => {
@@ -172,7 +177,7 @@ class drupalAPI {
     return caches.match(API_LOC)
       .then(response => {
         if (!response) {
-          const request = fetch(API_LOC, { headers })
+          const request = fetch(API_LOC, { headers: this.headers })
           caches.open('window-cache-v2').then(cache => {
             cache.add(API_LOC).then(() => console.log('cache added'))
           })
@@ -214,7 +219,7 @@ class drupalAPI {
       })
     }
 
-    return fetch(API_LOC)
+    return fetch(API_LOC, { headers: this.headers })
       .then(res => res.json())
       .then(json => {
         localStorage.setItem(API_LOC, JSON.stringify(json))
@@ -261,7 +266,7 @@ class drupalAPI {
       })
       .catch(err => {
         console.log(err);
-        return fetch(API_LOC)
+        return fetch(API_LOC, { headers: this.headers })
           .then(res => res.json())
           .then(json => {
             db.table('requests').add({ path: API_LOC, data: json })
