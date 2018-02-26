@@ -78,48 +78,6 @@ class Node extends Component {
 
         {/* -------------------------------------- */}
 
-        <input type="button" className="remove-node-btn float-right" onClick={this.handleRemoveNode} value={"Remove Node"} />
-        <input type="button" className="update-node-btn float-right" onClick={this.toggleUpdate} value={"Update Node"} />
-
-        {/* -------------------------------------- */}
-
-        {showUpdateForm && (
-          <div className="update-node clearfix">
-            <form onSubmit={this.handleSubmit}>
-              <p className="label"><strong>{"Title"}</strong></p>
-              <input type={"text"} name="title" value={title} onChange={this.handleChange} />
-              <p className="label"><strong>{"Body"}</strong></p>
-              <ReactQuill
-                value={body.value ? body.value : body}
-                onChange={function (text) { this._handleEditorChange(text, 'body') }.bind(this)}
-              />
-              <p className="label"><strong>{"History and Background"}</strong></p>
-              <ReactQuill
-                value={field_history_and_background.value ? field_history_and_background.value : field_history_and_background}
-                onChange={function (text) { this._handleEditorChange(text, 'field_history_and_background') }.bind(this)}
-              />
-              <p className="label"><strong>{"Images"}</strong></p>
-              <span className="img-preview">
-                <Dropzone onDrop={this.onDrop}>
-                  <p>Drop image to upload</p>
-                </Dropzone>
-                {this.state.uploadedFiles && (
-                  <div className="image-preview">
-                    {this.state.uploadedFiles ? (<img src={this.state.uploadedFiles.image} />) : ''}
-                  </div>
-                )}
-              </span>
-              <div className="submit-node clearfix">
-                <input type="submit" value="update api" />
-              </div>
-            </form>
-          </div>
-        )}
-
-        {/* -------------------------------------- */}
-
-        <hr className="separator clearfix" />
-
         <div className="existing-node clearfix">
 
           <span className="api-source-drupal">Drupal API</span>
@@ -154,6 +112,48 @@ class Node extends Component {
         </div>
 
         {/* -------------------------------------- */}
+
+        <hr className="separator clearfix" />
+
+        {/* -------------------------------------- */}
+
+        <input type="button" className="remove-node-btn float-right" onClick={this.handleRemoveNode} value={"Remove Node"} />
+        <input type="button" className="update-node-btn float-right" onClick={this.toggleUpdate} value={"Update Node"} />
+
+        {/* -------------------------------------- */}
+
+        {showUpdateForm && (
+          <div className="update-node clearfix">
+            <form onSubmit={this.handleSubmit}>
+              <p className="label"><strong>{"Title"}</strong></p>
+              <input type={"text"} name="title" value={title} onChange={this.handleChange} />
+              <p className="label"><strong>{"Body"}</strong></p>
+              <ReactQuill
+                value={body.value ? body.value : body}
+                onChange={function (text) { this._handleEditorChange(text, 'body') }.bind(this)}
+              />
+              <p className="label"><strong>{"History and Background"}</strong></p>
+              <ReactQuill
+                value={field_history_and_background.value ? field_history_and_background.value : field_history_and_background}
+                onChange={function (text) { this._handleEditorChange(text, 'field_history_and_background') }.bind(this)}
+              />
+              <p className="label"><strong>{"Images"}</strong></p>
+              <span className="img-preview">
+                <Dropzone onDrop={this.onDrop}>
+                  <p>Drop image to upload</p>
+                </Dropzone>
+                {this.state.uploadedFiles && (
+                  <div className="image-preview">
+                    {this.state.uploadedFiles ? (<img src={this.state.uploadedFiles.image} />) : ''}
+                  </div>
+                )}
+              </span>
+              <div className="submit-node clearfix">
+                <input type="submit" value="Save Changes thru API >" />
+              </div>
+            </form>
+          </div>
+        )}
 
       </div>
     )
