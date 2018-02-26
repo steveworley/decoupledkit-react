@@ -1,4 +1,4 @@
-import drupalAPI from '../api/drupalAPI';
+import { drupalAPI } from '../api/drupalAPI';
 
 // This should probably be an environment variable.
 export const DRUPAL_API_LOC = 'http://local.decoupledkit.com/jsonapi/node/dogs';
@@ -34,16 +34,6 @@ export function clearMessage() {
   return { type: DRUPAL_CRUD_MESSAGE_CLEAR, message: null }
 }
 
-export function loadSingleCache() {
-  return dispatch => {
-    drupalAPI.loadCache(`${DRUPAL_API_LOC}/bc2153d4-3426-4983-a33e-d57934dec3fa`)
-      .then(response => {
-        const { data } = response
-        dispatch({ type: RECEIVE_DRUPAL_SINGLE_CACHE, caches: data })
-      })
-  }
-}
-
 export function updateContent(uuid, attr) {
   const fields = JSON.parse(JSON.stringify(attr));
   return dispatch => {
@@ -61,7 +51,7 @@ export function updateContent(uuid, attr) {
     if (attr.uploadedFiles) {
       const { image, name } = attr.uploadedFiles
       dispatch(sendMessage(`Uploading files for ${uuid}`))
-      drupalAPI.uploadImages('http://local.decoupledkit.com/jsonapi/file/image', image, name)
+      drupalAPI.uploadImages('/file/image', image, name)
         .then(file => {
           if (file.errors) {
             dispatch(sendMessage(file.errors[0].detail))
@@ -81,7 +71,7 @@ export function updateContent(uuid, attr) {
             }
           }
 
-          drupalAPI.updateDrupal(`${DRUPAL_API_LOC}/${uuid}`, body).then(() => {
+          drupalAPI.updateDrupal(`/node/dogs/${uuid}`, body).then(() => {
             dispatch(doLoadDrupalData())
             dispatch(sendMessage(`Successfull updated ${uuid}`))
             setTimeout(() => { dispatch(clearMessage()) }, timeout_seconds)
@@ -90,7 +80,7 @@ export function updateContent(uuid, attr) {
     }
     else {
       dispatch(sendMessage(`Sending a content update for ${uuid}`));
-      drupalAPI.updateDrupal(`${DRUPAL_API_LOC}/${uuid}`, body).then(() => {
+      drupalAPI.updateDrupal(`/node/dogs/${uuid}`, body).then(() => {
         dispatch(doLoadDrupalData());
         dispatch(sendMessage(`Succesfully updated ${uuid}`));
         setTimeout(() => { dispatch(clearMessage()) }, timeout_seconds);
@@ -122,7 +112,7 @@ export function createContent(item) {
 
     if (uploadedFile) {
       const { image, name } = uploadedFile
-      drupalAPI.uploadImages('http://local.decoupledkit.com/jsonapi/file/image', image, name)
+      drupalAPI.uploadImages('/file/image', image, name)
         .then(file => {
           if (file.errors) {
             dispatch(sendMessage(file.errors[0].detail))
@@ -142,7 +132,7 @@ export function createContent(item) {
             }
           }
 
-          drupalAPI.createNode(`${DRUPAL_API_LOC}`, requestBody)
+          drupalAPI.createNode('/node/dogs', requestBody)
             .then(() => {
               dispatch(doLoadDrupalData());
               dispatch(sendMessage(`Successfully created the node!`));
@@ -150,7 +140,7 @@ export function createContent(item) {
             });
         })
     } else {
-      drupalAPI.createNode(`${DRUPAL_API_LOC}`, requestBody)
+      drupalAPI.createNode('/node/dogs', requestBody)
         .then(() => {
           dispatch(doLoadDrupalData());
           dispatch(sendMessage(`Successfully created the node!`));
@@ -163,7 +153,7 @@ export function createContent(item) {
 export function deleteContent(uuid) {
   return dispatch => {
     dispatch(sendMessage(`Deleting node with ${uuid}`));
-    return drupalAPI.deleteNode(`${DRUPAL_API_LOC}/${uuid}`)
+    return drupalAPI.deleteNode(`/node/dogs/${uuid}`)
       .then(() => {
         dispatch(sendMessage(`Successfully deleted ${uuid}`));
         dispatch(doLoadDrupalData());
@@ -184,7 +174,7 @@ export function deleteContent(uuid) {
 export function doLoadDrupalData() {
   let result = {};
   return (dispatch) => {
-    return drupalAPI.getAllDrupal(DRUPAL_API_LOC)
+    return drupalAPI.getAllDrupal('/node/dogs')
       .then(json => {
         const { data } = json;
         result = data.reduce((result, item) => {
@@ -201,10 +191,14 @@ export function doLoadDrupalData() {
 
         const imageRequests = [];
         Object.keys(result).forEach((uuid) => {
-          imageRequests.push(drupalAPI.getAllDrupalImg(`${DRUPAL_API_LOC}/${uuid}/field_dog_picture`));
+          imageRequests.push(drupalAPI.getAllDrupalImg(`/node/dogs/${uuid}/field_dog_picture`));
         });
 
         Promise.all(imageRequests).then(values => {
+          // If the request 500s we can get an undefined result so we ensure to filter
+          // the values array before we process each item.
+          values = values.filter(n => n != undefined)
+
           values.forEach((item) => {
             if (item.hasOwnProperty('data')) { // validate it's not returning "" from 500
               const { data: { attributes }, links: { self } } = item;
