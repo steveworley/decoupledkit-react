@@ -36,6 +36,7 @@
     "client-oauth2": "4.1.0",
     "cors": "2.8.4",
     "dexie": "2.0.1",
+    "dotenv-webpack": "1.5.4",
     "draft-js": "0.10.5",
     "draft-js-export-html": "1.2.0",
     "draft-js-import-html": "1.2.1",
