@@ -1,11 +1,10 @@
 import * as types from '../actions/drupalAPITypes';
 import { tokenStorage, fetchWithMiddleware, middleware } from 'fetch-oauth2'
-
 import Dexie from 'dexie'
 
 class DrupalAPI {
 
-  constructor() {    
+  constructor() {
     this.storage = tokenStorage({
       fetchToken: this.generateToken,
       generateToken: this.generateToken,
@@ -22,8 +21,8 @@ class DrupalAPI {
 
   /**
    * Middleware to append the Drupal host to every request.
-   * 
-   * @param {Function} next 
+   *
+   * @param {Function} next
    */
   addHostToUrl(next) {
     const host = types.DRUPAL_API_LOC
@@ -36,9 +35,9 @@ class DrupalAPI {
 
   /**
    * Middleware to add headers to each request.
-   * 
-   * @param {String} header 
-   * @param {String} value 
+   *
+   * @param {String} header
+   * @param {String} value
    */
   addHeader(header, value) {
     return next => config => {
@@ -46,7 +45,7 @@ class DrupalAPI {
     }
   }
 
-  /** 
+  /**
    * Fetches the stored token for this client.
    */
   fetchToken() {
@@ -58,21 +57,21 @@ class DrupalAPI {
     })
   }
 
-  /** 
-   * Make a request to Drupal to generate a new API token. 
+  /**
+   * Make a request to Drupal to generate a new API token.
    */
   generateToken() {
     // @TODO Move to configuration
     const body = [
       'grant_type=password',
-      'client_id=ffdff2a7-53d7-408c-865c-67121e597285',
-      'client_secret=apitest',
-      'username=apitest',
-      'password=apitest',
-    ]
-    
-    return fetch('http://local.decoupledkit.com/oauth/token', { 
-      method: 'POST', 
+      'client_id=' + process.env.CLIENT_ID,
+      'client_secret=' + process.env.CLIENT_SECRET,
+      'username=' + process.env.DRUPAL_USER,
+      'password=' + process.env.DRUPAL_PASSWORD,
+    ];
+
+    return fetch('http://local.decoupledkit.com/oauth/token', {
+      method: 'POST',
       body: body.join('&'),
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
     })
@@ -80,19 +79,19 @@ class DrupalAPI {
       .then((json) => {
         if (json.error) {
           // Oauth errors are sent with a 200 response from the serve the fetch api
-          // treats anything that isn't 4xx or 5xx as success so the catch will not 
+          // treats anything that isn't 4xx or 5xx as success so the catch will not
           // match these so we manually trigger an error.
           throw new Error(json.message)
         }
-        
+
         /*
         As tokens are leased for an extended period we save the token to the
         client so they do not have to lease another token. This will be validated
         by a fetch middleware; if the token is no longer valid the middleware will
         trigger another generation and replay the request.
-        */ 
+        */
         window.localStorage.setItem('authtoken', JSON.stringify(json))
-        
+
         /*
         The fetch middleware requires an object to be returned from the token
         generation method. It expects to be able to destruct the server response
@@ -321,8 +320,8 @@ class DrupalAPI {
     db.open().catch(err => console.error('UNABLE TO OPEN DB', err))
 
     return db.table('requests').where('path').equals(API_LOC).first(response => {
-        return new Promise(resolve => resolve(response.data))
-      })
+      return new Promise(resolve => resolve(response.data))
+    })
       .catch(err => {
         console.log(err);
         return this.fetch(API_LOC)
