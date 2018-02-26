@@ -12,6 +12,7 @@ The Decoupled Kit was built to explore and communicate common workflows when bui
 - Navigate to the repository root 
 - Install <a href="https://yarnpkg.com/lang/en/docs/install/">yarn</a> or also use `npm` for dependencies.
 - Install packages with `yarn install` or `npm install`
+- Rename the file `.env.example` to `.env` in the project root. This file already contains the proper configuration variables to connect to the Drupal website. 
 - Stand up the application with `yarn start` or `npm start` and visit `http://localhost:8080`
 
 
@@ -19,9 +20,10 @@ The Decoupled Kit was built to explore and communicate common workflows when bui
 - Navigate to the `__graphql_server/` folder
 - Install <a href="https://yarnpkg.com/lang/en/docs/install/">yarn</a> or also use `npm` for dependencies.
 - Install packages with `yarn install` or `npm install`
+- Complete the "Environment Configuration for the GraphQL Application" instructions listed below
 - Stand up the application with `yarn start` or `npm start` and visit `localhost:8082/graphiql` to test queries
 
-#### Configuration for the GraphQL Application
+#### Environment Configuration for the GraphQL Application
 
 -  Rename the file `.env.example` to `.env` in the  `__graphql_server/` folder
 -  Obtain and update the `API_PUBLIC_KEY` and `API_PRIVATE_KEY` from [https://developer.marvel.com](https://developer.marvel.com) website
