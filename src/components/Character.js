@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import ReactHtmlParser from 'react-html-parser'
-import '../styles/hero.scss'
+import '../styles/character.scss'
 import Comic from './Comic';
 
-class Hero extends Component {
+class Character extends Component {
   constructor(props) {
     super(props)
   }
@@ -25,7 +25,7 @@ class Hero extends Component {
     })
 
     return (
-      <div className="hero">
+      <div className="character">
         <h4>{name}<span className="api-source api-source-drupal">Drupal API</span></h4>
         <div className="col col-image">
           <div className="row">
@@ -53,11 +53,11 @@ class Hero extends Component {
 
 }
 
-Hero.propTypes = {
+Character.propTypes = {
   name: PropTypes.string,
   image: PropTypes.string,
   description: PropTypes.string,
   comics: PropTypes.array
 }
 
-export default Hero;
+export default Character;

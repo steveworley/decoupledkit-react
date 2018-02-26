@@ -27,7 +27,7 @@ The GraphQL API UI will provide a method to test queries, which you can then rep
 
 ```
 {
-  heroes {
+  characters {
     id
     name
     description
@@ -50,35 +50,47 @@ The GraphQL API UI will provide a method to test queries, which you can then rep
 #### Create a new Marvel character with a Mutation
 
 ```
-mutation CreateHero($input: HeroName!) {
-  createHero(input: $input) {
+mutation CreateCharacter($input: CharacterName!) {
+  createCharacter(input: $input) {
     id
     name
     description
     image
+    comics {
+      id
+      title
+      image
+      description
+      sales {
+        issue
+        count
+      }
+    }
   }
 }
+
 
 (query variable)
 {
   "input": {
-    "name": "thor"
+    "name": "Arcade"
   }
 }
 ```
 #### Update Marvel character with a Mutation
 
 ```
-mutation UpdateHero($id: Int! $input: HeroName!) {
-  updateHero(id: $id input: $input) {
-    title
+mutation UpdateCharacter($input: CharacterName!) {
+  createCharacter(input: $input) {
+    name
+    description
   }
 }
 
 (query variable)
 {
   "input": {
-    "name": "thor"
+    "name": "Arcade"
   }
 }
 ```

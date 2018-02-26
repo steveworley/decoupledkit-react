@@ -4,7 +4,7 @@ import Select from 'react-select';
 
 import '../styles/select.scss'
 
-class CreateHeroForm extends Component {
+class CreateCharacterForm extends Component {
   constructor(props) {
     super(props);
     this.state = { name: '' }
@@ -32,7 +32,7 @@ class CreateHeroForm extends Component {
       <form onSubmit={this.onSubmit}>
         <div className="row">
           <Select
-            name="hero-name"
+            name="character-name"
             value={name}
             onChange={this.onUpdate}
             options={lookahead}
@@ -40,7 +40,7 @@ class CreateHeroForm extends Component {
             labelKey='name'
             openOnClick={false}
           />
-          <p style={{ fontSize: "small" }}>Enter a valid Marvel character, this will instruct the GraphQL server to update its database with values from the Marvel API based on the hero name.</p>
+          <p style={{ fontSize: "small" }}>Enter a valid Marvel character, this will instruct the GraphQL server to update its database with values from the Marvel API based on the character name.</p>
           <input type="submit" value={`Add ${name}`} />
         </div>
       </form>
@@ -48,9 +48,9 @@ class CreateHeroForm extends Component {
   }
 }
 
-CreateHeroForm.propTypes = {
+CreateCharacterForm.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   lookahead: PropTypes.array.isRequired
 }
 
-export default CreateHeroForm
+export default CreateCharacterForm

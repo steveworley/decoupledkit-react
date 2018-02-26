@@ -21,7 +21,7 @@ const client = new ApolloClient({
 
 export const fetchAll = gql`
   query {
-    heroes {
+    characters {
       id
       name
       description
@@ -42,8 +42,8 @@ export const fetchAll = gql`
 
 const update = () => {
   return gql`
-    mutation UpdateHero($id: Int! $input: HeroName!) {
-      updateHero(id: $id input: $input) {
+    mutation UpdateCharacter($id: Int! $input: CharacterName!) {
+      updateCharacter(id: $id input: $input) {
         title
       }
     }
@@ -51,8 +51,8 @@ const update = () => {
 }
 
 export const create = gql`
-  mutation CreateHero($input: HeroName!) {
-    createHero(input: $input) {
+  mutation CreateCharacter($input: CharacterName!) {
+    createCharacter(input: $input) {
       id
       name
       description
@@ -115,8 +115,8 @@ export function fetchGraphql() {
   return dispatch => {
     return client.query({ query: fetchAll })
       .then(data => {
-        const { data: { heroes } } = data
-        dispatch(endAction(heroes))
+        const { data: { characters } } = data
+        dispatch(endAction(characters))
       })
       .catch(err => console.log(err))
   }
@@ -130,8 +130,8 @@ export function updateGrpahql(id, name) {
     const mutation = update()
     return client.mutate({ mutation, variables })
       .then(graphql => {
-        const { data: { createHero } } = graphql
-        dispatch(endUpdate(createHero))
+        const { data: { createCharacter } } = graphql
+        dispatch(endUpdate(createCharacter))
         dispatch(fetchGraphql())
       })
       .catch(err => console.log(err))
@@ -145,7 +145,7 @@ export function createGraphql(name) {
     return client.mutate({ mutation: create, variables })
       .then(graphql => {
         dispatch(sendMessage(`Successfully added ${name} refreshing data from the server`))
-        dispatch(updateCharacterList(graphql.data.createHero))
+        dispatch(updateCharacterList(graphql.data.createCharacter))
         setTimeout(() => dispatch(clearMessage()), 3000)
       })
       .catch(err => console.log(err))

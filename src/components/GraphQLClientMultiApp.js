@@ -3,8 +3,8 @@ import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as actions from '../actions/graphqlMulti'
-import Hero from './Hero'
-import CreateHeroForm from './CreateHeroForm'
+import Character from './Character'
+import CreateCharacterForm from './CreateCharacterForm'
 import '../styles/graphqlclientdrupal.scss'
 
 /*eslint-disable no-console */
@@ -20,22 +20,22 @@ class GraphQLClientMulti extends React.Component {
     this.props.actions.lookahead();
   }
 
-  handleSubmit(hero) {
-    this.props.actions.createGraphql(hero);
+  handleSubmit(character) {
+    this.props.actions.createGraphql(character);
   }
 
   render() {
     const { data, message, lookahead } = this.props;
 
-    const Heroes = data.map(hero => {
+    const Characters = data.map(character => {
       return (
-        <Hero
-          key={hero.id}
-          name={hero.name}
-          description={hero.description}
-          image={hero.image}
-          comics={hero.comics}
-          villains={hero.villains}
+        <Character
+          key={character.id}
+          name={character.name}
+          description={character.description}
+          image={character.image}
+          comics={character.comics}
+          villains={character.villains}
         />
       )
     })
@@ -67,7 +67,7 @@ class GraphQLClientMulti extends React.Component {
         <div className="comic-form-wrapper">
           <h4>Proxying data with GraphQL</h4>
           <p>The below form shows how to send a mutation to the GraphQL server. Mutations are a pattern defined by GraphQL to allow data updates to be sent and handled by the GraphQL server. This example showcases using data from one of the other attached systems and replicating the data in Drupal.</p>
-          <CreateHeroForm
+          <CreateCharacterForm
             handleSubmit={this.handleSubmit.bind(this)}
             lookahead={lookahead}
           />
@@ -77,8 +77,8 @@ class GraphQLClientMulti extends React.Component {
 
         <h4>List of Marvel Characters</h4>
 
-        <div className="herolisting-wrapper">
-          {Heroes}
+        <div className="characterlisting-wrapper">
+          {Characters}
           {messages}
         </div>
 

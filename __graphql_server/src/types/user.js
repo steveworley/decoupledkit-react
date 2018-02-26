@@ -16,7 +16,7 @@ const schema = `
 
 const queries = `
   users: [User]
-  user(id: ID!): Hero
+  user(id: ID!): Character
 `
 
 export default () => ({ schema, queries })
