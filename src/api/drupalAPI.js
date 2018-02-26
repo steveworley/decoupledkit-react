@@ -1,20 +1,107 @@
 import * as types from '../actions/drupalAPITypes';
-
+import { tokenStorage, fetchWithMiddleware, middleware } from 'fetch-oauth2'
 import Dexie from 'dexie'
 
-const headers = {
-  'Accept': 'application/vnd.api+json',
-  'Content-Type': 'application/vnd.api+json',
-  'Authorization': 'Basic ' + btoa('apitest:apitest') // username:password from http://local.decoupledkit.com/admin/access/users
-}
+class DrupalAPI {
 
-// todo: implement better 500 errors for missing images
-// function handleErrors(response) {
-//   if (!response.ok) { throw Error('response.statusText', response.statusText); }
-//   return response;
-// }
+  constructor() {
+    this.storage = tokenStorage({
+      fetchToken: this.generateToken,
+      generateToken: this.generateToken,
+    })
 
-class drupalAPI {
+    this.fetch = fetchWithMiddleware(
+      this.addHostToUrl,
+      this.addHeader('Content-Type', 'application/vnd.api+json'),
+      this.addHeader('Accept', 'application/vnd.api+json'),
+      middleware.setOAuth2Authorization(this.storage),
+      middleware.authorisationChallengeHandler(this.storage)
+    )
+  }
+
+  /**
+   * Middleware to append the Drupal host to every request.
+   *
+   * @param {Function} next
+   */
+  addHostToUrl(next) {
+    const host = types.DRUPAL_API_LOC
+    return config => {
+      return next(config.then(config => {
+        return config.updateUri(uri => `${host}${uri}`)
+      }));
+    }
+  }
+
+  /**
+   * Middleware to add headers to each request.
+   *
+   * @param {String} header
+   * @param {String} value
+   */
+  addHeader(header, value) {
+    return next => config => {
+      return next(config.then(config => config.setHeader(header, value)))
+    }
+  }
+
+  /**
+   * Fetches the stored token for this client.
+   */
+  fetchToken() {
+    return new Promise((resolve, reject) => {
+      if (window.localStorage.getItem('authtoken')) {
+        resolve(JSON.parse(window.localStorage.getItem('authtoken')))
+      }
+      reject('No token.')
+    })
+  }
+
+  /**
+   * Make a request to Drupal to generate a new API token.
+   */
+  generateToken() {
+    // @TODO Move to configuration
+    const body = [
+      'grant_type=password',
+      'client_id=' + process.env.CLIENT_ID,
+      'client_secret=' + process.env.CLIENT_SECRET,
+      'username=' + process.env.DRUPAL_USER,
+      'password=' + process.env.DRUPAL_PASSWORD,
+    ];
+
+    return fetch('http://local.decoupledkit.com/oauth/token', {
+      method: 'POST',
+      body: body.join('&'),
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+      .then(res => res.json())
+      .then((json) => {
+        if (json.error) {
+          // Oauth errors are sent with a 200 response from the serve the fetch api
+          // treats anything that isn't 4xx or 5xx as success so the catch will not
+          // match these so we manually trigger an error.
+          throw new Error(json.message)
+        }
+
+        /*
+        As tokens are leased for an extended period we save the token to the
+        client so they do not have to lease another token. This will be validated
+        by a fetch middleware; if the token is no longer valid the middleware will
+        trigger another generation and replay the request.
+        */
+        window.localStorage.setItem('authtoken', JSON.stringify(json))
+
+        /*
+        The fetch middleware requires an object to be returned from the token
+        generation method. It expects to be able to destruct the server response
+        and find the token_type (typically Bearer) and the access_token. Drupal's
+        SimpleOauth formats the response correctly.
+        */
+        return json
+      })
+      .catch(err => console.error('Unable to generate token ==>', err))
+  }
 
   /**
    * Fetch all nodes from a given type.
@@ -31,8 +118,8 @@ class drupalAPI {
    *
    * @return {Promise}
    */
-  static getAllDrupal(API_LOC = types.DRUPAL_API_LOC) {
-    return fetch(API_LOC, { headers }).then(res => res.json()).catch(err => console.log(err))
+  getAllDrupal(API_LOC) {
+    return this.fetch(API_LOC).then(res => res.json()).catch(err => console.log(err))
   }
 
   /**
@@ -42,12 +129,8 @@ class drupalAPI {
    *
    * @return {Promise}
    */
-  static getAllDrupalImg(API_LOC = types.DRUPAL_API_LOC) {
-    return fetch(API_LOC, { headers }).then(response => {
-      return response.json();
-    }).catch(error => {
-      return error;
-    });
+  getAllDrupalImg(API_LOC) {
+    return this.fetch(API_LOC).then(res => res.json()).catch(err => console.log(err))
   }
 
   /**
@@ -57,10 +140,9 @@ class drupalAPI {
    *
    * @return {Promise}
    */
-  static createNode(API_LOC = types.DRUPAL_API_LOC, data = {}) {
-    return fetch(API_LOC, { method: 'POST', body: JSON.stringify(data), headers })
-      .then(res => res.json())
-      .catch(err => console.log(err))
+  createNode(API_LOC, data = {}) {
+    const body = JSON.stringify(data)
+    return this.fetch(API_LOC, { method: 'POST', body }).then(res => res.json()).catch(err => console.log(err))
   }
 
   /**
@@ -70,10 +152,8 @@ class drupalAPI {
    *
    * @return {Promise}
    */
-  static deleteNode(API_LOC = types.DRUPAL_API_LOC) {
-    return fetch(API_LOC, { method: 'DELETE', headers })
-      .then(res => res.json())
-      .catch(err => console.log(err))
+  deleteNode(API_LOC) {
+    return this.fetch(API_LOC, { method: 'DELETE' }).then(res => res.json()).catch(err => console.log(err))
   }
 
 
@@ -84,16 +164,9 @@ class drupalAPI {
    *
    * @return {Promise}
    */
-  static updateDrupal(API_LOC = types.DRUPAL_API_LOC, data) {
-    return fetch(API_LOC, {
-      method: 'PATCH',
-      body: JSON.stringify(data),
-      headers
-    }).then(response => {
-      return response.json();
-    }).catch(error => {
-      return error;
-    });
+  updateDrupal(API_LOC, data) {
+    const body = JSON.stringify(data)
+    return this.fetch(API_LOC, { method: 'PATCH', body }).then(res => res.json()).catch(err => console.log(err))
   }
 
 
@@ -110,7 +183,7 @@ class drupalAPI {
    *
    * @return {Promise}
    */
-  static uploadImages(API_LOC = types.DRUPAL_API_LOC, filebin, name) {
+  uploadImages(API_LOC, filebin, name) {
     // FileReader creats a base64encoded string that decorates with the file
     // type and method and will look like data:image/jpeg;base64 this is
     // typically followed by , and then the base64encoded string of the asset.
@@ -118,7 +191,7 @@ class drupalAPI {
     // decorator.
     filebin = filebin.split(',').slice(-1)[0]
 
-    const body = {
+    const body = JSON.stringify({
       data: {
         type: 'file--image',
         attributes: {
@@ -126,15 +199,9 @@ class drupalAPI {
           uri: `public://${name ? name : 'api-uploaded'}.jpg`
         }
       }
-    }
+    })
 
-    return fetch(API_LOC, {
-      method: 'POST',
-      body: JSON.stringify(body),
-      headers
-    }).then(response => {
-      return response.json()
-    }).catch(error => console.log(error))
+    return this.fetch(API_LOC, { method: 'POST', body }).then(res => res.json()).catch(err => console.log(err))
   }
 
   /**
@@ -145,15 +212,11 @@ class drupalAPI {
     *
     * @return {Promise}
     */
-  static getDrupalIDs(API_LOC = types.DRUPAL_API_LOC) {
-    return fetch(API_LOC, { headers }).then(response => {
-      return response.json();
-    }).then(res => {
-      const IDs = res.data.map(el => {
-        return el.id;
-      })
-      return IDs;
-    }).catch(err => console.log(err))
+  getDrupalIDs(API_LOC) {
+    return this.fetch(API_LOC)
+      .then(res => res.json())
+      .then(res => res.data.map(el => el.id))
+      .catch(err => console.log(err))
   }
 
   /**
@@ -168,11 +231,11 @@ class drupalAPI {
    *
    * @see service-worker.js
    */
-  static loadCache(API_LOC = types.DRUPAL_API_LOC) {
+  loadCache(API_LOC) {
     return caches.match(API_LOC)
       .then(response => {
         if (!response) {
-          const request = fetch(API_LOC, { headers })
+          const request = this.fetch(API_LOC)
           caches.open('window-cache-v2').then(cache => {
             cache.add(API_LOC).then(() => console.log('cache added'))
           })
@@ -203,7 +266,7 @@ class drupalAPI {
    * @return {Promise}
    *   A promise that will resolve to the result of the fetch request.
    */
-  static loadLocalStorage(API_LOC) {
+  loadLocalStorage(API_LOC) {
     if (localStorage.getItem(API_LOC)) {
       // Expecting a promise - localStorage is synchronous so it will return the
       // data as it sees it in the store. We wrap this in a simple promise so
@@ -214,7 +277,7 @@ class drupalAPI {
       })
     }
 
-    return fetch(API_LOC)
+    return this.fetch(API_LOC)
       .then(res => res.json())
       .then(json => {
         localStorage.setItem(API_LOC, JSON.stringify(json))
@@ -247,7 +310,7 @@ class drupalAPI {
    * @param {String} API_LOC
    *   The
    */
-  static loadIndexedDB(API_LOC) {
+  loadIndexedDB(API_LOC) {
     // Create the indexedDB.
     const db = new Dexie('test-db')
     db.version(1).stores({
@@ -257,11 +320,11 @@ class drupalAPI {
     db.open().catch(err => console.error('UNABLE TO OPEN DB', err))
 
     return db.table('requests').where('path').equals(API_LOC).first(response => {
-        return new Promise(resolve => resolve(response.data))
-      })
+      return new Promise(resolve => resolve(response.data))
+    })
       .catch(err => {
         console.log(err);
-        return fetch(API_LOC)
+        return this.fetch(API_LOC)
           .then(res => res.json())
           .then(json => {
             db.table('requests').add({ path: API_LOC, data: json })
@@ -271,7 +334,7 @@ class drupalAPI {
       })
   }
 
-  static clearCaches() {
+  clearCaches() {
     // Clear the caches.
     caches.keys().then(cacheNames => {
       cacheNames.map(cacheName => {
@@ -284,4 +347,4 @@ class drupalAPI {
 
 }
 
-export default drupalAPI;
+export let drupalAPI = new DrupalAPI()

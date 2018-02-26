@@ -1,6 +1,7 @@
 import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import path from 'path';
+const Dotenv = require('dotenv-webpack');
 
 export default {
   resolve: {
@@ -39,7 +40,8 @@ export default {
         collapseWhitespace: true
       },
       inject: true
-    })
+    }),
+    new Dotenv({ path: './.env' }), // available deployments variables in a .env file
   ],
   module: {
     rules: [
