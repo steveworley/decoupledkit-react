@@ -62,7 +62,8 @@ class MarvelApi {
    * @function handleError
    */
   handleErrors(error) {
-    console.log(error);
+    console.log(error)
+    return []
   }
 
   /**
@@ -77,6 +78,7 @@ class MarvelApi {
    *   Returns a promise that resolves to new characters.
    */
   characters(name = null) {
+    // Marvel API is limited to 100.
     let params = this.params + '&limit=100'
     if (!!name) {
       params += `&name=${name}`
@@ -106,13 +108,9 @@ class MarvelApi {
 
     return fetch(url)
       .then(res => res.json())
-      .then(json => {
-        const comics = json.data.results.map(i => new Comic(i));
-        return comics;
-      })
-      .catch(() => this._cache.comics[id]);
+      .then(json => json.data.results.map(i => new Comic(i)))
+      .catch(this.handleErrors);
   }
-
 }
 
 // This is the singleton pattern for NodeJS - this will allow all types to use

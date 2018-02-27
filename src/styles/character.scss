@@ -100,3 +100,65 @@
     text-align: center;
   }
 }
+
+.preloader-1 {
+  margin: 30px auto 0;
+  padding-bottom: 50px;
+  text-align: center;
+  height: 12px;
+
+  > div {
+    color: #000;
+    margin: 5px 0;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 2px;
+  }
+
+  .line {
+    width: 30px;
+    height: 20px;
+    background: #000;
+    margin: 0 1px;
+    display: inline-block;
+    animation: opacity-1 1000ms infinite ease-in-out;
+  }
+
+  .line-1 { animation-delay: 800ms; }
+  .line-2 { animation-delay: 600ms; }
+  .line-3 { animation-delay: 400ms; }
+  .line-4 { animation-delay: 200ms; }
+  .line-6 { animation-delay: 200ms; }
+  .line-7 { animation-delay: 400ms; }
+  .line-8 { animation-delay: 600ms; }
+  .line-9 { animation-delay: 800ms; }
+} 
+
+
+
+@keyframes opacity-1 { 
+  0% { 
+    opacity: 1;
+  }
+  50% { 
+    opacity: 0;
+  }
+  100% { 
+    opacity: 1;
+  }  
+}
+
+@keyframes opacity-2 { 
+  0% { 
+    opacity: 1;
+    height: 15px;
+  }
+  50% { 
+    opacity: 0;
+    height: 12px;
+  }
+  100% { 
+    opacity: 1;
+    height: 15px;
+  }  
+}
