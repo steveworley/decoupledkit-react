@@ -7,6 +7,8 @@ The Decoupled Kit was built to explore and communicate common workflows when bui
 
  This application was forked from the [React Slingshot](https://github.com/coryhouse/react-slingshot) application and the full documentation has been moved in `docs\React-Slingshot.md`. This application has included a considerable amount of features to be leveraged as best practices around workflow, structure, testing, and much more. The examples are intentionally basic to provide clarity around the intents of the components.
 
+<hr />
+
 ### Installation for React Application 
 
 - Navigate to the repository root 
@@ -35,6 +37,11 @@ The Decoupled Kit was built to explore and communicate common workflows when bui
 
 - The repository is located at [https://github.com/acquia-pso/decoupledkit-drupal](https://github.com/acquia-pso/decoupledkit-drupal) and will provide instructions to setup, in addition to a sample DB to get started. 
 
+*Additional Information*
+
+- The React application will utilize OAuth to validate headers. So if you are running into issues with `cors` or `OAuth2` errors, make sure to confirm file permission noted under "Additional Notes" in the [Drupal Readme](https://github.com/acquia-pso/decoupledkit-drupal).
+
+<br><hr />
 
 ### Feature Summary 
 

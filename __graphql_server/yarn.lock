@@ -1198,10 +1198,6 @@ fast-json-stable-stringify@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/fast-json-stable-stringify/-/fast-json-stable-stringify-2.0.0.tgz#d5142c0caee6b1189f87d3a76111064f86c8bbf2"
 
-fetch-oauth2@^0.1.5:
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/fetch-oauth2/-/fetch-oauth2-0.1.5.tgz#336cd7dff773ed7a156f0909e9dbdec6b66c8977"
-
 filename-regex@^2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/filename-regex/-/filename-regex-2.0.1.tgz#c1c4b9bee3e09725ddb106b75c1e301fe2f18b26"
