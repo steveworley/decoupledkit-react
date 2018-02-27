@@ -10,8 +10,8 @@ export class ChatBotPage extends Component {
         <p>The chatbot utilises the GraphQL server to provide information to answer questions; this particular chatbot uses the pokemon information (found on <a href="/graphqlclientsingle">graphql single</a>), so you can ask it about Pokemon statistics.</p>
         <p>Some questions you can ask</p>
         <ul>
-          <li>What is venusaur's speed?</li>
-          <li>What is slowbro's HP?</li>
+          <li>What is venusaur&apos;s speed?</li>
+          <li>What is slowbro&apos;s HP?</li>
           <li>Who is stronger venusaur or slowbro?</li>
           <li>Who has higher speed venusaur, slowbro or mankey?</li>
         </ul>
