@@ -98,12 +98,12 @@ class DrupalApi {
     console.log('Making request to:', process.env.DRUPAL_URL + 'oauth/token')
 
     fetch('https://httpbin.org/post', {
-      method: 'post',
-      body: body.join('&')
+      method: 'POST',
+      body: body.join('&'),
     }).then(res => res.json()).then(json => console.log(json))
 
     return fetch(process.env.DRUPAL_URL + '/oauth/token', {
-      method: 'post',
+      method: 'POST',
       body: body.join('&'),
     })
       .then(res => res.json())
