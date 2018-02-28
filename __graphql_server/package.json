@@ -20,7 +20,9 @@
     "graphql": "^0.12.3",
     "graphql-modules": "^0.2.2",
     "graphql-tools": "^2.16.0",
-    "node-fetch": "^1.7.3"
+    "node-fetch": "^1.7.3",
+    "node-fetch-oauth": "github:steveworley/node-fetch-oauth2",
+    "node-fetch-oauth2": "github:steveworley/node-fetch-oauth2"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
