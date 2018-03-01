@@ -10,6 +10,8 @@ import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 import config from '../webpack.config.dev';
+import fetch from 'cross-fetch'
+
 // import proxy from 'http-proxy-middleware';
 
 const bundler = webpack(config);
@@ -30,6 +32,42 @@ browserSync({
     baseDir: 'src',
 
     middleware: [
+
+      // This middleware dynamically generates the apitoken.js file that will be
+      // used to authenticate against Drupals API. For the demo this will lease a
+      // token for every page request and will the tokens are leased indefinitely
+      // for production it would make sense to have these use a low lease time so
+      // if the token is compromised the API can only be accessed for a short duration.
+      //
+      // Ideally this would be injected to index.html rather than another script file
+      // to reduce the ability for people to remote request it.
+      {
+        route: '/apitoken.js',
+        handle: async (req, res) => { // , next
+          const body = Object.entries({
+            grant_type: 'password',
+            client_id: 'ffdff2a7-53d7-408c-865c-67121e597285',
+            client_secret: 'apitest',
+            username: 'apitest',
+            password: 'apitest'
+          }).map(([key, val]) => `${key}=${val}`).join('&')
+
+          const response = await fetch('http://local.decoupledkit.com/oauth/token', {
+            method: 'post',
+            body,
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+          })
+
+          if (response.ok) {
+            const token = await response.json()
+            res.setHeader('Content-Type', 'text/javascript')
+            res.end(`window.apiToken = ${JSON.stringify(token)}`)
+          }
+
+          res.end('window.apiToken = { token_type: null, access_token: null }')
+        }
+      },
+
       historyApiFallback(),
 
       // The order of serverProxy is important. It will not work if it is indexed
