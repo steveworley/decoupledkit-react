@@ -1,5 +1,6 @@
-import fetch from 'node-fetch'
 import btoa from 'btoa'
+import fetchWithConfig from 'node-fetch-oauth2'
+import fetch from 'node-fetch'
 
 // Import classes to assist with formatting the API response into a structure
 // that represents the GraphQL Schema for the type in the graphql server.
@@ -19,12 +20,20 @@ class DrupalApi {
    * @function constructor
    */
   constructor() {
-    this.url = process.env.DRUPAL_URL
-    this.headers = {
-      'Accept': 'applicatoin/vnd.api+json',
-      'Content-Type': 'application/vnd.api+json',
-      'Authorization': 'Basic ' + btoa(process.env.DRUPAL_USER + ':' + process.env.DRUPAL_PASSWORD)
-    }
+    this.fetch = fetchWithConfig({
+      host: process.env.DRUPAL_URL,
+      headers: [
+        ['Accept', 'application/vnd.api+json'],
+        ['Content-Type', 'application/vnd.api+json']
+      ],
+      tokenConfig: {
+        grant_type: 'password',
+        client_id: process.env.CLIENT_ID,
+        client_secret: process.env.CLIENT_SECRET,
+        username:  process.env.DRUPAL_USER,
+        password:  process.env.DRUPAL_PASSWORD
+      }
+    })
   }
 
   /**
@@ -51,12 +60,11 @@ class DrupalApi {
    * @return {Promise}
    *   Returns a promise that resolves to new characters.
    */
-  characters(nid = null) {
-    const url = this.url + 'node/marvel_characters/'
-    return fetch(url, { headers: this.headers })
-      .then(res => res.json())
-      .then(json => json.data.map(i => new Character(i)))
-      .catch(this.handleErrors)
+  async characters(nid = null) {
+    const response = await this.fetch('/jsonapi/node/marvel_characters')
+    const { data } = await response.json()
+
+    return data.map(i => new Character(i))
   }
 
   /**
@@ -73,28 +81,27 @@ class DrupalApi {
    * @todo Data validation on the JSON object that is given to ensure we have
    * the requried fields to create a node.
    */
-  createCharacter(character) {
-    const data = {
+  async createCharacter(character) {
+    const body = JSON.stringify({
       data: {
         type: 'node--marvel_characters',
         attributes: character
       }
+    })
+
+    const response = await this.fetch('/jsonapi/node/marvel_characters', {
+      method: 'POST',
+      body
+    })
+
+    if (response.ok) {
+      const { data } = await response.json()
+      return new Character(data)
     }
 
-    return fetch(`${this.url}node/marvel_characters`, {
-      method: 'POST',
-      headers: this.headers,
-      body: JSON.stringify(data)
-    })
-      .then(res => {
-        if (res.status === 403) {
-          console.log(JSON.stringify(data))
-          throw new Error('Forbidden')
-        }
-        return res.json()
-      })
-      .then(json => new Character(json.data))
-      .catch(this.handleErrors)
+    // @TODO: Error handling would be done here so we can bubble a reasonable
+    // response to our clients so they can act accordingly.
+    throw new Error(`Unable to create character [${response.status}]`)
   }
 
 }

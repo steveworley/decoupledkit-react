@@ -123,9 +123,12 @@ const createCharacter = (_, { input }) => {
 
     const characterData = {
       title: character.name,
-      field_description: character.description,
+      field_description: {
+        value: character.description,
+        format: 'rich_text'
+      },
       field_image_reference: `${character.thumbnail.path}.${character.thumbnail.extension}`,
-      field_marvel_id: character.id
+      field_marvel_id: character.id,
     }
 
     return DrupalApi.createCharacter(characterData)
