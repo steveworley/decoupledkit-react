@@ -1,4 +1,4 @@
-import fetch from 'node-fetch'
+import fetchWithConfig from 'node-fetch-oauth2'
 
 // Import classes to assist with formatting the API response into a structure
 // that represents the GraphQL Schema for the type in the graphql server.
@@ -17,55 +17,45 @@ import {
 class PokemonApi {
 
   constructor() {
-    const drupal_url = process.env.DRUPAL_URL;
-    this.url = drupal_url;
-    this._cache = {
-      pokemons: {},
-      abilities: {},
-      types: {}
-    };
+    this.fetch = fetchWithConfig({
+      host: process.env.DRUPAL_URL,
+      headers: [
+        ['Accept', 'application/vnd.api_json'],
+        ['Content-Type', 'application/vnd.api_json']
+      ],
+      tokenConfig: {
+        grant_type: 'password',
+        client_id: process.env.CLIENT_ID,
+        client_secret: process.env.CLIENT_SECRET,
+        username: process.env.DRUPAL_USER,
+        password: process.env.DRUPAL_PASSWORD
+      }
+    })
   }
 
   handleErrors(error) {
     console.error(error);
   }
 
-  pokemons(nid = null) {
-    const url = this.url + 'node/pokemon/';
-    return fetch(url)
-      .then(res => res.json())
-      .then(json => {
-        return json;
-      }).then(json => {
-        const pokemonList = json.data.map(i => new Pokemon(i));
-        this._cache.pokemons = pokemonList; // store in cache
-        return pokemonList;
-      })
-      .catch(this.handleErrors);
+  async pokemons(nid = null) {
+    const response = await this.fetch('/jsonapi/node/pokemon')
+    const { data } = await response.json()
+
+    return data.map(i => new Pokemon(i))
   }
 
-  abilities(uuid) {
-    const url = this.url + `node/pokemon/${uuid}/field_abilities`;
-    return fetch(url)
-      .then(res => res.json())
-      .then(json => {
-        const abilities = json.data.map(i => new Ability(i));
-        this._cache.abilities[uuid] = abilities;
-        return abilities;
-      })
-      .catch(this.handleErrors);
+  async abilities(uuid) {
+    const response = await this.fetch(`/jsonapi/node/pokemon/${uuid}/field_abilities`)
+    const { data } = await response.json()
+
+    return data.map(i => new Ability(i))
   }
 
-  ref_types(uuid) {
-    const url = this.url + `node/pokemon/${uuid}/field_type_pokemon_ref`;
-    return fetch(url)
-      .then(res => res.json())
-      .then(json => {
-        const types = json.data.map(i => new Types(i));
-        this._cache.types[uuid] = types;
-        return types;
-      })
-      .catch(this.handleErrors);
+  async ref_types(uuid) {
+    const response = await this.fetch(`/jsonapi/node/pokemon/${uuid}/field_type_pokemon_ref`)
+    const { data } = await response.json()
+
+    return data.map(i => new Types(i))
   }
 
 }

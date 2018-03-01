@@ -1,6 +1,6 @@
-import fetch from 'node-fetch'
 import btoa from 'btoa'
 import fetchWithConfig from 'node-fetch-oauth2'
+import fetch from 'node-fetch'
 
 // Import classes to assist with formatting the API response into a structure
 // that represents the GraphQL Schema for the type in the graphql server.
@@ -23,8 +23,8 @@ class DrupalApi {
     this.fetch = fetchWithConfig({
       host: process.env.DRUPAL_URL,
       headers: [
-        ['Accept', 'application/vnd.api_json'],
-        ['Content-Type', 'application/vnd.api_json']
+        ['Accept', 'application/vnd.api+json'],
+        ['Content-Type', 'application/vnd.api+json']
       ],
       tokenConfig: {
         grant_type: 'password',
@@ -82,24 +82,26 @@ class DrupalApi {
    * the requried fields to create a node.
    */
   async createCharacter(character) {
-    const data = {
+    const body = JSON.stringify({
       data: {
         type: 'node--marvel_characters',
         attributes: character
       }
-    }
-
-    const response = await fetch('/jsonapi/node/marvel_characters', {
-      method: 'POST',
-      body: JSON.stringify(data)
     })
 
-    if (response.status === 403) {
-      throw new Error('forbidden')
+    const response = await this.fetch('/jsonapi/node/marvel_characters', {
+      method: 'POST',
+      body
+    })
+
+    if (response.ok) {
+      const { data } = await response.json()
+      return new Character(data)
     }
 
-    const { data } = await response.json()
-    return new Character(data)
+    // @TODO: Error handling would be done here so we can bubble a reasonable
+    // response to our clients so they can act accordingly.
+    throw new Error(`Unable to create character [${response.status}]`)
   }
 
 }

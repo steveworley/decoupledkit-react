@@ -1,6 +1,10 @@
 import * as types from '../actions/drupalAPITypes';
-import { tokenStorage, fetchWithMiddleware, middleware } from 'fetch-oauth2'
 import Dexie from 'dexie'
+
+// fetch-oauth2 can be used to lease a token with the API but this will require
+// API credentials to be stored and served with the client application which
+// may compromise the API.
+import { tokenStorage, fetchWithMiddleware, middleware } from 'fetch-oauth2'
 
 class DrupalAPI {
 
@@ -14,7 +18,8 @@ class DrupalAPI {
       this.addHostToUrl,
       this.addHeader('Content-Type', 'application/vnd.api+json'),
       this.addHeader('Accept', 'application/vnd.api+json'),
-      middleware.setOAuth2Authorization(this.storage),
+      this.addHeader('Authorization', `${window.apiToken.token_type} ${window.apiToken.access_token}`),
+      // middleware.setOAuth2Authorization(this.storage),
       middleware.authorisationChallengeHandler(this.storage)
     )
   }
@@ -232,12 +237,12 @@ class DrupalAPI {
    * @see service-worker.js
    */
   loadCache(API_LOC) {
-    return caches.match(API_LOC)
+    return caches.match(types.DRUPAL_API_LOC + API_LOC)
       .then(response => {
         if (!response) {
           const request = this.fetch(API_LOC)
           caches.open('window-cache-v2').then(cache => {
-            cache.add(API_LOC).then(() => console.log('cache added'))
+            cache.add(types.DRUPAL_API_LOC + API_LOC).then(() => console.log('cache added'))
           })
           return request.then(res => res.json())
         }

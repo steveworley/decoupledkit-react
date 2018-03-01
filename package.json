@@ -48,6 +48,7 @@
     "graphql-tag": "2.6.1",
     "http-proxy-middleware": "0.17.4",
     "immutable": "^3.8.2",
+    "node-fetch-oauth2": "github:steveworley/node-fetch-oauth2",
     "object-assign": "4.1.0",
     "react": "^16.2.0",
     "react-apollo": "2.0.4",
