@@ -4,10 +4,7 @@ import { api as DrupalApi } from '../helper/DrupalApi'
 // Additional Type definitions that are used by this module.
 import villains from './villain';
 import comics from './comic';
-
 import villainList from '../../data/villains'
-
-const characterList = [];
 
 /**
  * --- Schema definition for the type ---
