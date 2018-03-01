@@ -64,7 +64,7 @@ browserSync({
             res.end(`window.apiToken = ${JSON.stringify(token)}`)
           }
 
-          res.end('')
+          res.end('window.apiToken = { token_type: null, access_token: null }')
         }
       },
 
