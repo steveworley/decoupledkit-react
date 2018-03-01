@@ -43,7 +43,7 @@ browserSync({
       // to reduce the ability for people to remote request it.
       {
         route: '/apitoken.js',
-        handle: async (req, res, next) => {
+        handle: async (req, res) => { // , next
           const body = Object.entries({
             grant_type: 'password',
             client_id: 'ffdff2a7-53d7-408c-865c-67121e597285',
