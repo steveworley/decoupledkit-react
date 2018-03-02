@@ -1,0 +1,39 @@
+site_name: React Decoupled StarterKit
+
+repo_url: https://github.com/acquia-pso/decoupledkit-react
+site_description: 'A starterkit for headless workflows with Drupal, React, & GraphQL'
+theme: readthedocs
+strict: true
+
+extra_javascript:
+  - readme/js/fix_search.js
+
+markdown_extensions:
+  - toc:
+      permalink: True
+
+pages:
+  - Overview: 'README.md'
+  - Getting started: 'readme/gettingstarted.md'
+    - Drupal: 'readme/gettingstarted-drupal.md'
+    - GraphQL: 'readme/gettingstarted-graphql.md'
+    - React: 'readme/gettingstarted-react.md'
+  - Drupal Documentation: 'readme/drupal.md'
+    - Drupal Content Model: 'readme/drupal-contenttypes.md'
+    - Drupal OAuth Settings: 'readme/drupal-oauth.md'
+    - Drupal API Consumers: 'readme/drupal-consumer.md'
+    - Drupal API Roles: 'readme/drupal-roles.md'
+    - Drupal API Tokens: 'readme/drupal-tokens.md'
+  - GraphQL Documentation: 'readme/graphql.md'
+    - Architecture Overview: 'readme/graphql-architecture.md'
+    - Node.js Application: 'readme/graphql-nodejs.md'
+    - Data Sources: 'readme/graphql-sources.md'
+    - Pokemon: 'readme/graphql-pokemon.md'
+    - Marvel: 'readme/graphql-marvel.md'
+  - React Documentation: 'readme/react.md'
+
+
+
+  # - Node.js Application: 'readme/graphql-xoxoxo.md'
+  # - Extending / Overriding BLT: 'readme/extending-blt.md'
+  # - Support & Contribution: '.github/CONTRIBUTING.md'
