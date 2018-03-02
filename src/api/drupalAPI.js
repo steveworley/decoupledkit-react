@@ -4,7 +4,11 @@ import Dexie from 'dexie'
 // fetch-oauth2 can be used to lease a token with the API but this will require
 // API credentials to be stored and served with the client application which
 // may compromise the API.
-import { tokenStorage, fetchWithMiddleware, middleware } from 'fetch-oauth2'
+import {
+  tokenStorage,
+  fetchWithMiddleware,
+  middleware
+} from 'fetch-oauth2'
 
 class DrupalAPI {
 
@@ -66,7 +70,6 @@ class DrupalAPI {
    * Make a request to Drupal to generate a new API token.
    */
   generateToken() {
-    // @TODO Move to configuration
     const body = [
       'grant_type=password',
       'client_id=' + process.env.CLIENT_ID,
@@ -75,11 +78,13 @@ class DrupalAPI {
       'password=' + process.env.DRUPAL_PASSWORD,
     ];
 
-    return fetch('http://local.decoupledkit.com/oauth/token', {
-      method: 'POST',
-      body: body.join('&'),
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-    })
+    return fetch(process.env.DRUPAL_URL + '/oauth/token', {
+        method: 'POST',
+        body: body.join('&'),
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      })
       .then(res => res.json())
       .then((json) => {
         if (json.error) {
@@ -147,7 +152,10 @@ class DrupalAPI {
    */
   createNode(API_LOC, data = {}) {
     const body = JSON.stringify(data)
-    return this.fetch(API_LOC, { method: 'POST', body }).then(res => res.json()).catch(err => console.log(err))
+    return this.fetch(API_LOC, {
+      method: 'POST',
+      body
+    }).then(res => res.json()).catch(err => console.log(err))
   }
 
   /**
@@ -158,7 +166,9 @@ class DrupalAPI {
    * @return {Promise}
    */
   deleteNode(API_LOC) {
-    return this.fetch(API_LOC, { method: 'DELETE' }).then(res => res.json()).catch(err => console.log(err))
+    return this.fetch(API_LOC, {
+      method: 'DELETE'
+    }).then(res => res.json()).catch(err => console.log(err))
   }
 
 
@@ -171,7 +181,10 @@ class DrupalAPI {
    */
   updateDrupal(API_LOC, data) {
     const body = JSON.stringify(data)
-    return this.fetch(API_LOC, { method: 'PATCH', body }).then(res => res.json()).catch(err => console.log(err))
+    return this.fetch(API_LOC, {
+      method: 'PATCH',
+      body
+    }).then(res => res.json()).catch(err => console.log(err))
   }
 
 
@@ -206,17 +219,20 @@ class DrupalAPI {
       }
     })
 
-    return this.fetch(API_LOC, { method: 'POST', body }).then(res => res.json()).catch(err => console.log(err))
+    return this.fetch(API_LOC, {
+      method: 'POST',
+      body
+    }).then(res => res.json()).catch(err => console.log(err))
   }
 
   /**
-    * Fetch all nodes IDs from a given type for use as a utility function.
-    *
-    * @param {String} API_LOC
-    *   The API URL.
-    *
-    * @return {Promise}
-    */
+   * Fetch all nodes IDs from a given type for use as a utility function.
+   *
+   * @param {String} API_LOC
+   *   The API URL.
+   *
+   * @return {Promise}
+   */
   getDrupalIDs(API_LOC) {
     return this.fetch(API_LOC)
       .then(res => res.json())
@@ -325,14 +341,17 @@ class DrupalAPI {
     db.open().catch(err => console.error('UNABLE TO OPEN DB', err))
 
     return db.table('requests').where('path').equals(API_LOC).first(response => {
-      return new Promise(resolve => resolve(response.data))
-    })
+        return new Promise(resolve => resolve(response.data))
+      })
       .catch(err => {
         console.log(err);
         return this.fetch(API_LOC)
           .then(res => res.json())
           .then(json => {
-            db.table('requests').add({ path: API_LOC, data: json })
+            db.table('requests').add({
+              path: API_LOC,
+              data: json
+            })
             return new Promise(resolve => resolve(json))
           })
           .catch(err => console.log(err))
