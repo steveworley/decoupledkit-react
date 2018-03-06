@@ -26,14 +26,16 @@ pages:
     - Drupal API Tokens: 'readme/drupal-tokens.md'
   - GraphQL Documentation: 'readme/graphql.md'
     - Architecture Overview: 'readme/graphql-architecture.md'
+    - Apollo Engine Overview: 'readme/graphql-apollo.md'
     - Node.js Application: 'readme/graphql-nodejs.md'
     - Data Sources: 'readme/graphql-sources.md'
     - Pokemon: 'readme/graphql-pokemon.md'
     - Marvel: 'readme/graphql-marvel.md'
   - React Documentation: 'readme/react.md'
+    - Architecture Overview: 'readme/react-architecture.md'
+    - Drupal CRUD Operations: 'readme/react-drupalcrud.md'
+    - Drupal GraphQL (single): 'readme/react-graphqlsingle.md'
+    - Drupal GraphQL (multiple): 'readme/react-graphqlmultiple.md'
+    - API Failover Techniques: 'readme/react-apifailover.md'
+    - API Mocking Techniques: 'readme/react-apimock.md'
 
-
-
-  # - Node.js Application: 'readme/graphql-xoxoxo.md'
-  # - Extending / Overriding BLT: 'readme/extending-blt.md'
-  # - Support & Contribution: '.github/CONTRIBUTING.md'
