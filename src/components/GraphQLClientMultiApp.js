@@ -49,7 +49,7 @@ class GraphQLClientMulti extends React.Component {
         <h4>Using GraphQL to query a data from both a Headless Drupal source and external non-Drupal API.</h4>
 
         <p>
-          <b>Story:</b> As a developer, I would like to understand the usefullness of utilizing a GraphQL server combine data from multiple API endpoints. I would like to understand how to setup the proper types and schema defintions to display this data. Using the GraphQL server we can demonstrate accessing information from different systems and exposing the data through a single interface for attached clients (this React application).
+          <b>Story:</b> As a developer, I would like to understand the usefulness of utilizing a GraphQL server combine data from multiple API endpoints. I would like to understand how to setup the proper types and schema definitions to display this data. Using the GraphQL server we can demonstrate accessing information from different systems and exposing the data through a single interface for attached clients (this React application).
         </p>
 
         <div className="docs-refs clearfix">
