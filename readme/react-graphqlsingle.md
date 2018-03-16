@@ -49,7 +49,7 @@ import {connect} from 'react-redux';
 ```
 
 ```
-# The GraphQL component is then imported 
+# The component is then imported 
 import GraphQLClientDrupalApp from '../components/GraphQLClientDrupalApp';
 # Then rendered within the container as a component 
 render() { ....

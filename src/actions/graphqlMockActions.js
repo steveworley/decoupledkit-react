@@ -29,17 +29,9 @@ const fetchAll = () => {
   `
 }
 
-// const beginAction = () => {
-//   return { type: MOCK_GRAPHQL_BEGIN, data: [] }
-// }
-
 const endAction = (data) => {
   return { type: MOCK_GRAPHQL_END, data: data }
 }
-
-// const sendMessage = (msg) => {
-//   return { type: MOCK_GRAPQHL_MSG, msg: msg }
-// }
 
 export const fetchUsersAction = () => {
   return dispatch => {
