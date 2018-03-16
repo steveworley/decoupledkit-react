@@ -64,7 +64,7 @@ This component serves as the UI layer to render the stored data as a visual elem
 
 #### src/api/drupalAPI.js
 
-This component stores each of the original storage methods by core functionality. The `loadCache` function uses a service worker to reference the `window.caches` for the storage device, which is referenced and leveraged in the associated files `src/registerServiceWorker.js` and `src/service-worker.js`. The `loadLocalStorage` function stores and and references the data according to the `localStorage` method, then allowing to be referenced as `key:value` as JSON objects. The `loadIndexedDB` function leverages the `Dexie` package to create a local HDD space to create a relational database for reference. The `clearCaches` is used as utility method do clear each of the caches with their matching option. 
+This component stores each of the original storage methods by core functionality. The `loadCache` function uses a service worker to reference the `window.caches` for the storage device, which is referenced and leveraged in the associated files `src/util/registerServiceWorker.js` and `src/util/service-worker.js`. The `loadLocalStorage` function stores and and references the data according to the `localStorage` method, then allowing to be referenced as `key:value` as JSON objects. The `loadIndexedDB` function leverages the `Dexie` package to create a local HDD space to create a relational database for reference. The `clearCaches` is used as utility method do clear each of the caches with their matching option. 
 
 
 ### Interacting with the storage methods
