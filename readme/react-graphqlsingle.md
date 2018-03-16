@@ -78,9 +78,7 @@ The component focuses its efforts on comparing the same statical attributes for 
 
 ### GraphQL interaction
 
-import * as actions from '../actions/graphqlclientActions';
-
-The primary execution of the JSON API interaction is fired within the `src/components/GraphQLClientDrupalApp.js ` file. This is referenced in this file as `import * as actions from '../actions/graphqlclientActions.js'` before binding within the standard Redux workflow. These actions are named according to their functionality in the `src/actions/graphqlclientActions.js` file, as this file serves most of the Redux actions for each of the interactions. As per the standard Redux workflow, reducers utilized as the final step to append the state. These reducers are `src/reducers/drupalLoadReducer.js` and `src/reducers/drupalLoadImgReducer.js`. 
+The primary execution of the JSON API interaction is fired within the `src/components/GraphQLClientDrupalApp.js` file. This is referenced in this file as `import * as actions from '../actions/graphqlclientActions.js'` before binding within the standard Redux workflow. These actions are named according to their functionality in the `src/actions/graphqlclientActions.js` file, as this file serves most of the Redux actions for each of the interactions. As per the standard Redux workflow, reducers utilized as the final step to append the state. These reducers are `src/reducers/drupalLoadReducer.js` and `src/reducers/drupalLoadImgReducer.js`. 
 
 #### What is Apollo Client?
 

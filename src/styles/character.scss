@@ -71,6 +71,7 @@
   padding: 3px;
   &.active {
     background: #efefef;
+    border-top:1px solid white;
   }
   a {
     display: block;
@@ -132,33 +133,33 @@
   .line-7 { animation-delay: 400ms; }
   .line-8 { animation-delay: 600ms; }
   .line-9 { animation-delay: 800ms; }
-} 
-
-
-
-@keyframes opacity-1 { 
-  0% { 
-    opacity: 1;
-  }
-  50% { 
-    opacity: 0;
-  }
-  100% { 
-    opacity: 1;
-  }  
 }
 
-@keyframes opacity-2 { 
-  0% { 
+
+
+@keyframes opacity-1 {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes opacity-2 {
+  0% {
     opacity: 1;
     height: 15px;
   }
-  50% { 
+  50% {
     opacity: 0;
     height: 12px;
   }
-  100% { 
+  100% {
     opacity: 1;
     height: 15px;
-  }  
+  }
 }
