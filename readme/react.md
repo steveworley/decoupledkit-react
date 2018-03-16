@@ -16,7 +16,6 @@ The application was developed on top of [React Slingshot](https://github.com/cor
 ### What architectures are included?
 
 
-
 #### Drupal CRUD Operations
 
 This page and components cover workflows around interacting directly with the JSON API module in Drupal. These operations are separated within the code and noted according to standard CRUD (create, read, update, delete) purposes. This page targets the "Dogs" content type which is stored in the Drupal CMS for these operations. The application intentionally only targets simple text and image fields to provide working examples of requirements when interacting with the endpoints. These straightforward examples utilize interactions with OAuth 2.0 headers and validations according to common security handshake practices. Code specifics and references will be covered in the [Drupal CRUD](react-drupalcrud.md) document.
@@ -24,7 +23,6 @@ This page and components cover workflows around interacting directly with the JS
 #### GraphQL Client (Single)
 
 This page and components cover workflows around interacting with GraphQL that derives its content from a single data source. In this case, the single source of data is the Drupal JSON API endpoint(s). The intent of this workflow is to exhibit a workable example when utilizing GraphQL as an orchestration layer, instead of dealing directly with Drupal, as shown in the previous CRUD example. This page uses the designated "Pokemon" content type in Drupal to interact with for the React application. The application fetches data from the GraphQL designation and displays as a list of nodes with all the pertinent fields for that content. The application then shows a straightforward example of comparing this data by strength and weakness. Code specifics and references will be covered in the [React GraphQL Single](react-graphqlsingle.md) document.
-
 
 
 ####  GraphQL Client (Multiple)
