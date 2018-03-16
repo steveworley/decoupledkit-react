@@ -16,7 +16,7 @@ export class ChatBotPage extends Component {
           <li>Who has higher speed venusaur or mankey?</li>
         </ul>
         <p className="note"><strong>Available Pokemon:</strong> Venusaur, Slowbro, Maneky, Grimer, Clefairy, Exeggutor, Chesnaught, Solosis, Corsola, Electabuzz<br /><strong>Available stats:</strong> HP, Attack, Defense, Special Attack, Special Defense, Speed<br /><strong>Natural English:</strong> faster, stronger, tougher</p>
-        <div style={{textAlign: "center"}}>
+        <div>
           <iframe
             width="80%"
             height="430"

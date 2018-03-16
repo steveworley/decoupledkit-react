@@ -1,5 +1,3 @@
-require('dotenv').config();
-
 const CACHE_VERSION = 2
 const CURRENT_CACHES = {
   prefetch: `window-cache-v${CACHE_VERSION}`
