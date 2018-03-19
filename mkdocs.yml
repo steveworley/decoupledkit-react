@@ -28,11 +28,10 @@ pages:
   - GraphQL Documentation:
     - GraphQL Overview: 'graphql.md'
     - Architecture Overview: 'graphql-architecture.md'
-    - Apollo Engine Overview: 'graphql-apollo.md'
-    - Node.js Application: 'graphql-nodejs.md'
-    - Data Sources: 'graphql-sources.md'
+    - API & Local Data Sources: 'graphql-sources.md'
     - Pokemon: 'graphql-pokemon.md'
     - Marvel: 'graphql-marvel.md'
+    - Client: 'graphql-client.md'
   - React Documentation:
     - React Documentation: 'react.md'
     - Architecture Overview: 'react-architecture.md'
