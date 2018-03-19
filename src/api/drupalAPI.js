@@ -240,6 +240,21 @@ class DrupalAPI {
       .catch(err => console.log(err))
   }
 
+  async login(user, pass) {
+    try {
+      const response = await this.fetch('/login?_format=json')
+    } catch (error) {
+      console.log(error)
+      return false
+    }
+
+    if (!response.ok) {
+      return false
+    }
+
+    return await response.json()
+  }
+
   /**
    * Load data from the browsers cache.
    *
