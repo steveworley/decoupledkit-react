@@ -1,4 +1,4 @@
-## API & Local Data Sources
+## GraphQL Data Sources
 
 **Note:** each of the queries can be tested in the browser at [http://localhost:8082/graphiql](http://localhost:8082/graphiql)
 
