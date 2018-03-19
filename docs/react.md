@@ -13,7 +13,7 @@ The React application piece of the Decoupled architecture focuses on the followi
 The application was developed on top of [React Slingshot](https://github.com/coryhouse/react-slingshot) project by Cory House. The application extends the baseline structure by including the original structure and combination of packages, while trying to focus additions within the `src/` application directory. Standard NPM build tasks are executed `package.json` and organized by functional purpose. More details will be provided in the [architecture documentation](react-architecture.md). 
 
 
-### What architectures are included?
+### Which architectural workflows are covered?
 
 
 #### Drupal CRUD Operations
