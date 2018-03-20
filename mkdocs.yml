@@ -40,3 +40,4 @@ pages:
     - Drupal GraphQL (multiple): 'react-graphqlmultiple.md'
     - API Failover Techniques: 'react-apifailover.md'
     - API Mocking Techniques: 'react-apimock.md'
+    - Chatbot: 'react-chatbot.md'
