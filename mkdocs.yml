@@ -5,37 +5,39 @@ site_description: 'A starterkit for headless workflows with Drupal, React, & Gra
 theme: readthedocs
 strict: true
 
-extra_javascript:
-  - readme/js/fix_search.js
+# extra_javascript:
+#   - js/fix_search.js
 
 markdown_extensions:
   - toc:
       permalink: True
 
 pages:
-  - Overview: 'README.md'
-  - Getting started: 'readme/gettingstarted.md'
-    - Drupal: 'readme/gettingstarted-drupal.md'
-    - GraphQL: 'readme/gettingstarted-graphql.md'
-    - React: 'readme/gettingstarted-react.md'
-  - Drupal Documentation: 'readme/drupal.md'
-    - Drupal Content Model: 'readme/drupal-contenttypes.md'
-    - Drupal OAuth Settings: 'readme/drupal-oauth.md'
-    - Drupal API Consumers: 'readme/drupal-consumer.md'
-    - Drupal API Roles: 'readme/drupal-roles.md'
-    - Drupal API Tokens: 'readme/drupal-tokens.md'
-  - GraphQL Documentation: 'readme/graphql.md'
-    - Architecture Overview: 'readme/graphql-architecture.md'
-    - Apollo Engine Overview: 'readme/graphql-apollo.md'
-    - Node.js Application: 'readme/graphql-nodejs.md'
-    - Data Sources: 'readme/graphql-sources.md'
-    - Pokemon: 'readme/graphql-pokemon.md'
-    - Marvel: 'readme/graphql-marvel.md'
-  - React Documentation: 'readme/react.md'
-    - Architecture Overview: 'readme/react-architecture.md'
-    - Drupal CRUD Operations: 'readme/react-drupalcrud.md'
-    - Drupal GraphQL (single): 'readme/react-graphqlsingle.md'
-    - Drupal GraphQL (multiple): 'readme/react-graphqlmultiple.md'
-    - API Failover Techniques: 'readme/react-apifailover.md'
-    - API Mocking Techniques: 'readme/react-apimock.md'
-
+  - Home: 'index.md'
+  - Getting started:
+    - Drupal: 'gettingstarted-drupal.md'
+    - GraphQL: 'gettingstarted-graphql.md'
+    - React: 'gettingstarted-react.md'
+  - Drupal Documentation:
+    - Drupal Overview: 'drupal.md'
+    - Drupal Content Model: 'drupal-contenttypes.md'
+    - Drupal OAuth Settings: 'drupal-oauth.md'
+    - Drupal API Consumers: 'drupal-consumer.md'
+    - Drupal API Roles: 'drupal-roles.md'
+    - Drupal API Tokens: 'drupal-tokens.md'
+  - GraphQL Documentation:
+    - GraphQL Overview: 'graphql.md'
+    - Architecture Overview: 'graphql-architecture.md'
+    - API & Local Data Sources: 'graphql-sources.md'
+    - Pokemon: 'graphql-pokemon.md'
+    - Marvel: 'graphql-marvel.md'
+    - Client: 'graphql-client.md'
+  - React Documentation:
+    - React Documentation: 'react.md'
+    - Architecture Overview: 'react-architecture.md'
+    - Drupal CRUD Operations: 'react-drupalcrud.md'
+    - Drupal GraphQL (single): 'react-graphqlsingle.md'
+    - Drupal GraphQL (multiple): 'react-graphqlmultiple.md'
+    - API Failover Techniques: 'react-apifailover.md'
+    - API Mocking Techniques: 'react-apimock.md'
+    - Chatbot: 'react-chatbot.md'

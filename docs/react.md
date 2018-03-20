@@ -13,8 +13,7 @@ The React application piece of the Decoupled architecture focuses on the followi
 The application was developed on top of [React Slingshot](https://github.com/coryhouse/react-slingshot) project by Cory House. The application extends the baseline structure by including the original structure and combination of packages, while trying to focus additions within the `src/` application directory. Standard NPM build tasks are executed `package.json` and organized by functional purpose. More details will be provided in the [architecture documentation](react-architecture.md). 
 
 
-### What architectures are included?
-
+### Which architectural workflows are covered?
 
 
 #### Drupal CRUD Operations
@@ -24,7 +23,6 @@ This page and components cover workflows around interacting directly with the JS
 #### GraphQL Client (Single)
 
 This page and components cover workflows around interacting with GraphQL that derives its content from a single data source. In this case, the single source of data is the Drupal JSON API endpoint(s). The intent of this workflow is to exhibit a workable example when utilizing GraphQL as an orchestration layer, instead of dealing directly with Drupal, as shown in the previous CRUD example. This page uses the designated "Pokemon" content type in Drupal to interact with for the React application. The application fetches data from the GraphQL designation and displays as a list of nodes with all the pertinent fields for that content. The application then shows a straightforward example of comparing this data by strength and weakness. Code specifics and references will be covered in the [React GraphQL Single](react-graphqlsingle.md) document.
-
 
 
 ####  GraphQL Client (Multiple)

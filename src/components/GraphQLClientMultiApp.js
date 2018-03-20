@@ -7,8 +7,6 @@ import Character from './Character'
 import CreateCharacterForm from './CreateCharacterForm'
 import '../styles/graphqlclientdrupal.scss'
 
-/*eslint-disable no-console */
-
 class GraphQLClientMulti extends React.Component {
 
   constructor(props, store) {

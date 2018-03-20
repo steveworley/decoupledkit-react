@@ -25,7 +25,7 @@ class APIDataMockApp extends React.Component {
 
       <div className="holder">
 
-        <h4>Mocking APIs for local developmenta</h4>
+        <h4>Mocking APIs for local development</h4>
         <p>
           <b>Story:</b> As a developer, I want understand the usefulness of using a Mock API when developing API-reliant applications in React.
            I would like to understand how this Mock API is constructed and executed for local build tasks only, when using a local variable in my .env file.
