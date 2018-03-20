@@ -76,18 +76,37 @@ This data is originally fetched from the [Marvel API](https://developer.marvel.c
 
 #### Comics 
 
-This data is also fetched from the [Marvel API](https://developer.marvel.com/) using the `API_PUBLIC_KEY` and `API_PRIVATE_KEY` which is stored in the local `.env` file.
+This data is also fetched from the [Marvel API](https://developer.marvel.com/) using the `API_PUBLIC_KEY` and `API_PRIVATE_KEY` which is stored in the local `.env` file. Comics are related directly to characters and cannot be queried for independently.
 
 ```
-TODO
+{
+  characters {
+    comics {
+      id
+      title
+      issueNumber
+      description
+      image
+    }
+  }
+}
 ```
 
 #### Comic Sales 
 
-This data is also fetched from the [Comic Sales API](https://comichron-data.github.io/api/titles.json) to compare sales data with the chosen characters's comic list. 
+This data is also fetched from the [Comic Sales API](https://comichron-data.github.io/api/titles.json) to compare sales data with the chosen characters's comic list. Similar to Comics, Comic sales are related directly to comics and cannot be queried for independently. The comic sales API does not match directly with Marvel's API so the server does a fuzzy match to try and find data to present to demo the concept.
 
 ```
-TODO
+{
+  characters {
+    comics {
+      comicSales {
+        issue
+        count
+      }
+    }
+  }
+}
 ```
 
 
