@@ -1,6 +1,6 @@
 ## React Architecture
 
-The React application is container in the root of the repository and entails everything except for the `__graphql_server`. The React application is operating as a [Single Page Application](https://en.wikipedia.org/wiki/Single-page_application) that is being served by a NodeJS server.
+The React application is contained in the root of this repository and entails everything except for the `__graphql_server`. The React application is operating as a [Single Page Application](https://en.wikipedia.org/wiki/Single-page_application) that is being served by a NodeJS server.
 
 
 ### Folder structure
