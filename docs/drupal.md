@@ -1,33 +1,22 @@
-todo
-# Drupal
+## Headless Lightning Drupal Application
 
-This Drupal Kit offers 5 diffrent types of content.
+This instance of the Headless Lightning Drupal application offers multiple content types when testing with the React Starter Kit, in addition to basic configuration to quickly standup the site locally. Each of the content types are created to test various scenarios with the React application directly or being sourced from the GraphQL application. Additional documentation is provided for each configuration topics noted below. 
 
-    Basic Page,  Client, Dogs, Marvel Characters, Pokemon
 
-More about Content Types [here](drupal-contenttypes.md)
-* api settings - http://local.decoupledkit.com/admin/access/settings
-Allows you to configure certain settings for the API, including token expiration and the location of your keys.
-    | Field | Description | Default Value |
-    | ------------ | ------------ | ------------ |
-    | Access Token Expiration Time | The default value, in seconds, to be used as expiration time when creating new tokens | 545400 |
-    | Refresh Token Expiration Time | The default value, in seconds, to be used as expiration time when creating new tokens | 1209600 |
-    | Public Key | The path to the public key file. This should match the key present in the Drupal docroot | todo |
-    | Private Key | The path to the private key file. This should match the key present in the Drupal docroot | todo |
-    Check the 'Enable the implicit grant?' box while setting this.
+#### Drupal configuration documentation
+ 
+* **[Content Model](./drupal-contenttypes.md)** - more information about the content types and fields which are are referenced  
+* **[API settings](./drupal-apisettings.md)** - settings allow you to configure certain settings for the API, including token expiration and the location of your keys.
+* **[Clients configuration](./drupal-consumer.md)** - documentation for setup and configuration for clients can be reviewed 
+* **[Drupal Roles](./drupal-roles.md)** - groups of permissions that can be assigned to regular users, API users, and clients via scopes
+<!--* **[Drupal Tokens](./drupal-tokens.md)** - granted when an API user successfully authenticates with a client authorization -->
+* **[JSON API](./drupal-jsonapi.md)** - covers structures and basis highlighted in the [api docs](http://local.decoupledkit.com/api-docs)
 
-* [Clients](drupal-consumer.md) - http://local.decoupledkit.com/admin/config/services/consumer
-Clients allow API users to interact with content. Clients have relationships to one or more roles via scopes and inherit the permissions assigned to those roles.
 
-* [Roles](drupal-roles.md) - http://local.decoupledkit.com/admin/access/roles
-Roles are groups of permissions and can be assigned to regular users, API users, and clients (via scopes).
+#### Additional Resources 
 
-* [Tokens](drupal-tokens.md) - http://local.decoupledkit.com/admin/access/tokens
-Tokens are granted when an API user successfully authenticates with a client
-Lists all the Access Tokens and Refresh Tokens for each and every user including the Scope.
 
-* [JSON API](drupal-jsonapi.md) - cover structures and basis uses http://local.decoupledkit.com/api-docs
-todo.
-The [JSON API module](https://www.drupal.org/project/jsonapi) is a fully compliant implementation of the [JSON API Specification](http://jsonapi.org/).
-Drupal's datastructures, i.e. entity types, bundles, and fields, are incredibly well suited to the JSON API.
+* The [JSON API module](https://www.drupal.org/project/jsonapi) is a fully compliant implementation of the [JSON API Specification](http://jsonapi.org/).
+* The Headless Lightning [repository](https://github.com/acquia/headless-lightning) provides full documentation and references 
 
+    

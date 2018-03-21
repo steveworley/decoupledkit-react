@@ -21,10 +21,10 @@ pages:
   - Drupal Documentation:
     - Drupal Overview: 'drupal.md'
     - Drupal Content Model: 'drupal-contenttypes.md'
+    - Drupal API Settings: 'drupal-apisettings.md'
     - Drupal OAuth Settings: 'drupal-oauth.md'
     - Drupal API Consumers: 'drupal-consumer.md'
     - Drupal API Roles: 'drupal-roles.md'
-    - Drupal API Tokens: 'drupal-tokens.md'
   - GraphQL Documentation:
     - GraphQL Overview: 'graphql.md'
     - Architecture Overview: 'graphql-architecture.md'
