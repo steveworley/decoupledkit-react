@@ -103,14 +103,14 @@ class APIDataFailoverApp extends Component {
             {canLocalStorage ? (
               <li>
                 <h4>window.localStorage</h4>
-                <p><a target="_blank" rel="noopener noreferrer" href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage">Local storage</a> allows the browser to store simple <code>key:value</code> pairs. These values can be string reprsentations of JSON objects however you are limited by the storage size. Local storage shares a storage capacity with Session Storage and can not exceed 10mb.</p>
+                <p><a target="_blank" rel="noopener noreferrer" href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage">Local storage</a> allows the browser to store simple <code>key:value</code> pairs. These values can be string representations of JSON objects however you are limited by the storage size. Local storage shares a storage capacity with Session Storage and can not exceed 10mb.</p>
                 <input type="button" onClick={this.onLocalStorageClick} value={"Load from LocalStorage"} />
               </li>) : <li>LocalStorage API is unavailable use a newer browser.</li>}
 
             {canIndexedDb ? (
               <li>
                 <h4>window.indexedDb</h4>
-                <p><a target="_blank" rel="noopener noreferrer" href="https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API">IndexedDB</a> uses local HDD space to create a relational databse for a web application. It is used to store and retrieve javascript objects by a known key. To begin with IndexedDB you need to open a connection to the database and then specify a schema, after which you can interact with the database as you would a SQL-based RDBMS. The IndexedDB API is complex and does not use the Promise API, but there are packages like <a target="_blank" rel="noopener noreferrer" href="http://dexie.org/">Dexie</a> which provide this functionality.</p>
+                <p><a target="_blank" rel="noopener noreferrer" href="https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API">IndexedDB</a> uses local HDD space to create a relational database for a web application. It is used to store and retrieve javascript objects by a known key. To begin with IndexedDB you need to open a connection to the database and then specify a schema, after which you can interact with the database as you would a SQL-based RDBMS. The IndexedDB API is complex and does not use the Promise API, but there are packages like <a target="_blank" rel="noopener noreferrer" href="http://dexie.org/">Dexie</a> which provide this functionality.</p>
                 <input type="button" onClick={this.onIndexedDbClick} value={"Load from IndexedDB"} />
               </li>) : <li>IndexedDB API is unavailable use a newer browser.</li>}
 

@@ -265,7 +265,7 @@ class DrupalAPI {
    * @param {String} API_LOC
    *   The API location.
    *
-   * @see service-worker.js
+   * @see util/service-worker.js
    */
   loadCache(API_LOC) {
     return caches.match(types.DRUPAL_API_LOC + API_LOC)

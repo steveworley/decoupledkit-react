@@ -122,7 +122,7 @@ export function fetchGraphql() {
   }
 }
 
-export function updateGrpahql(id, name) {
+export function updateGraphql(id, name) {
   return dispatch => {
     dispatch(beginUpdate());
     dispatch(sendMessage(`Preparing to update ${id}'s name to ${name}`))
