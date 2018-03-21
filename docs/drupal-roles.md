@@ -9,3 +9,18 @@ More info here: https://www.drupal.org/docs/7/managing-users/user-roles
 http://local.decoupledkit.com/admin/access/roles
 
 basic overview of roles as they related to the API
+
+Available roles/scopes in this kit:
+
+    Basic page creator
+    Basic page reviewer
+    Client creator
+    Client reviewer
+    Dogs creator
+    Dogs reviewer
+    Marvel Characters creator
+    Marvel Characters reviewer
+    Media creator
+    Media manager
+    Pokemon creator
+    Pokemon reviewer
