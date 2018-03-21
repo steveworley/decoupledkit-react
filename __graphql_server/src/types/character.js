@@ -2,9 +2,7 @@ import { api as MarvelApi } from '../helper/MarvelApi';
 import { api as DrupalApi } from '../helper/DrupalApi'
 
 // Additional Type definitions that are used by this module.
-import villains from './villain';
 import comics from './comic';
-import villainList from '../../data/villains'
 
 /**
  * --- Schema definition for the type ---
@@ -37,7 +35,6 @@ const schema = `
     image: String
     description: String
     marvelId: Int
-    villains: [Villain] @cacheControl(maxAge: 240)
     comics: [Comic] @cacheControl(maxAge: 240)
   }
 
@@ -160,13 +157,6 @@ const resolvers = {
   return type).
   */
   Character: {
-    villains: ({ villains }) => {
-      const badGuys = [];
-      for (let villain of villains) {
-        badGuys.push(villainList.find(vil => villain === vil.name));
-      }
-      return badGuys;
-    },
     comics: ({ marvelId }) => MarvelApi.comics(marvelId)
   }
 }
@@ -184,7 +174,6 @@ export class Model {
     this.description = attributes.field_description !== null ? attributes.field_description.value : ''
     this.image = attributes.field_image_reference
     this.nid = attributes.nid
-    this.villains = attributes.field_nemesis
     this.comics = []
     this.marvelId = attributes.field_marvel_id
   }
@@ -215,5 +204,5 @@ export default () => ({
   queries,
   mutations,
   resolvers,
-  modules: [villains, comics]
+  modules: [comics]
 })

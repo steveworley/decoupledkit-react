@@ -10,7 +10,6 @@ import { makeExecutableSchema, addMockFunctionsToSchema } from 'graphql-tools'
  * @see ./types/character for more inforamtion
  */
 import characters from './types/character'
-import villains from './types/villain'
 import comics from './types/comic'
 import users from './types/user'
 import pokemon from './types/pokemon'
@@ -23,7 +22,7 @@ import marvel from './types/marvel'
 import mocks from './mocks'
 
 // Add the exported modules to the modules array ready for bundling.
-const modules = [characters, villains, comics, users, pokemon, abilities, types, comicSale, marvel]
+const modules = [characters, comics, users, pokemon, abilities, types, comicSale, marvel]
 
 const schema = makeExecutableSchema(bundle(modules))
 
