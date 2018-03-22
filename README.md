@@ -1,47 +1,16 @@
 
-## Decoupled Kit Application from Acquia
+## Decoupled Starter Kit Application from Acquia
 
 ### About 
 
-The Decoupled Kit was built to explore and communicate common workflows when building headless applications with Drupal's API.  This application is intended for multiple reasons, but primarily as an exercise to help developers understand best practices when combining popular architectural pieces with <a href="https://dri.es/how-to-decouple-drupal-in-2018" target="_blank">Decoupled Drupal</a>, <a href="http://graphql.org" target="_blank">GraphQL</a>, and <a href="https://reactjs.org" target="_blank">React</a>. We have also included a <a href="https://github.com/acquia-pso/decoupledkit-drupal" target="_blank">sibling repository</a> to provide all the necessary data schemas, which are used by this React application and the GraphQL server located in sub-folder `__graphql_server/`.
+The Acquia Decoupled Starter Kit for React provides a complete working environment for demonstrating and prototyping front-end digital experience applications coded in standard Javascript, utilizing decoupled Drupal as a content service. This starter kit aims to provide technical guidance and insights for both Javascript and Drupal developers and is comprised of three separate applications: Headless Lightning Drupal website, React application, and a GraphQL application. Each of these applications work in tandem to illustrate patterned workflows when developing with each of the interconnected applications.
 
- This application was forked from the [React Slingshot](https://github.com/coryhouse/react-slingshot) application and the full documentation has been moved in `docs\React-Slingshot.md`. This application has included a considerable amount of features to be leveraged as best practices around workflow, structure, testing, and much more. The examples are intentionally basic to provide clarity around the intents of the components.
+The Decoupled Starter Kit for React was created [Steve Worley](https://twitter.com/sjworley) and [Jason Enter](https://twitter.com/jasonenter) from the [Acquia](https://www.acquia.com) Professional Services team. The intent of the application(s) is to explore different architectural scenarios when building Decoupled Drupal applications, while using the development to explore options around best practices with these patterned workflows. The components are broken out by functional purposes and the content subjects are intended as straightforward methods to understand. 
 
-<hr />
+### Getting Started 
 
-### Installation for React Application 
+A complete installation steps, high level overview of the architecture, and detailed walk-thru of the code is included in the [Read the Docs website](http://decoupledkit-react.readthedocs.io). The getting started guide is broken out for the [React application](http://decoupledkit-react.readthedocs.io/en/develop/gettingstarted-react/), the [GraphQL application](http://decoupledkit-react.readthedocs.io/en/develop/gettingstarted-graphql/), and the [Headless Lightning Drupal](http://decoupledkit-react.readthedocs.io/en/develop/gettingstarted-drupal/) website. The applications are structured for baseline API architectures to work in tandem, but can also be used as a boilerplates for other purposes.  
 
-- Navigate to the repository root 
-- Install <a href="https://yarnpkg.com/lang/en/docs/install/">yarn</a> or also use `npm` for dependencies.
-- Install packages with `yarn install` or `npm install`
-- Rename the file `.env.example` to `.env` in the project root. This file already contains the proper configuration variables to connect to the Drupal website. 
-- Stand up the application with `yarn start` or `npm start` and visit `http://localhost:8080`
-
-
-### Installation for GraphQL Application 
-- Navigate to the `__graphql_server/` folder
-- Install <a href="https://yarnpkg.com/lang/en/docs/install/">yarn</a> or also use `npm` for dependencies.
-- Install packages with `yarn install` or `npm install`
-- Complete the "Environment Configuration for the GraphQL Application" instructions listed below
-- Stand up the application with `yarn start` or `npm start` and visit `localhost:8082/graphiql` to test queries
-
-#### Environment Configuration for the GraphQL Application
-
--  Rename the file `.env.example` to `.env` in the  `__graphql_server/` folder
--  Obtain and update the `API_PUBLIC_KEY` and `API_PRIVATE_KEY` from [https://developer.marvel.com](https://developer.marvel.com) website
--  Update the `APOLLO_ENGINE` from [https://engine.apollographql.com](https://engine.apollographql.com)
--  The other variables can stay as supplied in the example unless changes are needed  
-
-
-### Installation for Headless Drupal website
-
-- The repository is located at [https://github.com/acquia-pso/decoupledkit-drupal](https://github.com/acquia-pso/decoupledkit-drupal) and will provide instructions to setup, in addition to a sample DB to get started. 
-
-*Additional Information*
-
-- The React application will utilize OAuth to validate headers. So if you are running into issues with `cors` or `OAuth2` errors, make sure to confirm file permission noted under "Additional Notes" in the [Drupal Readme](https://github.com/acquia-pso/decoupledkit-drupal).
-
-<br><hr />
 
 ### Feature Summary 
 
@@ -61,19 +30,17 @@ Architectures which lean on external sources as the primary data streams can off
 This component illustrates utilizing techniques to mock API data endpoints when developing locally. Mock data endpoints are typically included within local build scripts to help emulate data models, while addressing issues around rate limits, changing real data, and similar challenges.
 
 
+### Visual References
 
-### Architecture Summary 
+<img src="https://content.screencast.com/users/BedimStudios/folders/Jing/media/6df987ad-ceda-41b2-a3cb-8bcd93a2ac6d/00002939.png" />
 
+<img src="https://content.screencast.com/users/BedimStudios/folders/Jing/media/b5ccb893-bc70-4450-887b-804e1c83919d/00002936.png" />
 
-TODO 
+<img src="https://content.screencast.com/users/BedimStudios/folders/Jing/media/115dae2c-8ee3-4af2-854b-10e2319ee43e/00002937.png" />
 
+<img src="https://content.screencast.com/users/BedimStudios/folders/Jing/media/abe00c23-123a-494b-aed8-13e0a5a14863/00002940.png" />
 
-### Configuration Summary 
-
-Here is a quick summary of elements included within this application stack, but make sure to review the documentation for proper explanation and context. 
-
-[React](https://facebook.github.io/react/) //  [Redux](http://redux.js.org) //  [React Router](https://github.com/reactjs/react-router) //   [Babel](http://babeljs.io) //   [Webpack](https://webpack.js.org) //   [Browsersync](https://www.browsersync.io/) //  [Jest](https://facebook.github.io/jest/) //  [TrackJS](https://trackjs.com/) // [ESLint](http://eslint.org/) //   [SASS](http://sass-lang.com/) // [PostCSS](https://github.com/postcss/postcss)  // [Editor Config](http://editorconfig.org) // [NPM Build Scripts](https://docs.npmjs.com/misc/scripts)
-
+<img src="https://content.screencast.com/users/BedimStudios/folders/Jing/media/66016689-79d4-4c8c-9af1-6b3d3b9dc189/00002938.png" />
 
 
 
