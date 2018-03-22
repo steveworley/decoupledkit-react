@@ -4,6 +4,14 @@
 
 An API-first CMS could contain many types of content that is designated for a storage method and intent. In Drupal, each item of content is called a node, and each node belongs to a single content type, which defines various default settings for nodes of that type, such as whether the node is published automatically and whether comments are permitted.
 
+### Considerations for content APIs
+
+#### No more layouts in WYSIWYG
+
+In a coupled Drupal architecture your websites theme is linked directly to your content model. This allows you to provide content editors with classes and additioanl HTML layout options in WYSIWYG fields. In a decoupled architectures your content should be clean from all inline HTML attributes (no classes, no styles) and should just provide raw content for clients to display as they see fit.
+
+### The decoupled kits content types
+
 This Decoupled Starter Kit for Drupal offers following 5 content types with the associated fields.
 
 **Client** - A collection of user clients for sample data.
