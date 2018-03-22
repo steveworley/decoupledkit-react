@@ -69,14 +69,21 @@ class DrupalAPI {
   /**
    * Make a request to Drupal to generate a new API token.
    */
-  generateToken() {
+  generateToken(username = process.env.DRUPAL_USER, password = process.env.DRUPAL_PASSWORD, scope) {
     const body = [
       'grant_type=password',
       'client_id=' + process.env.CLIENT_ID,
       'client_secret=' + process.env.CLIENT_SECRET,
-      'username=' + process.env.DRUPAL_USER,
-      'password=' + process.env.DRUPAL_PASSWORD,
+      'username=' + username,
+      'password=' + password
     ];
+
+
+    if (scope) {
+      body.push('scope=' + scope.join(' '))
+    }
+
+    console.log(body)
 
     return fetch(process.env.DRUPAL_URL + '/oauth/token', {
         method: 'POST',
@@ -111,6 +118,44 @@ class DrupalAPI {
         return json
       })
       .catch(err => console.error('Unable to generate token ==>', err))
+  }
+
+  /**
+   * Fetch debug information about an access token.
+   * 
+   * @param {Object} token 
+   */
+  tokenDebug(token) {
+    const { access_token, token_type } = token
+    return fetch(process.env.DRUPAL_URL + '/oauth/debug?_format=json', {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `${token_type} ${access_token}`
+      }
+    })
+      .then(res => res.json())
+      .then(json => json)
+      .catch(err => console.error('Token Debug Error ==>', error))
+  }
+
+  fetchWithToken(token = {}) {
+    const { token_type, access_token } = token
+
+    if (!token_type || !access_token) {
+      return;
+    }
+
+    let _fetch = fetchWithMiddleware(
+      this.addHostToUrl,
+      this.addHeader('Content-Type', 'application/vnd.api+json'),
+      this.addHeader('Accept', 'application/vnd.api+json'),
+      this.addHeader('Authorization', `${token_type} ${access_token}`),
+    )
+
+    return _fetch('/node/premium_content').then(res => res.json()).then(({data}) => { return data }).catch(err => {
+      console.log(err)
+      return []
+    })
   }
 
   /**
@@ -238,21 +283,6 @@ class DrupalAPI {
       .then(res => res.json())
       .then(res => res.data.map(el => el.id))
       .catch(err => console.log(err))
-  }
-
-  async login(user, pass) {
-    try {
-      const response = await this.fetch('/login?_format=json')
-    } catch (error) {
-      console.log(error)
-      return false
-    }
-
-    if (!response.ok) {
-      return false
-    }
-
-    return await response.json()
   }
 
   /**
