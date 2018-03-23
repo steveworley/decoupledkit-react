@@ -24,7 +24,7 @@ The GraphQL application included in the architecture acts as a proxy or orchestr
 
 #### About the .env file
 
-As stated in the installation steps, you will copy `.env.example` to `.env`. For the GraphQL application, this file already includes most of the the proper environment variables to connect each of the entities. The Drupal variables can also be referenced at [http://local.decoupledkit.com/admin/config/services/consumer](http://local.decoupledkit.com/admin/config/services/consumer) after installing the Drupal website locally. 
+As stated in the installation steps, you will copy `.env.example` to `.env`. For the GraphQL application, this file already includes most of the proper environment variables to connect each of the entities. The Drupal variables can also be referenced at [http://local.decoupledkit.com/admin/config/services/consumer](http://local.decoupledkit.com/admin/config/services/consumer) after installing the Drupal website locally.
 
 
 ```
