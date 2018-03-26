@@ -1,27 +1,27 @@
 
 ## Decoupled Starter Kit Application from Acquia
 
-### About 
+### About
 
-The Acquia Decoupled Starter Kit for React provides a complete working environment for demonstrating and prototyping front-end digital experience applications coded in standard Javascript, utilizing decoupled Drupal as a content service. This starter kit aims to provide technical guidance and insights for both Javascript and Drupal developers and is comprised of three separate applications: Headless Lightning Drupal website, React application, and a GraphQL application. Each of these applications work in tandem to illustrate patterned workflows when developing with each of the interconnected applications.
+The Acquia Decoupled Starter Kit for React provides a complete working environment for demonstrating and prototyping front-end digital experience applications coded in standard Javascript, utilizing decoupled Drupal as a content service. This starter kit aims to provide technical guidance and insights for both Javascript and Drupal developers and is comprised of three separate applications: Headless Lightning Drupal website, React application, and a GraphQL application. Each of these applications works in tandem to illustrate patterned workflows when developing with each of the interconnected applications.
 
-The Decoupled Starter Kit for React was created [Steve Worley](https://twitter.com/sjworley) and [Jason Enter](https://twitter.com/jasonenter) from the [Acquia](https://www.acquia.com) Professional Services team. The intent of the application(s) is to explore different architectural scenarios when building Decoupled Drupal applications, while using the development to explore options around best practices with these patterned workflows. The components are broken out by functional purposes and the content subjects are intended as straightforward methods to understand. 
+The Decoupled Starter Kit for React was created by [Steve Worley](https://twitter.com/sjworley) and [Jason Enter](https://twitter.com/jasonenter) from the [Acquia](https://www.acquia.com) Professional Services team. The intent of the application(s) is to explore different architectural scenarios when building Decoupled Drupal applications while using the development to explore options around best practices with these patterned workflows. The components are broken out by functional purposes and the content subjects are intended as straightforward methods to understand.
 
-### Getting Started 
+### Getting Started
 
-A complete installation steps, high level overview of the architecture, and detailed walk-thru of the code is included in the [Read the Docs website](http://decoupledkit-react.readthedocs.io). The getting started guide is broken out for the [React application](http://decoupledkit-react.readthedocs.io/en/develop/gettingstarted-react/), the [GraphQL application](http://decoupledkit-react.readthedocs.io/en/develop/gettingstarted-graphql/), and the [Headless Lightning Drupal](http://decoupledkit-react.readthedocs.io/en/develop/gettingstarted-drupal/) website. The applications are structured for baseline API architectures to work in tandem, but can also be used as a boilerplates for other purposes.  
+A complete installation steps, high-level overview of the architecture and detailed walk-thru of the code is included in the [Read the Docs website](http://decoupledkit-react.readthedocs.io). The getting started guide is broken out for the [React application](http://decoupledkit-react.readthedocs.io/en/develop/gettingstarted-react/), the [GraphQL application](http://decoupledkit-react.readthedocs.io/en/develop/gettingstarted-graphql/), and the [Headless Lightning Drupal](http://decoupledkit-react.readthedocs.io/en/develop/gettingstarted-drupal/) website. The applications are structured for baseline API architectures to work in tandem, but can also be used as boilerplates for other purposes.
 
 
-### Feature Summary 
+### Feature Summary
 
 **Drupal CRUD** <br>
-This page addresses workflows when dealing directly with JSON API endpoints served from a Headless Lightning Drupal instance. These tasks are broken out by core CRUD (Create, Read, Update, Delete) tasks for rich text and images fields. This application does not propose to replace Drupal strengths around content authoring, but rather seeks to understand workflows around interacting with API content.
+This page addresses workflows when dealing directly with JSON API endpoints served from a Headless Lightning Drupal instance. These tasks are broken out by core CRUD (Create, Read, Update, Delete) tasks for rich text and images fields. This application does not propose replacing Drupal content authoring strengths but rather seeks to understand workflows around interacting with API content.
 
 **GraphQL Client (Single)**  <br>
-This page addresses architecture scenarios when interacting with a GraphQL server which is exposing content that originates from Drupals JSON API (single source). These components interacts with data that is served via GraphQL queries to retrieve and compare data sets. This page also helps to compare benefits of using GraphQL as a middle orchestration layer, opposed to dealing directly with standard JSON API structures.
+This page addresses architecture scenarios when interacting with a GraphQL server which is exposing content that originates from Drupal's JSON API (single source). These components interact with data that is served via GraphQL queries to retrieve and compare data sets. This page also helps to compare benefits of using GraphQL as a middle orchestration layer, opposed to dealing directly with standard JSON API structures.
 
 **GraphQL Client (Multiple)**  <br>
-This page builds upon the previous example by synthesizing non-Drupal and Drupal API data with GraphQL by combining multiple sources. GraphQL serves the combination of data points into proper structures to for retrieval of data, as well as GraphQL mutations. This component also addresses scenarios around caching and performance by using the Apollo Client layer.
+This page builds upon the previous example by synthesizing non-Drupal and Drupal API data with GraphQL by combining multiple sources. GraphQL serves the combination of data points into proper structures for retrieval of data, as well as GraphQL mutations. This component also addresses scenarios around caching and performance by using the Apollo Client layer.
 
 **API Data Failover** <br>
 Architectures which lean on external sources as the primary data streams can offer challenges. This page demonstrates methods to tackle these scenarios with API failure with techniques of browser cache, local indexed databases, and local storage.
