@@ -6,9 +6,13 @@ This is defined as a client who can consume the API based on the scope it is ass
 
 #### How to add a consumer?
 
-Go to `/admin/config/services/consumer/add` on the site, give it a name and select the scope of the  ([drupal role](../drupal-roles.md)) for this consumer.
+Go to `/admin/config/services/consumer/add` on the site, give it a name and select the scope, by choosing a [drupal role](../drupal-roles.md) for this consumer.
 
-Anonymous access to the API is allowed in the same way that Drupal allows anonymous access to content. Generally, published content is available while unpublished content is not. If your application needs more privileged access (for example, accessing unpublished or creating new content) you will need to authenticate. Authentication involves a client, which is associated with a role, and a user which is assigned the same role as the client. 
+When creating a consumer you can optionally assign a user to the consumer. This will be the user account that is used if during OAuth authentication no user credentials have been provided. For security purposes this user shouldn't have access to elevated system permissions as these can be added to the token via the `scope` parameter.
+
+The OAuth scope is used as a default set of permissions that all tokens will have when they are created by this client. Additional scopes can be requested by using the `scope` parameter when requesting a token. These scopes are additional to the default scopes and are intersected with the roles that the user account has in Drupal.
+
+Anonymous access to the API is allowed in the same way that Drupal allows anonymous access to content. Generally, published content is available while unpublished content is not. If your application needs more privileged access (for example, accessing unpublished or creating new content) you will need to authenticate. 
 
 Once you have a client and user set up, you can obtain an access token like this:
 
