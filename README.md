@@ -42,6 +42,9 @@ This component illustrates utilizing techniques to mock API data endpoints when 
 
 <img src="https://content.screencast.com/users/BedimStudios/folders/Jing/media/66016689-79d4-4c8c-9af1-6b3d3b9dc189/00002938.png" />
 
+<br /> <hr />
 
+### Credit
 
+The React portion of this project was built using the excellent toolset provided in the [React Slingshot](https://github.com/coryhouse/react-slingshot) by Cory House. We have included the primary readme documentation [here](/docs/react-slingshot/README.md). Be sure to also review the React Slingshot [FAQs](/docs/react-slingshot/FAQ.md), as well as [contributors](/docs/react-slingshot/CONTRIBUTORS.md) and [contributing](/docs/react-slingshot/CONTRIBUTING.md).
 
