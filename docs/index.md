@@ -47,3 +47,8 @@ The application tackles the challenges of building an API-first architecture. Mu
 <img src="https://content.screencast.com/users/BedimStudios/folders/Jing/media/66016689-79d4-4c8c-9af1-6b3d3b9dc189/00002938.png" />
 
 
+
+### Credit
+
+The React portion of this project was built using the excellent toolset provided in the [React Slingshot](https://github.com/coryhouse/react-slingshot) by Cory House. We have included the primary readme documentation [here](./react-slingshot/README.md). Be sure to also review the React Slingshot [FAQs](./react-slingshot/FAQ.md), as well as [contributors](./react-slingshot/CONTRIBUTORS.md) and [contributing](./react-slingshot/CONTRIBUTING.md).
+
