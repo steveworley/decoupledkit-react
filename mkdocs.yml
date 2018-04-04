@@ -5,9 +5,6 @@ site_description: 'A starterkit for headless workflows with Drupal, React, & Gra
 theme: readthedocs
 strict: true
 
-# extra_javascript:
-#   - js/fix_search.js
-
 markdown_extensions:
   - toc:
       permalink: True
@@ -44,5 +41,5 @@ pages:
   - React Slingshot Documentation:
     - React Slingshot: 'react-slingshot/README.md'
     - React Slingshot FAQ: 'react-slingshot/FAQ.md'
-    - Drupal CRUD Contributors: 'react-slingshot/CONTRIBUTORS.md'
-    - Drupal CRUD Contributing: 'react-slingshot/CONTRIBUTING.md'
+    - React Slingshot Contributors: 'react-slingshot/CONTRIBUTORS.md'
+    - React Slingshot Contributing: 'react-slingshot/CONTRIBUTING.md'
