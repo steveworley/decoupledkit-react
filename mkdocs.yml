@@ -41,3 +41,8 @@ pages:
     - API Failover Techniques: 'react-apifailover.md'
     - API Mocking Techniques: 'react-apimock.md'
     - Chatbot: 'react-chatbot.md'
+  - React Slingshot Documentation:
+    - React Slingshot: 'react-slingshot/README.md'
+    - React Slingshot FAQ: 'react-slingshot/FAQ.md'
+    - Drupal CRUD Contributors: 'react-slingshot/CONTRIBUTORS.md'
+    - Drupal CRUD Contributing: 'react-slingshot/CONTRIBUTING.md'
