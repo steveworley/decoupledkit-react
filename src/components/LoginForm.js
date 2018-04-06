@@ -15,6 +15,14 @@ class LoginForm extends Component {
     this.handleToggle = this.handleToggle.bind(this)
   }
 
+  componentDidMount() {
+    let token = window.localStorage.getItem('code_token')
+    if (token) {
+      token = JSON.parse(token)
+      this.props.actions.fetchContent(token)
+    }
+  }
+
   handleSubmit(event) {
     this.props.actions.doLogin(this.state)
     event.preventDefault()
@@ -34,24 +42,30 @@ class LoginForm extends Component {
     }
   }
 
+  getForm() {
+    return (
+      <form onSubmit={this.handleSubmit}>
+        <label>Username</label>
+        <input type="text" name="username" onChange={this.handleChange('username')} value={username} />
+        <label>Password</label>
+        <input type="password" name="password" onChange={this.handleChange('password')} value={password} />
+        <p>Scope</p>
+        <p><small>OAuth scope is implemented using Drupal roles - the decoupled kit Drupal site has these roles created for demo purposes. The Simple OAuth module will not assign roles to users who have not been set up with them; for example if you sign in with <code>premium</code> and choose the administrator role your access token will not be assigned the administrator role as this user is not an administrator</small></p>
+        <label>Premium <input type="checkbox" value={scope.premium} onChange={this.handleToggle('premium')} /></label>
+        <label>Administrator <input type="checkbox" value={scope.administrator} onChange={this.handleToggle('administrator')} /></label>
+        <input type="submit" value="Login" />
+      </form>
+    )
+  }
+
   render() {
     const { username, password, scope } = this.state
     const { tokenDebug, token, content } = this.props
 
     return (
       <div>
-        <form onSubmit={this.handleSubmit}>
-          <label>Username</label>
-          <input type="text" name="username" onChange={this.handleChange('username')} value={username} />
-          <label>Password</label>
-          <input type="password" name="password" onChange={this.handleChange('password')} value={password} />
-          <p>Scope</p>
-          <p><small>OAuth scope is implemented using Drupal roles - the decoupled kit Drupal site has these roles created for demo purposes. The Simple OAuth module will not assign roles to users who have not been set up with them; for example if you sign in with <code>premium</code> and choose the administrator role your access token will not be assigned the administrator role as this user is not an administrator</small></p>
-          <label>Premium <input type="checkbox" value={scope.premium} onChange={this.handleToggle('premium')} /></label>
-          <label>Administrator <input type="checkbox" value={scope.administrator} onChange={this.handleToggle('administrator')} /></label>
-          <input type="submit" value="Login" />
-        </form>
-
+        <a className="btn btn-primary" href="http://local.decoupledkit.com/oauth/authorize?response_type=code&client_id=22fb4284-ddb3-42c6-b1b0-b522ef0dd1b5&scope=premium">Login</a>
+        
         { 
           Object.keys(tokenDebug).length === 0 ? '' : (
             <div className="code-block">

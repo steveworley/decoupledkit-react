@@ -16,7 +16,6 @@ export class UserAccessPage extends Component {
           <ul>
             <li>premium:premium</li>
             <li>standard:standard</li>
-            <li>apitest:apitest (administrator)</li>
           </ul>
         </div>
 

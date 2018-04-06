@@ -83,8 +83,6 @@ class DrupalAPI {
       body.push('scope=' + scope.join(' '))
     }
 
-    console.log(body)
-
     return fetch(process.env.DRUPAL_URL + '/oauth/token', {
         method: 'POST',
         body: body.join('&'),
