@@ -36,6 +36,7 @@ export const getDebug = (token) => {
   return dispatch => {
     return drupalAPI.tokenDebug(token)
       .then(json => dispatch(loginDebug(json)))
+      .catch(err => console.log(err))
   }
 }
 

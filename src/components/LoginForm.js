@@ -9,7 +9,7 @@ import * as actions from '../actions/drupalLogin'
 class LoginForm extends Component {
   constructor(props) {
     super(props)
-    this.state = { username: '', password: '', scope: {} }
+    this.state = { username: '', password: '', scope: {}, showForm: false }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.handleToggle = this.handleToggle.bind(this)
@@ -17,10 +17,14 @@ class LoginForm extends Component {
 
   componentDidMount() {
     let token = window.localStorage.getItem('code_token')
+    
     if (token) {
       token = JSON.parse(token)
       this.props.actions.fetchContent(token)
+      this.props.actions.getDebug(token)
     }
+    // Remove it after the first use for demonstration.
+    window.localStorage.removeItem('code_token')
   }
 
   handleSubmit(event) {
@@ -43,6 +47,8 @@ class LoginForm extends Component {
   }
 
   getForm() {
+    const { username, password, scope } = this.state
+    
     return (
       <form onSubmit={this.handleSubmit}>
         <label>Username</label>
@@ -59,16 +65,20 @@ class LoginForm extends Component {
   }
 
   render() {
-    const { username, password, scope } = this.state
-    const { tokenDebug, token, content } = this.props
+    const { tokenDebug, token, content, showForm } = this.props
+    const form = this.getForm();
 
     return (
       <div>
         <a className="btn btn-primary" href="http://local.decoupledkit.com/oauth/authorize?response_type=code&client_id=22fb4284-ddb3-42c6-b1b0-b522ef0dd1b5&scope=premium">Login</a>
-        
+
+        <a className="btn btn-secondary" href="#" onClick={() => this.setState({showForm: !showForm})}>{ showForm ? 'Hide' : 'Show' } form</a>
+
+        { showForm ? form : '' }
+
         { 
           Object.keys(tokenDebug).length === 0 ? '' : (
-            <div className="code-block">
+            <div className="code-block" style={{paddingTop: '50px'}}>
               <p><strong>Drupal Roles</strong></p>
               <pre>{JSON.stringify(tokenDebug.roles, null, 2)}</pre>
             </div>

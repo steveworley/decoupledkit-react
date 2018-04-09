@@ -64,9 +64,22 @@ browserSync({
         }
       },
 
+      /**
+       * OAuth callback.
+       * 
+       * This handles receiving a response from an oauth server and is intended to convert the
+       * authorization code into an oauth token which can then be used by the application to
+       * make requests on behalf of the user.
+       */
       {
         route: "/oauth2/callback",
         handle: async (req, res) => {
+
+          if (req.url.indexOf('?') == -1) {
+            res.statusCode = 400
+            return res.end('Unable to process the oauth callback.')
+          }
+
           const params = req.url.slice(req.url.indexOf('?') + 1).split('&').reduce((result, item, index, array) => {
             item = item.split('=')
             if (item.length > 0) {
@@ -77,7 +90,7 @@ browserSync({
 
           if (!params.code) {
             res.statusCode = 400;
-            res.end('Invalid redirect.');
+            return res.end('Invalid redirect.')
           }
 
           const body = Object.entries({
@@ -98,7 +111,7 @@ browserSync({
           if (response.ok) {
             let token = await response.json()
             token = JSON.stringify(token);
-            res.end(`
+            return res.end(`
               <body>
                 <script type="text/javascript">
                   window.localStorage.setItem('code_token', '${token}')
@@ -109,7 +122,7 @@ browserSync({
               </body>
             `)
           }
-          res.end(response);
+          res.end(response)
         }
       },
 

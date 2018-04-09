@@ -133,7 +133,7 @@ class DrupalAPI {
     })
       .then(res => res.json())
       .then(json => json)
-      .catch(err => console.error('Token Debug Error ==>', error))
+      .catch(err => console.error('Token Debug Error ==>', err))
   }
 
   fetchWithToken(token = {}) {

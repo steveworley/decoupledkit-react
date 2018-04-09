@@ -99,3 +99,27 @@ span.api-source-graphql {
 span.api-source-sales {
   background: rgb(212, 96, 0);
 }
+
+a.btn {
+  border: 1px solid lightblue;
+  background: #28a745;
+  padding: 10px;
+  color: #fefefe;
+  cursor: pointer;
+  font-weight: bold;
+  -webkit-transition: all 0.5s;
+  transition: all 0.5s;
+  border-radius: 3px;
+}
+
+a.btn:hover {
+  background: #28aaaa;
+}
+
+a.btn-primary {
+  border: #28a745;
+}
+
+a.btn-secondary {
+  background: #28a;
+}
