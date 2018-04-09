@@ -64,6 +64,68 @@ browserSync({
         }
       },
 
+      /**
+       * OAuth callback.
+       * 
+       * This handles receiving a response from an oauth server and is intended to convert the
+       * authorization code into an oauth token which can then be used by the application to
+       * make requests on behalf of the user.
+       */
+      {
+        route: "/oauth2/callback",
+        handle: async (req, res) => {
+
+          if (req.url.indexOf('?') == -1) {
+            res.statusCode = 400
+            return res.end('Unable to process the oauth callback.')
+          }
+
+          const params = req.url.slice(req.url.indexOf('?') + 1).split('&').reduce((result, item, index, array) => {
+            item = item.split('=')
+            if (item.length > 0) {
+              result[item[0]] = item[1]
+            }
+            return result;
+          }, {})
+
+          if (!params.code) {
+            res.statusCode = 400;
+            return res.end('Invalid redirect.')
+          }
+
+          const body = Object.entries({
+            'grant_type': 'authorization_code',
+            'client_id': '22fb4284-ddb3-42c6-b1b0-b522ef0dd1b5',
+            'client_secret': 'premium',
+            'code': params.code
+          }).map(([key, val]) => `${key}=${val}`).join('&')
+
+          const response = await fetch(process.env.DRUPAL_URL + '/oauth/token', {
+            method: 'post',
+            body,
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            }
+          })
+
+          if (response.ok) {
+            let token = await response.json()
+            token = JSON.stringify(token);
+            return res.end(`
+              <body>
+                <script type="text/javascript">
+                  window.localStorage.setItem('code_token', '${token}')
+                  setTimeout(function() {
+                    window.location = '/uac'
+                  }, 500)
+                </script>
+              </body>
+            `)
+          }
+          res.end(response)
+        }
+      },
+
       historyApiFallback(),
 
       // The order of serverProxy is important. It will not work if it is indexed
