@@ -53,6 +53,9 @@ export function clearMessage() {
 
 export function updateContent(uuid, attr) {
   const fields = JSON.parse(JSON.stringify(attr));
+
+  console.log(fields)
+
   return dispatch => {
     const body = {
       "data": {
@@ -264,7 +267,9 @@ export function doLoadDrupalData() {
                 }
               } = item;
               const uuid = self.split('/').splice(-2, 1)[0]; // has to be a better way to get the UUID.
-              result[uuid].image = DRUPAL_API_LOC.replace('/jsonapi/node/dogs', attributes.url);
+              if (attributes && attributes.url) {
+                result[uuid].image = DRUPAL_API_LOC.replace('/jsonapi/node/dogs', attributes.url);
+              }
             }
           });
           let imageResult = JSON.parse(JSON.stringify(result));
