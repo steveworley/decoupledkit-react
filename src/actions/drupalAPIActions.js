@@ -53,13 +53,12 @@ export function clearMessage() {
 
 export function updateContent(uuid, attr) {
   const fields = JSON.parse(JSON.stringify(attr));
-
-  console.log(fields)
-
+  
   return dispatch => {
     const body = {
       "data": {
         "id": uuid,
+        "type": "node--dogs",
         "attributes": {
           'title': fields['title'],
           'body': fields['body'],
